@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>/* Language: the browser's on the first visit, then the one picked with the FR / EN switch. Bots stay on the page they asked for. */
+(function(){var c=null;try{c=localStorage.getItem('popote-lang')}catch(e){}if(!c&&/bot|crawl|spider|slurp|facebookexternalhit|whatsapp|telegram|preview/i.test(navigator.userAgent))return;var b=((navigator.languages&&navigator.languages[0])||navigator.language||'fr').toLowerCase();if((c||(b.indexOf('fr')===0?'fr':'en'))==='fr')location.replace('/'+location.search+location.hash)})();</script>
+<title>Popote Duo · The app for cooking together, parent and child</title>
+<meta name="description" content="Popote Duo is the cooking app where the child and the parent each get their own instructions on the same screen, from age 4. Join the free beta in February 2027.">
+<meta name="theme-color" content="#173F2E">
+<link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+<!-- Partage sur les réseaux : adresses complètes, à changer si le site passe sur un nom de domaine (page générée par outils/version-anglaise.py) -->
+<link rel="canonical" href="https://popote-duo.vercel.app/en">
+<link rel="alternate" hreflang="fr" href="https://popote-duo.vercel.app/">
+<link rel="alternate" hreflang="en" href="https://popote-duo.vercel.app/en">
+<link rel="alternate" hreflang="x-default" href="https://popote-duo.vercel.app/">
+<meta property="og:url" content="https://popote-duo.vercel.app/en">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_GB">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:title" content="Popote Duo · Cooking together">
+<meta property="og:description" content="One set of instructions for the child, another for the parent, on the same screen. Join the free family beta.">
+<meta property="og:image" content="https://popote-duo.vercel.app/assets/img/og-image-en.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preload" href="/assets/fonts/archivo-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/style.css?v=26">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-split" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M12 4v16"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></symbol>
+  <symbol id="i-voice" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 9a4 4 0 0 1 0 6"/><path d="M19 6.5a8 8 0 0 1 0 11"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.6 5.3 5.9.9-4.2 4.1 1 5.8L12 16.4l-5.3 2.7 1-5.8-4.2-4.1 5.9-.9L12 3z"/></symbol>
+  <symbol id="i-flame" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c1 3.2 4.5 5.2 4.5 9.5a4.5 4.5 0 0 1-9 0c0-2.2 1-3.6 2.3-4.6 0 2 .9 3.1 2.2 3.1 0-3.2-1-5.2 0-8z"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2.5"/><path d="M8 11V7.5a4 4 0 0 1 8 0V11"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="18" r="1"/></symbol>
+  <symbol id="i-data" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v11m0 0-4-4m4 4 4-4"/><path d="M5 20h14"/></symbol>
+  <symbol id="i-box" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8 12 3.8 20.5 8v8.2L12 20.4l-8.5-4.2z"/><path d="M3.5 8 12 12.2 20.5 8M12 12.2v8.2"/><path d="M7.8 5.9l8.4 4.2"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+</svg>
+
+<header class="nav">
+  <div class="nav-pill">
+    <a class="nav-logo" href="#top" aria-label="Popote Duo, back to top"><svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 418.9 152.0"><g transform="translate(6.00 6.00) scale(1.0000)"><path d="M60 40 C52 22 40 14 26 16 C32 30 44 40 58 44Z" fill="#3E9B4F"/><path d="M60 42 C60 22 66 8 78 4 C80 20 72 34 62 44Z" fill="#57B565"/><path d="M62 44 C74 30 88 26 99 30 C92 42 78 48 64 48Z" fill="#3E9B4F"/><path d="M60 44 C30 44 16 66 18 88 C20 112 40 128 60 128 C80 128 100 112 102 88 C104 66 90 44 60 44Z" fill="#D9415E"/><path d="M60 127 C60 133 62 137 67 139" stroke="#B8324C" stroke-width="3" fill="none" stroke-linecap="round"/><ellipse cx="38" cy="64" rx="9" ry="5" fill="#FFFFFF" opacity="0.35" transform="rotate(-35 38 64)"/><ellipse cx="46" cy="84" rx="7" ry="8.5" fill="#FFFFFF"/><ellipse cx="74" cy="84" rx="7" ry="8.5" fill="#FFFFFF"/><circle cx="47.5" cy="86" r="4.2" fill="#23201C"/><circle cx="75.5" cy="86" r="4.2" fill="#23201C"/><circle cx="49" cy="84.4" r="1.4" fill="#FFFFFF"/><circle cx="77" cy="84.4" r="1.4" fill="#FFFFFF"/><ellipse cx="35" cy="99" rx="6" ry="3.5" fill="#F7A3B0"/><ellipse cx="85" cy="99" rx="6" ry="3.5" fill="#F7A3B0"/><path d="M50 99 Q60 110 70 99" stroke="#23201C" stroke-width="3.2" fill="none" stroke-linecap="round"/></g><path d="M148.898 53.48V20.682H155.062L155.706 24.04H156.028Q157.27 21.97 159.179 21.049999999999997Q161.088 20.13 163.434 20.13Q166.516 20.13 168.747 21.509999999999998Q170.978 22.89 172.174 25.695999999999998Q173.37 28.502 173.37 32.826Q173.37 37.104 172.174 39.91Q170.978 42.716 168.77 44.096000000000004Q166.562 45.476 163.572 45.476Q162.1 45.476 160.812 45.153999999999996Q159.524 44.832 158.489 44.141999999999996Q157.454 43.452 156.718 42.44H156.442V53.48ZM161.088 39.588Q162.79 39.588 163.825 38.897999999999996Q164.86 38.208 165.32 36.873999999999995Q165.78 35.54 165.78 33.608000000000004V31.997999999999998Q165.78 30.066 165.32 28.709Q164.86 27.352 163.825 26.685000000000002Q162.79 26.018 161.088 26.018Q159.432 26.018 158.397 26.777Q157.362 27.536 156.879 28.939Q156.396 30.342 156.396 32.228V33.332Q156.396 34.712 156.649 35.862Q156.902 37.012 157.47699999999998 37.84Q158.052 38.668 158.949 39.128Q159.846 39.588 161.088 39.588ZM190.16 45.476Q186.112 45.476 183.237 44.096000000000004Q180.362 42.716 178.821 39.887Q177.28 37.058 177.28 32.78Q177.28 28.502 178.821 25.695999999999998Q180.362 22.89 183.237 21.509999999999998Q186.112 20.13 190.16 20.13Q194.254 20.13 197.129 21.509999999999998Q200.004 22.89 201.54500000000002 25.695999999999998Q203.086 28.502 203.086 32.78Q203.086 37.058 201.54500000000002 39.887Q200.004 42.716 197.129 44.096000000000004Q194.254 45.476 190.16 45.476ZM190.16 40.002Q192.046 40.002 193.219 39.266000000000005Q194.392 38.53 194.921 37.127Q195.45 35.724000000000004 195.45 33.653999999999996V31.951999999999998Q195.45 29.881999999999998 194.921 28.456Q194.392 27.03 193.219 26.317Q192.046 25.604 190.16 25.604Q188.32 25.604 187.147 26.317Q185.974 27.03 185.445 28.456Q184.916 29.881999999999998 184.916 31.951999999999998V33.653999999999996Q184.916 35.724000000000004 185.445 37.127Q185.974 38.53 187.147 39.266000000000005Q188.32 40.002 190.16 40.002ZM208.146 53.48V20.682H214.31L214.95399999999998 24.04H215.27599999999998Q216.518 21.97 218.427 21.049999999999997Q220.33599999999998 20.13 222.682 20.13Q225.76399999999998 20.13 227.995 21.509999999999998Q230.226 22.89 231.422 25.695999999999998Q232.618 28.502 232.618 32.826Q232.618 37.104 231.422 39.91Q230.226 42.716 228.018 44.096000000000004Q225.81 45.476 222.82 45.476Q221.34799999999998 45.476 220.06 45.153999999999996Q218.772 44.832 217.737 44.141999999999996Q216.702 43.452 215.96599999999998 42.44H215.69V53.48ZM220.33599999999998 39.588Q222.03799999999998 39.588 223.07299999999998 38.897999999999996Q224.108 38.208 224.56799999999998 36.873999999999995Q225.028 35.54 225.028 33.608000000000004V31.997999999999998Q225.028 30.066 224.56799999999998 28.709Q224.108 27.352 223.07299999999998 26.685000000000002Q222.03799999999998 26.018 220.33599999999998 26.018Q218.67999999999998 26.018 217.64499999999998 26.777Q216.60999999999999 27.536 216.12699999999998 28.939Q215.64399999999998 30.342 215.64399999999998 32.228V33.332Q215.64399999999998 34.712 215.897 35.862Q216.14999999999998 37.012 216.72499999999997 37.84Q217.29999999999998 38.668 218.197 39.128Q219.094 39.588 220.33599999999998 39.588ZM249.408 45.476Q245.35999999999999 45.476 242.48499999999999 44.096000000000004Q239.60999999999999 42.716 238.069 39.887Q236.528 37.058 236.528 32.78Q236.528 28.502 238.069 25.695999999999998Q239.60999999999999 22.89 242.48499999999999 21.509999999999998Q245.35999999999999 20.13 249.408 20.13Q253.50199999999998 20.13 256.377 21.509999999999998Q259.252 22.89 260.793 25.695999999999998Q262.334 28.502 262.334 32.78Q262.334 37.058 260.793 39.887Q259.252 42.716 256.377 44.096000000000004Q253.50199999999998 45.476 249.408 45.476ZM249.408 40.002Q251.29399999999998 40.002 252.46699999999998 39.266000000000005Q253.64 38.53 254.16899999999998 37.127Q254.69799999999998 35.724000000000004 254.69799999999998 33.653999999999996V31.951999999999998Q254.69799999999998 29.881999999999998 254.16899999999998 28.456Q253.64 27.03 252.46699999999998 26.317Q251.29399999999998 25.604 249.408 25.604Q247.56799999999998 25.604 246.39499999999998 26.317Q245.22199999999998 27.03 244.69299999999998 28.456Q244.164 29.881999999999998 244.164 31.951999999999998V33.653999999999996Q244.164 35.724000000000004 244.69299999999998 37.127Q245.22199999999998 38.53 246.39499999999998 39.266000000000005Q247.56799999999998 40.002 249.408 40.002ZM275.858 45.476Q273.512 45.476 271.879 44.763Q270.246 44.05 269.441 42.623999999999995Q268.63599999999997 41.198 268.63599999999997 39.174V26.156H265.462V20.682H268.866L270.43 13.597999999999999H276.13399999999996V20.682H280.87199999999996V26.156H276.13399999999996V37.334Q276.13399999999996 38.622 276.64 39.312Q277.14599999999996 40.002 278.47999999999996 40.002H280.87199999999996V44.694Q280.274 44.878 279.37699999999995 45.085Q278.47999999999996 45.292 277.55999999999995 45.384Q276.64 45.476 275.858 45.476ZM297.38599999999997 45.476Q293.246 45.476 290.34799999999996 44.119Q287.45 42.762 285.909 39.956Q284.368 37.15 284.368 32.78Q284.368 28.502 285.88599999999997 25.695999999999998Q287.404 22.89 290.256 21.509999999999998Q293.108 20.13 297.11 20.13Q301.066 20.13 303.803 21.464Q306.54 22.798 307.966 25.558Q309.392 28.318 309.392 32.688V34.298H292.004Q292.004 36.230000000000004 292.55600000000004 37.564Q293.108 38.897999999999996 294.25800000000004 39.587999999999994Q295.408 40.278 297.34 40.278Q298.49 40.278 299.36400000000003 40.001999999999995Q300.238 39.726 300.836 39.197Q301.43399999999997 38.668 301.756 37.932Q302.078 37.196 302.078 36.275999999999996H309.392Q309.392 38.484 308.587 40.209Q307.782 41.934 306.21799999999996 43.107Q304.654 44.28 302.423 44.878Q300.192 45.476 297.38599999999997 45.476ZM292.05 30.112000000000002H301.71Q301.71 28.916 301.41099999999994 28.019Q301.11199999999997 27.122 300.537 26.524Q299.962 25.926 299.157 25.627Q298.352 25.328 297.294 25.328Q295.638 25.328 294.534 25.88Q293.43 26.432 292.832 27.49Q292.234 28.548 292.05 30.112000000000002Z" fill="currentColor"/><path d="M153.992 131.852V57.548H197.192Q211.01600000000002 57.548 221.06 61.868Q231.10399999999998 66.188 236.504 74.504Q241.904 82.82000000000001 241.904 94.7Q241.904 106.58000000000001 236.504 114.89600000000002Q231.10399999999998 123.212 221.06 127.53200000000001Q211.01600000000002 131.852 197.192 131.852ZM180.668 113.384H195.572Q200.0 113.384 203.45600000000002 112.088Q206.912 110.792 209.39600000000002 108.47Q211.88 106.148 213.176 102.962Q214.47199999999998 99.77600000000001 214.47199999999998 95.888V93.296Q214.47199999999998 89.408 213.176 86.27600000000001Q211.88 83.144 209.39600000000002 80.822Q206.912 78.5 203.45600000000002 77.25800000000001Q200.0 76.016 195.572 76.016H180.668ZM276.572 133.148Q263.828 133.148 257.402 126.884Q250.976 120.62 250.976 108.524V74.828H275.168V105.608Q275.168 107.876 275.81600000000003 109.874Q276.464 111.872 277.76 113.27600000000001Q279.056 114.68 281.10799999999995 115.49000000000001Q283.15999999999997 116.30000000000001 285.86 116.30000000000001Q289.748 116.30000000000001 292.71799999999996 114.73400000000001Q295.688 113.168 297.36199999999997 110.36000000000001Q299.036 107.552 299.036 104.096V74.828H323.22799999999995V131.852H303.572L301.952 122.56400000000001H300.97999999999996Q298.06399999999996 126.34400000000001 294.12199999999996 128.666Q290.18 130.988 285.698 132.06799999999998Q281.216 133.148 276.572 133.148ZM371.288 133.148Q359.516 133.148 350.552 129.85399999999998Q341.588 126.56 336.512 119.97200000000001Q331.436 113.384 331.436 103.34Q331.436 93.296 336.512 86.654Q341.588 80.012 350.552 76.772Q359.516 73.53200000000001 371.288 73.53200000000001Q383.06 73.53200000000001 392.024 76.772Q400.988 80.012 406.06399999999996 86.654Q411.14 93.296 411.14 103.34Q411.14 113.384 406.06399999999996 119.97200000000001Q400.988 126.56 392.024 129.85399999999998Q383.06 133.148 371.288 133.148ZM371.288 117.92Q376.58 117.92 379.874 116.084Q383.168 114.248 384.68 111.17000000000002Q386.192 108.09200000000001 386.192 104.42V102.26Q386.192 98.588 384.68 95.50999999999999Q383.168 92.432 379.874 90.596Q376.58 88.76 371.288 88.76Q365.996 88.76 362.702 90.596Q359.408 92.432 357.896 95.50999999999999Q356.384 98.588 356.384 102.26V104.42Q356.384 108.09200000000001 357.896 111.17000000000002Q359.408 114.248 362.702 116.084Q365.996 117.92 371.288 117.92Z" fill="currentColor"/></svg></a>
+    <ul class="nav-links">
+      <li><a href="#story">The app</a></li>
+      <li><a href="#mode-cuisine">Demo</a></li>
+      <li><a href="#recettes">Recipes</a></li>
+      <li><a href="#tarifs">Pricing</a></li>
+    </ul>
+    <div class="nav-end">
+      <div class="lang" role="group" aria-label="Language"><a href="/" hreflang="fr" lang="fr" data-lang="fr" title="Version française">FR</a><span class="on" aria-current="true">EN</span></div>
+      <a class="btn btn-mint" href="#liste" data-track="nav">Join the beta</a>
+    </div>
+  </div>
+</header>
+
+<main>
+<div class="stage panel">
+  <section class="hero" id="top">
+    <div class="hero-scene">
+      <div class="pepin-spot" id="spotHero" aria-hidden="true" title="Pépin loves cuddles">
+        <img class="pepin-fallback" src="/assets/img/pepin.svg" alt="">
+      </div>
+      <ul class="ing" aria-label="The beta recipes">
+        <li class="ing-card c1"><a class="ing-in" href="#r-rougail" data-recette="Rougail saucisses"><img src="/assets/img/ingredients/tomate.webp" alt="" width="512" height="512"><span class="ing-tip"><b>Sausage rougail</b>Main · 1 hr</span><span class="ing-go" aria-hidden="true"><svg><use href="#i-arrow"/></svg></span><span class="sr">See the sausage rougail recipe</span></a></li>
+        <li class="ing-card c2"><a class="ing-in" href="#recettes" data-recette="Bientôt"><img src="/assets/img/ingredients/carotte.webp" alt="" width="512" height="512"><span class="ing-tip"><b>More recipes on the way</b>6 to 8 for the beta</span><span class="ing-go" aria-hidden="true"><svg><use href="#i-arrow"/></svg></span><span class="sr">See the recipes</span></a></li>
+        <li class="ing-card c3"><a class="ing-in" href="#r-verrines" data-recette="Verrines banane-spéculoos"><img src="/assets/img/ingredients/banane.webp" alt="" width="512" height="512"><span class="ing-tip"><b>Banana and Biscoff pots</b>No bake · 10 min</span><span class="ing-go" aria-hidden="true"><svg><use href="#i-arrow"/></svg></span><span class="sr">See the banana and Biscoff pots recipe</span></a></li>
+        <li class="ing-card c4"><a class="ing-in" href="#r-cookie" data-recette="Cookie géant"><img src="/assets/img/ingredients/cookie.webp" alt="" width="512" height="512"><span class="ing-tip"><b>Giant cookie</b>Snack · 35 min</span><span class="ing-go" aria-hidden="true"><svg><use href="#i-arrow"/></svg></span><span class="sr">See the giant cookie recipe</span></a></li>
+      </ul>
+    </div>
+    <div class="hero-copy">
+      <div class="hc-main">
+        <p class="pill"><span class="dot"></span>Free beta in February 2027</p>
+        <h1 class="h1">Cook together, one task each</h1>
+      </div>
+      <div class="hc-side">
+        <p class="lead">Popote Duo splits the screen in two: one task for the child, one for the parent. You cook together, each in your own role, from age&nbsp;4.</p>
+        <div class="cta-row">
+          <a class="btn btn-mint" href="#liste" data-track="hero">Join the beta<svg><use href="#i-arrow"/></svg></a>
+          <a class="btn btn-glass" href="#mode-cuisine">See the demo</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="story" id="story" aria-label="How it works">
+    <div class="story-bg"></div>
+    <div class="story-sticky">
+      <canvas id="scene" aria-hidden="true"></canvas>
+      <div class="story-head wrap">
+        <p class="kicker">How it works</p>
+        <h2 class="h2 story-title">Skills sized for small hands</h2>
+      </div>
+      <svg class="story-lines" id="storyLines" aria-hidden="true"></svg>
+      <div class="story-stage">
+        <div class="story-spot" id="spotStory">
+          <button class="pin" data-i="0" type="button"><span class="ico"><svg><use href="#i-shield"/></svg></span>No knives</button>
+          <button class="pin" data-i="1" type="button"><span class="ico"><svg><use href="#i-star"/></svg></span>Skills book</button>
+        </div>
+      </div>
+      <div class="story-panel">
+        <div class="sp-bars" aria-hidden="true"><span></span><span></span></div>
+        <div class="sp-items">
+          <article class="sp-item on"><h3>A “no knives” filter</h3><p>From age 4, recipes and tasks with no blades and no flames. Trickier skills come with age.</p></article>
+          <article class="sp-item"><h3>A skills book</h3><p>Weighing, cracking an egg, whisking: every skill the parent signs off goes into the book and earns a badge.</p></article>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<section class="after section panel demo" id="mode-cuisine">
+  <div class="wrap demo-grid">
+    <div class="demo-copy">
+      <h2 class="h2">Each their own task, on the same screen</h2>
+      <p class="lead">At every step, the child gets a task their size while the parent handles the oven, the hob and the knife. Try it with the giant cookie: go through the steps and listen to Pépin.</p>
+      <p class="gestes"><b>Skills learned:</b> weighing, mixing, folding in, setting the table.</p>
+      <a class="btn btn-ink" href="#liste" data-track="demo">Try it with my child<svg><use href="#i-arrow"/></svg></a>
+    </div>
+
+    <div class="demo-device">
+      <p class="tab-hint"><svg aria-hidden="true"><use href="#i-voice"/></svg>Tap “Listen” to hear Pépin</p>
+      <div class="tab" aria-label="Cooking mode demo">
+        <div class="tab-screen" id="tabScreen">
+          <div class="ts-head">
+            <div class="ts-recipe">Giant cookie<small>Serves 8 · 10 min + 25 min baking</small></div>
+            <div class="ts-step" id="tsStep" aria-live="polite">Step 1 of 4</div>
+          </div>
+          <div class="ts-progress"><span id="tsBar"></span></div>
+          <div class="ts-body">
+            <div class="ts-split">
+              <div class="ts-kid" id="tsKid">
+                <div class="ts-who"><span class="av"><svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120.0 140.0"><path d="M60 40 C52 22 40 14 26 16 C32 30 44 40 58 44Z" fill="#3E9B4F"/><path d="M60 42 C60 22 66 8 78 4 C80 20 72 34 62 44Z" fill="#57B565"/><path d="M62 44 C74 30 88 26 99 30 C92 42 78 48 64 48Z" fill="#3E9B4F"/><path d="M60 44 C30 44 16 66 18 88 C20 112 40 128 60 128 C80 128 100 112 102 88 C104 66 90 44 60 44Z" fill="#D9415E"/><path d="M60 127 C60 133 62 137 67 139" stroke="#B8324C" stroke-width="3" fill="none" stroke-linecap="round"/><ellipse cx="38" cy="64" rx="9" ry="5" fill="#FFFFFF" opacity="0.35" transform="rotate(-35 38 64)"/><ellipse cx="46" cy="84" rx="7" ry="8.5" fill="#FFFFFF"/><ellipse cx="74" cy="84" rx="7" ry="8.5" fill="#FFFFFF"/><circle cx="47.5" cy="86" r="4.2" fill="#23201C"/><circle cx="75.5" cy="86" r="4.2" fill="#23201C"/><circle cx="49" cy="84.4" r="1.4" fill="#FFFFFF"/><circle cx="77" cy="84.4" r="1.4" fill="#FFFFFF"/><ellipse cx="35" cy="99" rx="6" ry="3.5" fill="#F7A3B0"/><ellipse cx="85" cy="99" rx="6" ry="3.5" fill="#F7A3B0"/><path d="M50 99 Q60 110 70 99" stroke="#23201C" stroke-width="3.2" fill="none" stroke-linecap="round"/></svg></span>For Lou, age 6</div>
+                <div class="ts-big">
+                  <svg class="ts-ring" viewBox="0 0 80 80" aria-hidden="true"><circle class="bg" cx="40" cy="40" r="32"/><circle class="fg" cx="40" cy="40" r="32"/></svg>
+                  <span class="num" id="tsBig">180 g</span>
+                </div>
+                <p class="ts-kid-text" id="tsKidText">Help weigh the ingredients: 180 g of brown sugar, then 180 g of flour.</p>
+                <div class="ts-row">
+                  <span class="chip chip-geste" id="tsGeste"><svg><use href="#i-star"/></svg><span>Skill: weighing</span></span>
+                  <button class="btn-voice" id="tsVoice" type="button"><svg><use href="#i-voice"/></svg><span>Listen</span></button>
+                </div>
+              </div>
+              <div class="ts-parent">
+                <span class="lbl"><svg><use href="#i-lock"/></svg>Meanwhile, for the parent</span>
+                <p id="tsParent">Preheat the oven to 180 °C and line the tin with baking paper.</p>
+                <span class="chip chip-feu" id="tsFeu"><svg><use href="#i-flame"/></svg>Oven, grown-ups only</span>
+              </div>
+            </div>
+            <div class="ts-done">
+              <img src="/assets/img/pepin-3d.webp" alt="" width="512" height="512" loading="lazy">
+              <span class="done-title">Well done, Lou!</span>
+              <button class="btn-voice" id="tsBravo" type="button"><svg><use href="#i-voice"/></svg><span>Listen to Pépin</span></button>
+              <p>The cookie is ready. Tick the skills your child managed to fill in the book:</p>
+              <ul class="badges" id="badges">
+                <li><button type="button" aria-pressed="false"><span class="b"><svg><use href="#i-check"/></svg></span>Weighing</button></li>
+                <li><button type="button" aria-pressed="false"><span class="b"><svg><use href="#i-check"/></svg></span>Mixing</button></li>
+                <li><button type="button" aria-pressed="false"><span class="b"><svg><use href="#i-check"/></svg></span>Folding in</button></li>
+                <li><button type="button" aria-pressed="false"><span class="b"><svg><use href="#i-check"/></svg></span>Setting the table</button></li>
+              </ul>
+              <button class="btn btn-line" type="button" id="tsRestart">Start the recipe again</button>
+            </div>
+          </div>
+          <div class="ts-foot">
+            <button class="btn btn-line" type="button" id="tsPrev" aria-label="Previous step"><svg><use href="#i-left"/></svg></button>
+            <div class="ts-dots" id="tsDots" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i></div>
+            <button class="btn btn-ink" type="button" id="tsNext">Next step<svg><use href="#i-arrow"/></svg></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="after section recipes" id="recettes">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 class="h2">Everyday recipes</h2>
+      <p class="lead">Each recipe card says who does what: safe skills for the child, the oven, the hob and the knife for the parent. Here are the first three.</p>
+    </div>
+    <div class="rc-grid">
+      <article class="rc" id="r-verrines">
+        <div class="rc-visual"><img class="rc-photo" src="/assets/img/photos/verrines-banane-speculoos.webp" alt="Layered dessert pots with cream and biscuit crumbs" width="760" height="608" loading="lazy"><span class="rc-tag">No bake</span><img class="rc-ing" src="/assets/img/ingredients/banane.webp" alt="" width="512" height="512" loading="lazy"></div>
+        <div class="rc-body">
+          <h3>Banana and Biscoff pots</h3>
+          <p class="rc-meta">Makes 2 · 10 min</p>
+          <ul class="rc-split" aria-label="First step">
+            <li><span class="who kid">Child</span>crushes the Biscoff biscuits by hand</li>
+            <li><span class="who">Parent</span>puts them in a sealed bag first</li>
+          </ul>
+        </div>
+      </article>
+      <article class="rc" id="r-cookie">
+        <div class="rc-visual"><img class="rc-photo" src="/assets/img/photos/cookie-geant.webp" alt="A giant chocolate chip cookie baked in a round dish" width="760" height="608" loading="lazy"><span class="rc-tag">Snack</span><img class="rc-ing" src="/assets/img/ingredients/cookie.webp" alt="" width="512" height="512" loading="lazy"></div>
+        <div class="rc-body">
+          <h3>Giant cookie</h3>
+          <p class="rc-meta">Serves 8 · 10 min + 25 min baking</p>
+          <ul class="rc-split" aria-label="Second step">
+            <li><span class="who kid">Child</span>mixes the soft butter and the sugar</li>
+            <li><span class="who">Parent</span>cracks the egg and adds the vanilla</li>
+          </ul>
+        </div>
+      </article>
+      <article class="rc" id="r-rougail">
+        <div class="rc-visual"><img class="rc-photo" src="/assets/img/photos/rougail-saucisses.webp" alt="Sliced sausages in sauce, served over rice" width="760" height="608" loading="lazy"><span class="rc-tag">Main</span><img class="rc-ing" src="/assets/img/ingredients/tomate.webp" alt="" width="512" height="512" loading="lazy"></div>
+        <div class="rc-body">
+          <h3>Sausage rougail</h3>
+          <p class="rc-meta">Serves 4 · 20 min + 40 min cooking</p>
+          <ul class="rc-split" aria-label="First step">
+            <li><span class="who kid">Child</span>washes the tomatoes and counts the ingredients</li>
+            <li><span class="who">Parent</span>slices the onions and chops the tomatoes</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+    <div class="rc-foot">
+      <p>Six to eight recipes for the beta, around fifteen when the app launches.<br><small>Stock photos, until we have pictures of our own dishes.</small></p>
+      <a class="btn btn-ink" href="#liste" data-track="recettes">Cook them before anyone else<svg><use href="#i-arrow"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<section class="after section trust" aria-labelledby="trust-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 class="h2" id="trust-title">Built for careful parents</h2>
+      <p class="lead">A parent code, checked recipes, no health data: you stay in control of everything.</p>
+    </div>
+    <div class="trust-grid">
+      <figure class="trust-photo">
+        <img src="/assets/img/photos/famille-cuisine.webp" alt="A mother and her daughter cutting out biscuits together in the kitchen" width="1100" height="825" loading="lazy">
+        <figcaption>At a child’s height, with no blades and no flames</figcaption>
+      </figure>
+    <ul class="safe-grid">
+      <li><span class="i"><svg><use href="#i-lock"/></svg></span><b>A parent code</b><span>Settings and signing off skills sit behind a code your child doesn’t know.</span></li>
+      <li><span class="i"><svg><use href="#i-shield"/></svg></span><b>Checked recipes</b><span>Every recipe is checked for age and safety before it goes into the app.</span></li>
+      <li><span class="i"><svg><use href="#i-list"/></svg></span><b>Tastes, not health data</b><span>The profile remembers the foods your child likes, tries or refuses. No allergies are stored: check the allergens in each recipe.</span></li>
+      <li><span class="i"><svg><use href="#i-data"/></svg></span><b>Your data, your choice</b><span>Export and delete it from the settings. No ads and no tracking on the child’s side, and data hosted in the European Union.</span></li>
+    </ul>
+    </div>
+  </div>
+</section>
+
+<section class="after section panel pricing" id="tarifs">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 class="h2">Free to start</h2>
+      <p class="lead">The app is free with six recipes, and Premium unlocks everything else. The box is separate: a one-off purchase, if you want the kit.</p>
+    </div>
+    <p class="beta-note"><span class="dot"></span><span><b>During the beta, everything is free, Premium included.</b> The prices below will apply once the app launches.</span></p>
+    <div class="plans">
+      <article class="plan">
+        <div class="plan-head"><h3 class="plan-name">Free</h3></div>
+        <p class="amount"><b>€0</b></p>
+        <p class="plan-note">To discover the app at your own pace.</p>
+        <ul class="feat">
+          <li><svg><use href="#i-check"/></svg>6 recipes with two sets of instructions</li>
+          <li><svg><use href="#i-check"/></svg>Cooking mode with Pépin’s voice</li>
+          <li><svg><use href="#i-check"/></svg>One child profile</li>
+        </ul>
+        <a class="btn btn-line" href="#liste" data-track="tarif-gratuit">Join the beta</a>
+      </article>
+      <article class="plan featured">
+        <div class="plan-head"><h3 class="plan-name">Premium</h3><span class="badge">First week free</span></div>
+        <p class="amount"><b>€5</b><span>per month</span></p>
+        <p class="plan-note"><b>Billed €59.99 a year</b>, after a 7-day free trial.</p>
+        <ul class="feat">
+          <li><svg><use href="#i-check"/></svg>Every recipe</li>
+          <li><svg><use href="#i-check"/></svg>The progress path and the skills book</li>
+          <li><svg><use href="#i-check"/></svg>Seasonal challenges</li>
+          <li><svg><use href="#i-check"/></svg>Several child profiles</li>
+        </ul>
+        <a class="btn btn-mint" href="#liste" data-track="tarif-premium">Try Premium for free</a>
+        <p class="plan-fine">Free for the whole beta. After launch, cancel during the trial and you pay nothing.</p>
+      </article>
+    </div>
+    <article class="addon">
+      <div class="addon-ico" aria-hidden="true"><svg><use href="#i-box"/></svg></div>
+      <div>
+        <p class="addon-tag">Optional · one-off purchase, no subscription</p>
+        <h3>The Popote Duo box</h3>
+        <p class="addon-text">Child-sized kitchen kit: apron, small whisk, soft spatula, mixing bowl, measuring jug and activity cards. The app works perfectly well without it.</p>
+      </div>
+      <div class="addon-side">
+        <p class="addon-price"><b>€39.90</b><small>one-off, delivery included</small></p>
+        <p class="soon"><i></i>Pre-orders in spring 2027</p>
+        <a class="link" href="#liste" data-track="box">Let me know<svg><use href="#i-arrow"/></svg></a>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="after section panel join" id="liste">
+  <div class="wrap join-grid">
+    <div class="join-head">
+      <p class="pill"><span class="dot"></span>Free beta · February 2027</p>
+      <h2 class="h2">Become a tester family</h2>
+      <p class="lead">In February, around twenty families will test the app at home for three weeks. It’s free, and your feedback decides what we improve before launch.</p>
+    </div>
+    <div class="join-more">
+      <ul class="perks">
+        <li><span class="ck"><svg><use href="#i-check"/></svg></span>Free, no strings attached</li>
+        <li><span class="ck"><svg><use href="#i-check"/></svg></span>On iPhone, iPad or Android</li>
+        <li><span class="ck"><svg><use href="#i-check"/></svg></span>People on the list hear from us first</li>
+      </ul>
+      <p class="who-we"><b>Who are we?</b> A team of five students building Popote Duo as part of our studies, with help from tester families.</p>
+      <p class="join-note">Launching on the App Store and Google Play in June 2027.</p>
+    </div>
+
+    <div class="form-card" id="formCard">
+      <img class="peek" src="/assets/img/pepin-3d.webp" alt="" width="512" height="512" loading="lazy">
+      <form id="joinForm" name="liste-attente" novalidate>
+        <p hidden><label>Leave empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+        <h3>Sign me up</h3>
+        <p class="sub">Three questions, one minute.</p>
+        <div class="field">
+          <label for="email">Your email</label>
+          <input class="input" id="email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="name@example.com" aria-describedby="emailErr">
+          <p class="err" id="emailErr" hidden>Please enter a valid email address, for example name@example.com.</p>
+        </div>
+        <fieldset class="field">
+          <legend>You are</legend>
+          <div class="seg">
+            <input type="radio" name="role" id="role-parent" value="parent" checked><label for="role-parent">A parent</label>
+            <input type="radio" name="role" id="role-pro" value="pro"><label for="role-pro">A childcare or youth worker</label>
+          </div>
+        </fieldset>
+        <fieldset class="field" id="ageField">
+          <legend>Children’s ages</legend>
+          <div class="chips">
+            <input type="checkbox" id="age-4" name="age" value="4-5"><label for="age-4">4–5</label>
+            <input type="checkbox" id="age-6" name="age" value="6-7"><label for="age-6">6–7</label>
+            <input type="checkbox" id="age-8" name="age" value="8-10"><label for="age-8">8–10</label>
+          </div>
+        </fieldset>
+        <div class="field" id="orgField" hidden>
+          <label for="org">Organisation name</label>
+          <input class="input" id="org" name="org" type="text" autocomplete="organization" placeholder="Oak Tree Holiday Club">
+        </div>
+        <div class="field check">
+          <input type="checkbox" id="beta" name="beta" checked>
+          <label for="beta"><span class="box"><svg><use href="#i-check"/></svg></span>I’d like to test the beta in February 2027</label>
+        </div>
+        <button class="btn btn-ink" type="submit">Sign me up<svg><use href="#i-arrow"/></svg></button>
+        <p class="err" id="sendErr" hidden>Sign-up didn’t go through. Check your connection and try again.</p>
+        <p class="fine">We only email you about Popote Duo. Unsubscribe in one click. <a href="/en/privacy.html">Privacy policy</a></p>
+      </form>
+      <div class="ok" id="joinOk" hidden>
+        <img src="/assets/img/pepin-3d.webp" alt="" width="512" height="512" loading="lazy">
+        <span class="done-title">Got it!</span>
+        <p id="joinOkText">You’re on the list. We’ll email you as soon as the beta opens in February.</p>
+        <button class="btn btn-line" type="button" id="joinAgain">Add another address</button>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="after foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <a href="#top" aria-label="Popote Duo, back to top"><svg aria-hidden="true" focusable="false" class="logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 418.9 152.0"><g transform="translate(6.00 6.00) scale(1.0000)"><path d="M60 40 C52 22 40 14 26 16 C32 30 44 40 58 44Z" fill="#3E9B4F"/><path d="M60 42 C60 22 66 8 78 4 C80 20 72 34 62 44Z" fill="#57B565"/><path d="M62 44 C74 30 88 26 99 30 C92 42 78 48 64 48Z" fill="#3E9B4F"/><path d="M60 44 C30 44 16 66 18 88 C20 112 40 128 60 128 C80 128 100 112 102 88 C104 66 90 44 60 44Z" fill="#D9415E"/><path d="M60 127 C60 133 62 137 67 139" stroke="#B8324C" stroke-width="3" fill="none" stroke-linecap="round"/><ellipse cx="38" cy="64" rx="9" ry="5" fill="#FFFFFF" opacity="0.35" transform="rotate(-35 38 64)"/><ellipse cx="46" cy="84" rx="7" ry="8.5" fill="#FFFFFF"/><ellipse cx="74" cy="84" rx="7" ry="8.5" fill="#FFFFFF"/><circle cx="47.5" cy="86" r="4.2" fill="#23201C"/><circle cx="75.5" cy="86" r="4.2" fill="#23201C"/><circle cx="49" cy="84.4" r="1.4" fill="#FFFFFF"/><circle cx="77" cy="84.4" r="1.4" fill="#FFFFFF"/><ellipse cx="35" cy="99" rx="6" ry="3.5" fill="#F7A3B0"/><ellipse cx="85" cy="99" rx="6" ry="3.5" fill="#F7A3B0"/><path d="M50 99 Q60 110 70 99" stroke="#23201C" stroke-width="3.2" fill="none" stroke-linecap="round"/></g><path d="M148.898 53.48V20.682H155.062L155.706 24.04H156.028Q157.27 21.97 159.179 21.049999999999997Q161.088 20.13 163.434 20.13Q166.516 20.13 168.747 21.509999999999998Q170.978 22.89 172.174 25.695999999999998Q173.37 28.502 173.37 32.826Q173.37 37.104 172.174 39.91Q170.978 42.716 168.77 44.096000000000004Q166.562 45.476 163.572 45.476Q162.1 45.476 160.812 45.153999999999996Q159.524 44.832 158.489 44.141999999999996Q157.454 43.452 156.718 42.44H156.442V53.48ZM161.088 39.588Q162.79 39.588 163.825 38.897999999999996Q164.86 38.208 165.32 36.873999999999995Q165.78 35.54 165.78 33.608000000000004V31.997999999999998Q165.78 30.066 165.32 28.709Q164.86 27.352 163.825 26.685000000000002Q162.79 26.018 161.088 26.018Q159.432 26.018 158.397 26.777Q157.362 27.536 156.879 28.939Q156.396 30.342 156.396 32.228V33.332Q156.396 34.712 156.649 35.862Q156.902 37.012 157.47699999999998 37.84Q158.052 38.668 158.949 39.128Q159.846 39.588 161.088 39.588ZM190.16 45.476Q186.112 45.476 183.237 44.096000000000004Q180.362 42.716 178.821 39.887Q177.28 37.058 177.28 32.78Q177.28 28.502 178.821 25.695999999999998Q180.362 22.89 183.237 21.509999999999998Q186.112 20.13 190.16 20.13Q194.254 20.13 197.129 21.509999999999998Q200.004 22.89 201.54500000000002 25.695999999999998Q203.086 28.502 203.086 32.78Q203.086 37.058 201.54500000000002 39.887Q200.004 42.716 197.129 44.096000000000004Q194.254 45.476 190.16 45.476ZM190.16 40.002Q192.046 40.002 193.219 39.266000000000005Q194.392 38.53 194.921 37.127Q195.45 35.724000000000004 195.45 33.653999999999996V31.951999999999998Q195.45 29.881999999999998 194.921 28.456Q194.392 27.03 193.219 26.317Q192.046 25.604 190.16 25.604Q188.32 25.604 187.147 26.317Q185.974 27.03 185.445 28.456Q184.916 29.881999999999998 184.916 31.951999999999998V33.653999999999996Q184.916 35.724000000000004 185.445 37.127Q185.974 38.53 187.147 39.266000000000005Q188.32 40.002 190.16 40.002ZM208.146 53.48V20.682H214.31L214.95399999999998 24.04H215.27599999999998Q216.518 21.97 218.427 21.049999999999997Q220.33599999999998 20.13 222.682 20.13Q225.76399999999998 20.13 227.995 21.509999999999998Q230.226 22.89 231.422 25.695999999999998Q232.618 28.502 232.618 32.826Q232.618 37.104 231.422 39.91Q230.226 42.716 228.018 44.096000000000004Q225.81 45.476 222.82 45.476Q221.34799999999998 45.476 220.06 45.153999999999996Q218.772 44.832 217.737 44.141999999999996Q216.702 43.452 215.96599999999998 42.44H215.69V53.48ZM220.33599999999998 39.588Q222.03799999999998 39.588 223.07299999999998 38.897999999999996Q224.108 38.208 224.56799999999998 36.873999999999995Q225.028 35.54 225.028 33.608000000000004V31.997999999999998Q225.028 30.066 224.56799999999998 28.709Q224.108 27.352 223.07299999999998 26.685000000000002Q222.03799999999998 26.018 220.33599999999998 26.018Q218.67999999999998 26.018 217.64499999999998 26.777Q216.60999999999999 27.536 216.12699999999998 28.939Q215.64399999999998 30.342 215.64399999999998 32.228V33.332Q215.64399999999998 34.712 215.897 35.862Q216.14999999999998 37.012 216.72499999999997 37.84Q217.29999999999998 38.668 218.197 39.128Q219.094 39.588 220.33599999999998 39.588ZM249.408 45.476Q245.35999999999999 45.476 242.48499999999999 44.096000000000004Q239.60999999999999 42.716 238.069 39.887Q236.528 37.058 236.528 32.78Q236.528 28.502 238.069 25.695999999999998Q239.60999999999999 22.89 242.48499999999999 21.509999999999998Q245.35999999999999 20.13 249.408 20.13Q253.50199999999998 20.13 256.377 21.509999999999998Q259.252 22.89 260.793 25.695999999999998Q262.334 28.502 262.334 32.78Q262.334 37.058 260.793 39.887Q259.252 42.716 256.377 44.096000000000004Q253.50199999999998 45.476 249.408 45.476ZM249.408 40.002Q251.29399999999998 40.002 252.46699999999998 39.266000000000005Q253.64 38.53 254.16899999999998 37.127Q254.69799999999998 35.724000000000004 254.69799999999998 33.653999999999996V31.951999999999998Q254.69799999999998 29.881999999999998 254.16899999999998 28.456Q253.64 27.03 252.46699999999998 26.317Q251.29399999999998 25.604 249.408 25.604Q247.56799999999998 25.604 246.39499999999998 26.317Q245.22199999999998 27.03 244.69299999999998 28.456Q244.164 29.881999999999998 244.164 31.951999999999998V33.653999999999996Q244.164 35.724000000000004 244.69299999999998 37.127Q245.22199999999998 38.53 246.39499999999998 39.266000000000005Q247.56799999999998 40.002 249.408 40.002ZM275.858 45.476Q273.512 45.476 271.879 44.763Q270.246 44.05 269.441 42.623999999999995Q268.63599999999997 41.198 268.63599999999997 39.174V26.156H265.462V20.682H268.866L270.43 13.597999999999999H276.13399999999996V20.682H280.87199999999996V26.156H276.13399999999996V37.334Q276.13399999999996 38.622 276.64 39.312Q277.14599999999996 40.002 278.47999999999996 40.002H280.87199999999996V44.694Q280.274 44.878 279.37699999999995 45.085Q278.47999999999996 45.292 277.55999999999995 45.384Q276.64 45.476 275.858 45.476ZM297.38599999999997 45.476Q293.246 45.476 290.34799999999996 44.119Q287.45 42.762 285.909 39.956Q284.368 37.15 284.368 32.78Q284.368 28.502 285.88599999999997 25.695999999999998Q287.404 22.89 290.256 21.509999999999998Q293.108 20.13 297.11 20.13Q301.066 20.13 303.803 21.464Q306.54 22.798 307.966 25.558Q309.392 28.318 309.392 32.688V34.298H292.004Q292.004 36.230000000000004 292.55600000000004 37.564Q293.108 38.897999999999996 294.25800000000004 39.587999999999994Q295.408 40.278 297.34 40.278Q298.49 40.278 299.36400000000003 40.001999999999995Q300.238 39.726 300.836 39.197Q301.43399999999997 38.668 301.756 37.932Q302.078 37.196 302.078 36.275999999999996H309.392Q309.392 38.484 308.587 40.209Q307.782 41.934 306.21799999999996 43.107Q304.654 44.28 302.423 44.878Q300.192 45.476 297.38599999999997 45.476ZM292.05 30.112000000000002H301.71Q301.71 28.916 301.41099999999994 28.019Q301.11199999999997 27.122 300.537 26.524Q299.962 25.926 299.157 25.627Q298.352 25.328 297.294 25.328Q295.638 25.328 294.534 25.88Q293.43 26.432 292.832 27.49Q292.234 28.548 292.05 30.112000000000002Z" fill="currentColor"/><path d="M153.992 131.852V57.548H197.192Q211.01600000000002 57.548 221.06 61.868Q231.10399999999998 66.188 236.504 74.504Q241.904 82.82000000000001 241.904 94.7Q241.904 106.58000000000001 236.504 114.89600000000002Q231.10399999999998 123.212 221.06 127.53200000000001Q211.01600000000002 131.852 197.192 131.852ZM180.668 113.384H195.572Q200.0 113.384 203.45600000000002 112.088Q206.912 110.792 209.39600000000002 108.47Q211.88 106.148 213.176 102.962Q214.47199999999998 99.77600000000001 214.47199999999998 95.888V93.296Q214.47199999999998 89.408 213.176 86.27600000000001Q211.88 83.144 209.39600000000002 80.822Q206.912 78.5 203.45600000000002 77.25800000000001Q200.0 76.016 195.572 76.016H180.668ZM276.572 133.148Q263.828 133.148 257.402 126.884Q250.976 120.62 250.976 108.524V74.828H275.168V105.608Q275.168 107.876 275.81600000000003 109.874Q276.464 111.872 277.76 113.27600000000001Q279.056 114.68 281.10799999999995 115.49000000000001Q283.15999999999997 116.30000000000001 285.86 116.30000000000001Q289.748 116.30000000000001 292.71799999999996 114.73400000000001Q295.688 113.168 297.36199999999997 110.36000000000001Q299.036 107.552 299.036 104.096V74.828H323.22799999999995V131.852H303.572L301.952 122.56400000000001H300.97999999999996Q298.06399999999996 126.34400000000001 294.12199999999996 128.666Q290.18 130.988 285.698 132.06799999999998Q281.216 133.148 276.572 133.148ZM371.288 133.148Q359.516 133.148 350.552 129.85399999999998Q341.588 126.56 336.512 119.97200000000001Q331.436 113.384 331.436 103.34Q331.436 93.296 336.512 86.654Q341.588 80.012 350.552 76.772Q359.516 73.53200000000001 371.288 73.53200000000001Q383.06 73.53200000000001 392.024 76.772Q400.988 80.012 406.06399999999996 86.654Q411.14 93.296 411.14 103.34Q411.14 113.384 406.06399999999996 119.97200000000001Q400.988 126.56 392.024 129.85399999999998Q383.06 133.148 371.288 133.148ZM371.288 117.92Q376.58 117.92 379.874 116.084Q383.168 114.248 384.68 111.17000000000002Q386.192 108.09200000000001 386.192 104.42V102.26Q386.192 98.588 384.68 95.50999999999999Q383.168 92.432 379.874 90.596Q376.58 88.76 371.288 88.76Q365.996 88.76 362.702 90.596Q359.408 92.432 357.896 95.50999999999999Q356.384 98.588 356.384 102.26V104.42Q356.384 108.09200000000001 357.896 111.17000000000002Q359.408 114.248 362.702 116.084Q365.996 117.92 371.288 117.92Z" fill="currentColor"/></svg></a>
+      <nav aria-label="Footer">
+        <a href="#story">The app</a><a href="#mode-cuisine">Demo</a><a href="#recettes">Recipes</a><a href="#tarifs">Pricing</a><a href="#liste">Beta</a><a href="/en/privacy.html">Privacy</a><a href="/en/legal-notice.html">Legal notice</a>
+      </nav>
+    </div>
+    <p>© 2026 Popote Duo · The app for cooking together, parent and child. Stock photos: Unsplash. Pépin’s voice: Piper speech synthesis, “siwis” voice in French (CC&nbsp;BY&nbsp;4.0) and “LJ&nbsp;Speech” voice in English (public domain).</p>
+  </div>
+</footer>
+
+<script src="/assets/js/main.js?v=27" defer></script>
+</body>
+</html>

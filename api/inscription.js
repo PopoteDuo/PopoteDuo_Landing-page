@@ -33,6 +33,7 @@ export default async function handler(req, res) {
   const ages = clean(b.ages, 40).replace(/[^0-9, \-–]/g, '');
   const org = role === 'pro' ? clean(b.org, 120) : '';
   const beta = b.beta === true;
+  const lang = b.lang === 'en' ? 'en' : 'fr';
 
   const { GMAIL_USER, GMAIL_APP_PASSWORD, INSCRIPTIONS_TO } = process.env;
   if (!GMAIL_USER || !GMAIL_APP_PASSWORD) return res.status(503).json({ ok: false, error: 'config' });
@@ -45,6 +46,7 @@ export default async function handler(req, res) {
     `Profil : ${ROLES[role]}`,
     role === 'pro' ? `Structure : ${org || '(non précisée)'}` : `Âge des enfants : ${ages ? ages + ' ans' : '(non précisé)'}`,
     `Partant pour la bêta : ${beta ? 'oui' : 'non'}`,
+    `Langue du site : ${lang === 'en' ? 'anglais (lui répondre en anglais)' : 'français'}`,
     `Date : ${date} (heure de Paris)`,
     '',
     'Pour lui écrire, il suffit de répondre à ce message.',
@@ -55,7 +57,7 @@ export default async function handler(req, res) {
       from: `Site Popote Duo <${GMAIL_USER}>`,
       to: INSCRIPTIONS_TO || GMAIL_USER,
       replyTo: email,
-      subject: `Inscription bêta · ${ROLES[role]} · ${email}`,
+      subject: `Inscription bêta${lang === 'en' ? ' (EN)' : ''} · ${ROLES[role]} · ${email}`,
       text,
     });
   } catch (err) {

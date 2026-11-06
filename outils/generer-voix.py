@@ -1,6 +1,7 @@
 """Génère les consignes parlées de Pépin (démo du mode cuisine) en MP3.
 
 Voix : « siwis » de Piper (synthèse vocale neuronale, locale), licence CC-BY 4.0.
+Version anglaise : voix « ljspeech » de Piper, domaine public, rangée dans assets/audio/en.
 À relancer quand les textes changent, par exemple avec les vraies recettes.
 
 Installation (une fois) :
@@ -8,12 +9,15 @@ Installation (une fois) :
     .venv-voix/bin/pip install piper-tts
     curl -LO https://huggingface.co/rhasspy/piper-voices/resolve/main/fr/fr_FR/siwis/medium/fr_FR-siwis-medium.onnx
     curl -LO https://huggingface.co/rhasspy/piper-voices/resolve/main/fr/fr_FR/siwis/medium/fr_FR-siwis-medium.onnx.json
+    curl -LO https://huggingface.co/rhasspy/piper-voices/resolve/main/en/en_US/ljspeech/medium/en_US-ljspeech-medium.onnx
+    curl -LO https://huggingface.co/rhasspy/piper-voices/resolve/main/en/en_US/ljspeech/medium/en_US-ljspeech-medium.onnx.json
 Il faut aussi ffmpeg (brew install ffmpeg).
 
 Lancement, depuis le dossier du site :
     .venv-voix/bin/python outils/generer-voix.py chemin/vers/fr_FR-siwis-medium.onnx
+    .venv-voix/bin/python outils/generer-voix.py chemin/vers/en_US-ljspeech-medium.onnx en
 """
-import subprocess, sys, tempfile, wave
+import os, subprocess, sys, tempfile, wave
 from pathlib import Path
 
 import piper
@@ -27,6 +31,15 @@ CLIPS = {
     "etape-3": "Ajoute la farine et la levure, puis les pépites de chocolat. Mélange sans trop insister, et répartis la pâte dans le moule.",
     "etape-4": "Le cookie cuit pendant vingt-cinq minutes. Pendant ce temps, prépare les petites assiettes. Ça sent drôlement bon !",
     "bravo": "Bravo ! Le cookie géant est prêt. Attends un peu qu'il refroidisse avant de le découper. Je suis trop fier de toi !",
+}
+
+# La même chose en anglais, pour la page /en.
+CLIPS_EN = {
+    "etape-1": "Your turn! Help weigh the ingredients: one hundred and eighty grams of brown sugar, then one hundred and eighty grams of flour.",
+    "etape-2": "Now mix the soft butter and the sugar, until it's nice and creamy. You're doing a great job!",
+    "etape-3": "Add the flour and the baking powder, then the chocolate chips. Mix gently, and spread the dough in the tin.",
+    "etape-4": "The cookie bakes for twenty-five minutes. Meanwhile, set out the little plates. It smells so good!",
+    "bravo": "Well done! The giant cookie is ready. Wait a little while for it to cool before cutting it. I'm so proud of you!",
 }
 
 # Un débit un peu plus lent et une intonation plus vivante que les réglages par défaut.
@@ -43,12 +56,25 @@ def fix_espeak_data() -> None:
                 (pkg / f.name).symlink_to(f)
 
 
-def main(model: str) -> None:
+def short_espeak_dir() -> Path:
+    """espeak ignore un chemin de données trop long (plus de 160 caractères environ) : on passe alors par un lien court."""
+    data = Path(piper.__file__).parent / "espeak-ng-data"
+    if len(str(data)) < 140:
+        return data
+    link = Path(tempfile.mkdtemp()) / "espeak-ng-data"
+    os.symlink(data, link)
+    return link
+
+
+def main(model: str, lang: str = "fr") -> None:
     fix_espeak_data()
     out = Path(__file__).resolve().parent.parent / "assets" / "audio"
+    clips = CLIPS
+    if lang == "en":
+        out, clips = out / "en", CLIPS_EN
     out.mkdir(parents=True, exist_ok=True)
-    voice = PiperVoice.load(model)
-    for name, text in CLIPS.items():
+    voice = PiperVoice.load(model, espeak_data_dir=short_espeak_dir())
+    for name, text in clips.items():
         with tempfile.NamedTemporaryFile(suffix=".wav") as tmp:
             with wave.open(tmp.name, "wb") as w:
                 voice.synthesize_wav(text, w, syn_config=STYLE)
@@ -63,6 +89,6 @@ def main(model: str) -> None:
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
+    if len(sys.argv) not in (2, 3):
         sys.exit(__doc__)
-    main(sys.argv[1])
+    main(*sys.argv[1:])

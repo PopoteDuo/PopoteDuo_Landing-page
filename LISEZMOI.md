@@ -6,7 +6,9 @@ Un site statique hébergé sur Vercel (offre gratuite), avec une seule petite fo
 ## Ce qu'il y a dans le dossier
 
 ```
-index.html                         la page (textes, structure, logos en SVG)
+index.html                         la page en français (textes, structure, logos en SVG)
+en/index.html                      la page en anglais, fabriquée par outils/version-anglaise.py (ne pas la modifier à la main)
+en/privacy.html, en/legal-notice.html  les traductions des deux pages légales
 politique-de-confidentialite.html  la politique de confidentialité du site et de la liste d'attente
 mentions-legales.html              les mentions légales (éditeur, hébergeur, crédits)
 404.html                           la page affichée pour une adresse qui n'existe pas
@@ -19,13 +21,14 @@ assets/
   js/main.js                       réglages (en haut), Pépin en 3D, l'histoire au scroll, la démo,
                                    la liste d'attente et la mesure d'audience
   js/three.min.js                  Three.js r128 (licence MIT), chargé après l'affichage de la page
-  audio/                           la voix de Pépin dans la démo (MP3)
+  audio/                           la voix de Pépin dans la démo (MP3), en anglais dans audio/en/
   fonts/                           Archivo en WOFF2, limitée aux caractères latins (licence OFL)
-  img/                             favicon, icône Apple, Pépin (plat et en 3D), image de partage (og-image.png)
+  img/                             favicon, icône Apple, Pépin (plat et en 3D), images de partage (og-image.png, og-image-en.png)
   img/ingredients/                 les ingrédients 3D des cartes du hero et des recettes (WebP)
   img/photos/                      les photos d'illustration des plats et de la cuisine à deux (WebP)
 outils/
   generer-voix.py                  régénère la voix de Pépin quand les textes changent
+  version-anglaise.py              refait en/index.html à partir de index.html et des traductions
 ```
 
 Tout est hébergé dans le dossier : la page n'appelle ni Google Fonts ni un CDN.
@@ -104,6 +107,25 @@ Tous les textes sont dans `index.html`, sauf ceux qui changent pendant l'utilisa
 - `STEPS` : les 4 étapes de la démo du cookie géant (consigne enfant, consigne parent, geste appris) ;
 - les messages de confirmation du formulaire.
 
+## Le site en deux langues
+
+Le site existe en français (`/`) et en anglais (`/en`). Le sélecteur FR / EN est dans la barre de navigation.
+
+- **Au premier passage**, la page suit la langue du navigateur : un navigateur en français reste sur `/`, tous les autres vont sur `/en`.
+- **Ensuite, le choix fait avec le sélecteur l'emporte** : il est retenu dans le navigateur du visiteur, et la page le respecte aux visites suivantes.
+- Les robots des moteurs de recherche et des réseaux sociaux ne sont jamais redirigés : chacun voit la page demandée, et les liens `hreflang` leur indiquent l'autre langue.
+- Les inscriptions venues de la page anglaise arrivent avec « (EN) » dans l'objet de l'e-mail, et la ligne « Langue du site : anglais » : il faut leur répondre en anglais.
+
+**Pour modifier un texte**, changer d'abord la version française dans `index.html`, puis sa traduction dans `outils/version-anglaise.py` (chaque paire : le français à gauche, l'anglais à droite), et relancer :
+
+```
+python3 outils/version-anglaise.py
+```
+
+Si un texte français a changé sans que sa paire suive, le script s'arrête et indique lequel. Les textes de la démo et du formulaire qui changent en direct sont dans `assets/js/main.js` (`T` et `STEPS`, en français et en anglais). Les pages légales anglaises (`en/`) sont à tenir à jour à la main, en même temps que les françaises, y compris les champs jaunes à compléter.
+
+L'image de partage anglaise (`og-image-en.png`) reprend la française avec le titre « Cook together, one task each ».
+
 ## Les recettes et les images
 
 Les trois recettes et la démo du cookie géant viennent des fiches de l'équipe (Notion, carte « Landing page ») : verrines banane-spéculoos, cookie géant et rougail saucisses.
@@ -125,7 +147,9 @@ Pour ajouter une recette, copier un bloc `<article class="rc" id="r-…">` dans 
 
 Les consignes de la démo sont pré-enregistrées avec Piper, une synthèse vocale neuronale qui tourne sur votre ordinateur, et la voix française « siwis » (licence CC-BY 4.0, d'où la mention en bas de page). Le résultat est bien plus naturel que les voix du téléphone, et identique sur tous les appareils. Chaque fichier pèse 40 Ko environ et ne se charge qu'au premier appui sur « Écouter ».
 
-Si les textes changent, modifier `CLIPS` dans `outils/generer-voix.py` (en écrivant les nombres en lettres), puis suivre les instructions en haut du fichier. Le texte affiché à l'écran est dans `STEPS`, dans `main.js`.
+En anglais, Pépin parle avec la voix « LJ Speech » de Piper (domaine public), et ses fichiers sont dans `assets/audio/en/`.
+
+Si les textes changent, modifier `CLIPS` (français) ou `CLIPS_EN` (anglais) dans `outils/generer-voix.py` (en écrivant les nombres en lettres), puis suivre les instructions en haut du fichier. Le texte affiché à l'écran est dans `STEPS`, dans `main.js`.
 
 Pour l'appli, une voix encore plus expressive est possible avec un service payant (ElevenLabs, Azure) ou en enregistrant une vraie voix pour Pépin.
 

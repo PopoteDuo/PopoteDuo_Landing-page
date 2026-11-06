@@ -94,10 +94,16 @@ h1,h2,h3,h4{margin:0;font-weight:700;letter-spacing:-.02em;text-wrap:balance}
 .nav-links a{display:block;padding:8px 14px;border-radius:999px;color:var(--on-dark-2);font-weight:500;font-size:15px;text-decoration:none;transition:background-color .2s,color .2s}
 .nav-links a:hover{background:rgba(243,238,226,.08);color:var(--on-dark)}
 .nav .btn{min-height:40px;padding:0 17px;font-size:14.5px}
+.nav-end{display:flex;align-items:center;gap:6px;flex:none}
+/* Sélecteur de langue FR / EN */
+.lang{display:flex;align-items:center;gap:2px;padding:3px;border-radius:999px;background:rgba(243,238,226,.08);font-size:13px;font-weight:650;letter-spacing:.02em}
+.lang a,.lang span{display:grid;place-items:center;min-width:32px;height:32px;padding:0 6px;border-radius:999px;text-decoration:none;color:var(--on-dark-2)}
+.lang .on{background:var(--on-dark);color:var(--herb)}
+.lang a:hover{color:var(--on-dark)}
 @media (min-width:860px){.nav-links{display:flex}}
 /* Sur mobile, la pilule de navigation est opaque : un flou par-dessus Pépin coûterait cher à chaque image */
 @media (max-width:899px){.nav-pill{background:rgba(14,38,26,.94);-webkit-backdrop-filter:none;backdrop-filter:none}}
-@media (max-width:374px){.nav-logo svg{height:26px}.nav .btn{padding:0 13px;font-size:14px}}
+@media (max-width:374px){.nav-pill{gap:6px;padding-left:12px}.nav-logo svg{height:24px}.nav-end{gap:4px}.lang a,.lang span{min-width:28px;padding:0 4px}.nav .btn{padding:0 11px;font-size:13.5px}}
 
 /* Canvas 3D */
 /* Le canvas de Pépin vit dans le bloc collant de l'histoire : il défile avec la page, et le script ne fait que le placer sur Pépin */

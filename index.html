@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>/* Langue : celle du navigateur au premier passage, puis celle choisie avec le sélecteur FR / EN. Les robots restent sur la page demandée. */
+(function(){var c=null;try{c=localStorage.getItem('popote-lang')}catch(e){}if(!c&&/bot|crawl|spider|slurp|facebookexternalhit|whatsapp|telegram|preview/i.test(navigator.userAgent))return;var b=((navigator.languages&&navigator.languages[0])||navigator.language||'fr').toLowerCase();if((c||(b.indexOf('fr')===0?'fr':'en'))==='en')location.replace('/en'+location.search+location.hash)})();</script>
 <title>Popote Duo · L’appli pour cuisiner à deux, parent et enfant</title>
 <meta name="description" content="Popote Duo, l’appli de cuisine où l’enfant et le parent ont chacun leur consigne sur le même écran, dès 4 ans. Rejoignez la bêta gratuite de février 2027.">
 <meta name="theme-color" content="#173F2E">
@@ -10,6 +12,9 @@
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
 <!-- Partage sur les réseaux : adresses complètes, à changer si le site passe sur un nom de domaine -->
 <link rel="canonical" href="https://popote-duo.vercel.app/">
+<link rel="alternate" hreflang="fr" href="https://popote-duo.vercel.app/">
+<link rel="alternate" hreflang="en" href="https://popote-duo.vercel.app/en">
+<link rel="alternate" hreflang="x-default" href="https://popote-duo.vercel.app/">
 <meta property="og:url" content="https://popote-duo.vercel.app/">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="fr_FR">
@@ -20,7 +25,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preload" href="assets/fonts/archivo-var.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/style.css?v=25">
+<link rel="stylesheet" href="assets/css/style.css?v=26">
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -47,7 +52,10 @@
       <li><a href="#recettes">Recettes</a></li>
       <li><a href="#tarifs">Tarifs</a></li>
     </ul>
-    <a class="btn btn-mint" href="#liste" data-track="nav">Rejoindre la bêta</a>
+    <div class="nav-end">
+      <div class="lang" role="group" aria-label="Langue"><span class="on" aria-current="true">FR</span><a href="/en" hreflang="en" lang="en" data-lang="en" title="English version">EN</a></div>
+      <a class="btn btn-mint" href="#liste" data-track="nav">Rejoindre la bêta</a>
+    </div>
   </div>
 </header>
 
@@ -361,10 +369,10 @@
         <a href="#story">L’appli</a><a href="#mode-cuisine">Démo</a><a href="#recettes">Recettes</a><a href="#tarifs">Tarifs</a><a href="#liste">Bêta</a><a href="politique-de-confidentialite.html">Confidentialité</a><a href="mentions-legales.html">Mentions légales</a>
       </nav>
     </div>
-    <p>© 2026 Popote Duo · L’appli pour cuisiner en duo, parent et enfant. Photos d’illustration&nbsp;: Unsplash. Voix de Pépin&nbsp;: synthèse Piper, voix «&nbsp;siwis&nbsp;» (CC&nbsp;BY&nbsp;4.0).</p>
+    <p>© 2026 Popote Duo · L’appli pour cuisiner en duo, parent et enfant. Photos d’illustration&nbsp;: Unsplash. Voix de Pépin&nbsp;: synthèse Piper, voix «&nbsp;siwis&nbsp;» en français (CC&nbsp;BY&nbsp;4.0) et «&nbsp;LJ&nbsp;Speech&nbsp;» en anglais (domaine public).</p>
   </div>
 </footer>
 
-<script src="assets/js/main.js?v=26" defer></script>
+<script src="assets/js/main.js?v=27" defer></script>
 </body>
 </html>

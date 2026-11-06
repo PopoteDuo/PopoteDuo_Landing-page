@@ -13,7 +13,28 @@ const CONFIG={
   // Laisser vide : rien n'est envoyé et la page affiche seulement la confirmation (mode démo).
   waitlist:{endpoint:'/api/inscription'}
 };
-const THREE_SRC='assets/js/three.min.js';
+// Racine du site, déduite de l'adresse de ce script : la page anglaise (en/) trouve ainsi les mêmes fichiers.
+const BASE=document.currentScript?new URL('../../',document.currentScript.src).href:'';
+const THREE_SRC=BASE+'assets/js/three.min.js';
+
+/* ---------- Langue : la page française (/) ou anglaise (/en) ---------- */
+const LANG=document.documentElement.lang.indexOf('en')===0?'en':'fr';
+const T={
+  fr:{step:(i,n)=>`Étape ${i} sur ${n}`,geste:'Geste&nbsp;: ',next:'Étape suivante ',finish:'Terminer ',done:'Recette terminée',speaking:'Pépin parle…',listen:'Écouter',listenPepin:'Écouter Pépin',
+    noVoice:'Voix indisponible ici',bravo:'Bravo ! Le cookie géant est prêt.',sending:'Envoi… ',send:'M’inscrire',
+    okPro:'Votre structure est sur la liste. On vous recontacte dès que l’offre pour les structures est prête.',
+    okBeta:'Vous êtes sur la liste. On vous écrit dès que la bêta ouvre, en février.',okLaunch:'Vous êtes sur la liste. On vous écrit au lancement de l’appli.'},
+  en:{step:(i,n)=>`Step ${i} of ${n}`,geste:'Skill: ',next:'Next step ',finish:'Finish ',done:'Recipe complete',speaking:'Pépin is talking…',listen:'Listen',listenPepin:'Listen to Pépin',
+    noVoice:'Voice not available here',bravo:'Well done! The giant cookie is ready.',sending:'Sending… ',send:'Sign me up',
+    okPro:'Your organisation is on the list. We’ll get back to you as soon as the offer for organisations is ready.',
+    okBeta:'You’re on the list. We’ll email you as soon as the beta opens in February.',okLaunch:'You’re on the list. We’ll email you when the app launches.'}
+}[LANG];
+// Sélecteur FR / EN : le choix est retenu et passe avant la langue du navigateur (voir le script en tête de page).
+document.addEventListener('click',e=>{
+  const a=e.target.closest('[data-lang]');if(!a)return;
+  try{localStorage.setItem('popote-lang',a.dataset.lang)}catch(_){}
+  e.preventDefault();location.href=a.href+location.hash;
+});
 
 const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -606,7 +627,12 @@ requestAnimationFrame(loop);
 
 /* ---------- Démo du mode cuisine ---------- */
 // La recette du cookie géant, d'après la fiche de l'équipe (Notion > Landing page).
-const STEPS=[
+const STEPS=LANG==='en'?[
+  {big:'180 g',kid:'Help weigh the ingredients: 180 g of brown sugar, then 180 g of flour.',geste:'weighing',parent:'Preheat the oven to 180 °C and line the tin with baking paper.',feu:true},
+  {big:'Creamy',kid:'Mix the soft butter and the sugar until it’s nice and creamy.',geste:'mixing',parent:'Crack the egg into a bowl, then add it with the vanilla.',feu:false},
+  {big:'150 g',kid:'Add the flour and baking powder, then the chocolate chips. Spread the dough in the tin.',geste:'folding in',parent:'Help spread the dough out evenly.',feu:false},
+  {big:'25 min',kid:'The cookie is baking! Meanwhile, set out the little plates.',geste:'setting the table',parent:'Bake for 25 min at 180 °C, then let it cool before cutting.',feu:true,timer:true}
+]:[
   {big:'180 g',kid:'Aide à peser les ingrédients&nbsp;: 180 g de sucre roux, puis 180 g de farine.',geste:'peser',parent:'Préchauffer le four à 180 °C et tapisser le moule de papier cuisson.',feu:true},
   {big:'Crémeux',kid:'Mélange le beurre mou et le sucre jusqu’à ce que ce soit bien crémeux.',geste:'mélanger',parent:'Casser l’œuf dans un bol, puis l’ajouter avec la vanille.',feu:false},
   {big:'150 g',kid:'Ajoute la farine et la levure, puis les pépites de chocolat. Répartis la pâte dans le moule.',geste:'incorporer',parent:'Aider à étaler la pâte bien régulièrement.',feu:false},
@@ -616,21 +642,21 @@ let step=0;
 const tsScreen=$('#tabScreen'), tsKid=$('#tsKid'), voiceBtn=$('#tsVoice');
 function renderStep(){
   const s=STEPS[step];
-  $('#tsStep').textContent=`Étape ${step+1} sur ${STEPS.length}`;
+  $('#tsStep').textContent=T.step(step+1,STEPS.length);
   $('#tsBar').style.width=((step+1)/STEPS.length*100)+'%';
   $('#tsBig').textContent=s.big;
   $('#tsKidText').innerHTML=s.kid;
   $('#tsParent').textContent=s.parent;
   $('#tsFeu').hidden=!s.feu;
-  const g=$('#tsGeste');g.hidden=!s.geste;if(s.geste)g.querySelector('span').innerHTML='Geste&nbsp;: '+s.geste;
+  const g=$('#tsGeste');g.hidden=!s.geste;if(s.geste)g.querySelector('span').innerHTML=T.geste+s.geste;
   tsKid.classList.toggle('timer',!!s.timer);
   $$('#tsDots i').forEach((d,i)=>d.classList.toggle('on',i===step));
   $('#tsPrev').disabled=step===0;$('#tsPrev').style.opacity=step===0?.35:1;
-  $('#tsNext').firstChild.textContent=step===STEPS.length-1?'Terminer ':'Étape suivante ';
+  $('#tsNext').firstChild.textContent=step===STEPS.length-1?T.finish:T.next;
   if(!RM&&tsKid.animate) tsKid.animate([{transform:'translateY(8px)',opacity:.4},{transform:'none',opacity:1}],{duration:380,easing:'cubic-bezier(.2,.8,.2,1)'});
   stopVoice();
 }
-$('#tsNext').addEventListener('click',()=>{if(step<STEPS.length-1){step++;renderStep()}else{tsScreen.classList.add('is-done');$('#tsStep').textContent='Recette terminée';$('#tsBar').style.width='100%';stopVoice();track('Démo : terminée')}});
+$('#tsNext').addEventListener('click',()=>{if(step<STEPS.length-1){step++;renderStep()}else{tsScreen.classList.add('is-done');$('#tsStep').textContent=T.done;$('#tsBar').style.width='100%';stopVoice();track('Démo : terminée')}});
 $('#tsPrev').addEventListener('click',()=>{if(step>0){step--;renderStep()}});
 $('#tsRestart').addEventListener('click',()=>{step=0;tsScreen.classList.remove('is-done');$$('#badges button').forEach(b=>b.setAttribute('aria-pressed','false'));renderStep()});
 $$('#badges button').forEach(b=>b.addEventListener('click',()=>b.setAttribute('aria-pressed',b.getAttribute('aria-pressed')==='true'?'false':'true')));
@@ -638,17 +664,17 @@ $$('#badges button').forEach(b=>b.addEventListener('click',()=>b.setAttribute('a
 // chargées seulement au premier appui. Si un fichier ne se lit pas, on se rabat sur la plus naturelle des voix de l'appareil.
 const voice=new Audio();voice.preload='none';
 let voiceBtnCur=null;
-function setVoiceBtn(btn,on){if(!btn)return;btn.classList.toggle('speaking',on);btn.querySelector('span').textContent=on?'Pépin parle…':btn.dataset.label}
+function setVoiceBtn(btn,on){if(!btn)return;btn.classList.toggle('speaking',on);btn.querySelector('span').textContent=on?T.speaking:btn.dataset.label}
 function stopVoice(){voice.pause();try{speechSynthesis.cancel()}catch(e){}setVoiceBtn(voiceBtnCur,false);voiceBtnCur=null}
 voice.addEventListener('ended',stopVoice);
 function bestFrenchVoice(){
-  const vs=('speechSynthesis' in window)?speechSynthesis.getVoices().filter(v=>/^fr/i.test(v.lang)):[];
-  const score=v=>(/natural|neural|premium|enhanced|online/i.test(v.name)?4:0)+(/denise|audrey|amélie|amelie|google/i.test(v.name)?2:0)+(/fr-FR/i.test(v.lang)?1:0);
+  const vs=('speechSynthesis' in window)?speechSynthesis.getVoices().filter(v=>v.lang.toLowerCase().indexOf(LANG)===0):[];
+  const score=v=>(/natural|neural|premium|enhanced|online/i.test(v.name)?4:0)+(/denise|audrey|amélie|amelie|samantha|google/i.test(v.name)?2:0)+(/fr-FR|en-US|en-GB/i.test(v.lang)?1:0);
   return vs.sort((a,b)=>score(b)-score(a))[0]||null;
 }
 function speakFallback(text,btn){
-  if(!('speechSynthesis' in window)){btn.querySelector('span').textContent='Voix indisponible ici';return}
-  const u=new SpeechSynthesisUtterance(text);u.lang='fr-FR';u.rate=.92;u.pitch=1.08;
+  if(!('speechSynthesis' in window)){btn.querySelector('span').textContent=T.noVoice;return}
+  const u=new SpeechSynthesisUtterance(text);u.lang=LANG==='en'?'en-US':'fr-FR';u.rate=.92;u.pitch=1.08;
   const v=bestFrenchVoice();if(v)u.voice=v;
   u.onend=u.onerror=stopVoice;speechSynthesis.speak(u);
 }
@@ -656,13 +682,13 @@ function playVoice(btn,clip,text){
   btn.classList.remove('hint');
   if(voiceBtnCur===btn){stopVoice();return}
   stopVoice();voiceBtnCur=btn;setVoiceBtn(btn,true);
-  voice.src='assets/audio/'+clip+'.mp3';
+  voice.src=BASE+'assets/audio/'+(LANG==='en'?'en/':'')+clip+'.mp3';
   voice.play().then(()=>track('Démo : écouter',{etape:clip})).catch(()=>{if(voiceBtnCur===btn)speakFallback(text,btn)});
 }
-voiceBtn.dataset.label='Écouter';voiceBtn.classList.add('hint');
+voiceBtn.dataset.label=T.listen;voiceBtn.classList.add('hint');
 voiceBtn.addEventListener('click',()=>playVoice(voiceBtn,'etape-'+(step+1),$('#tsKidText').textContent));
-const bravoBtn=$('#tsBravo');bravoBtn.dataset.label='Écouter Pépin';
-bravoBtn.addEventListener('click',()=>playVoice(bravoBtn,'bravo','Bravo ! Le cookie géant est prêt.'));
+const bravoBtn=$('#tsBravo');bravoBtn.dataset.label=T.listenPepin;
+bravoBtn.addEventListener('click',()=>playVoice(bravoBtn,'bravo',T.bravo));
 renderStep();
 
 /* ---------- Liste d'attente ---------- */
@@ -677,7 +703,7 @@ function valid(v){return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim())}
 async function sendWaitlist(d){
   const url=CONFIG.waitlist.endpoint;
   if(!url){console.warn('Popote Duo : liste d’attente en mode démo (CONFIG.waitlist), rien n’a été envoyé.');return true}
-  const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)});
+  const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...d,lang:LANG})});
   return r.ok;
 }
 const sendBtn=form.querySelector('button[type="submit"]'), sendErr=$('#sendErr');
@@ -688,16 +714,16 @@ form.addEventListener('submit',async e=>{
   const fd=new FormData(form), pro=fd.get('role')==='pro';
   const d={email:email.value.trim(),role:pro?'pro':'parent',ages:pro?'':fd.getAll('age').join(', '),org:pro?(fd.get('org')||'').trim().slice(0,120):'',beta:$('#beta').checked};
   if(!fd.get('bot-field')){ // champ piège : rempli seulement par les robots
-    sendBtn.disabled=true;sendBtn.firstChild.textContent='Envoi… ';
+    sendBtn.disabled=true;sendBtn.firstChild.textContent=T.sending;
     let ok=false;
     try{ok=await sendWaitlist(d)}catch(err){ok=false}
-    sendBtn.disabled=false;sendBtn.firstChild.textContent='M’inscrire';
+    sendBtn.disabled=false;sendBtn.firstChild.textContent=T.send;
     if(!ok){sendErr.hidden=false;return}
     track('Inscription liste d’attente',{profil:d.role,beta:d.beta?'oui':'non'});
   }
   $('#joinOkText').textContent=pro
-    ? 'Votre structure est sur la liste. On vous recontacte dès que l’offre pour les structures est prête.'
-    : ($('#beta').checked?'Vous êtes sur la liste. On vous écrit dès que la bêta ouvre, en février.':'Vous êtes sur la liste. On vous écrit au lancement de l’appli.');
+    ? T.okPro
+    : ($('#beta').checked?T.okBeta:T.okLaunch);
   form.hidden=true;$('#joinOk').hidden=false;
   $('#formCard .peek').hidden=true;
 });
