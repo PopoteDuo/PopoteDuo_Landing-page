@@ -26,7 +26,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preload" href="/assets/fonts/archivo-var.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/css/style.css?v=26">
+<link rel="stylesheet" href="/assets/css/style.css?v=28">
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -64,9 +64,7 @@
 <div class="stage panel">
   <section class="hero" id="top">
     <div class="hero-scene">
-      <div class="pepin-spot" id="spotHero" aria-hidden="true" title="Pépin loves cuddles">
-        <img class="pepin-fallback" src="/assets/img/pepin.svg" alt="">
-      </div>
+      <div class="mascotte-spot" id="spotHero" aria-hidden="true" title="Popote loves cuddles"></div>
       <ul class="ing" aria-label="The beta recipes">
         <li class="ing-card c1"><a class="ing-in" href="#r-rougail" data-recette="Rougail saucisses"><img src="/assets/img/ingredients/tomate.webp" alt="" width="512" height="512"><span class="ing-tip"><b>Sausage rougail</b>Main · 1 hr</span><span class="ing-go" aria-hidden="true"><svg><use href="#i-arrow"/></svg></span><span class="sr">See the sausage rougail recipe</span></a></li>
         <li class="ing-card c2"><a class="ing-in" href="#recettes" data-recette="Bientôt"><img src="/assets/img/ingredients/carotte.webp" alt="" width="512" height="512"><span class="ing-tip"><b>More recipes on the way</b>6 to 8 for the beta</span><span class="ing-go" aria-hidden="true"><svg><use href="#i-arrow"/></svg></span><span class="sr">See the recipes</span></a></li>
@@ -92,7 +90,8 @@
   <section class="story" id="story" aria-label="How it works">
     <div class="story-bg"></div>
     <div class="story-sticky">
-      <canvas id="scene" aria-hidden="true"></canvas>
+      <!-- Popote, la mascotte : dessinée en SVG (outils/dessiner-popote.py), animée et placée par main.js -->
+      <div class="mascotte" id="mascotte"><span class="m-lustre"></span><svg class="m-svg" viewBox="-24 -40 720 780" aria-hidden="true" focusable="false"><ellipse class="m-ombre" cx="336" cy="634.5" rx="176" ry="17.2" fill="#173F2B" opacity=".11"/><g class="m-corps"><g><ellipse cx="293" cy="600" rx="42" ry="20" fill="#C42E4C" stroke="#173F2B" stroke-width="12"/><ellipse cx="379" cy="600" rx="42" ry="20" fill="#C42E4C" stroke="#173F2B" stroke-width="12"/></g><g class="m-bras-g"><path d="M110 374Q76 390 64 426" fill="none" stroke="#173F2B" stroke-width="9.5" stroke-linecap="round"/><circle cx="59.7" cy="445.6" r="19.7" fill="#ED4B5F" stroke="#173F2B" stroke-width="9.5"/></g><g class="m-bras-d"><path d="M561 322Q597 300 610 260" fill="none" stroke="#173F2B" stroke-width="9.5" stroke-linecap="round"/><circle cx="616.6" cy="241.1" r="19.7" fill="#ED4B5F" stroke="#173F2B" stroke-width="9.5"/></g><clipPath id="mc"><path d="M336 124C354.5 124 375.2 124.1 391.4 125.9C407.5 127.7 420.1 131.2 432.9 134.8C445.8 138.4 458.8 143.6 468.5 147.7C478.3 151.8 484.5 155.6 491.3 159.6C498 163.6 502.2 165.4 509.1 171.5C516 177.6 526.4 188.4 532.8 196.3C539.2 204.2 543.5 211.5 547.6 219.1C551.8 226.7 555.1 234.2 557.5 241.9C560 249.7 561.5 257.8 562.5 265.7C563.5 273.7 563.5 281.6 563.5 289.5C563.5 297.5 563.1 305.4 562.5 313.4C561.8 321.3 560.8 329.2 559.5 337.2C558.2 345.1 556.4 353 554.6 361C552.8 368.9 550.9 376.8 548.6 384.8C546.3 392.7 543.7 400.6 540.7 408.6C537.8 416.5 534.6 424.5 530.8 432.4C527 440.3 522.6 448.3 518 456.2C513.4 464.1 508.4 472.1 503.1 480C497.9 487.9 492.8 495.9 486.3 503.8C479.9 511.8 472.5 519.7 464.6 527.6C456.7 535.6 448.4 543.8 438.9 551.4C429.3 559 418.1 567.6 407.2 573.3C396.3 578.9 385.4 581.9 373.6 585.2C361.7 588.5 348.5 593 336 593C323.5 593 310.3 588.5 298.4 585.2C286.6 581.9 275.7 578.9 264.8 573.3C253.9 567.6 242.7 559 233.1 551.4C223.6 543.8 215.3 535.6 207.4 527.6C199.5 519.7 192.1 511.8 185.7 503.8C179.2 495.9 174.1 487.9 168.9 480C163.6 472.1 158.6 464.1 154 456.2C149.4 448.3 145 440.3 141.2 432.4C137.4 424.5 134.2 416.5 131.3 408.6C128.3 400.6 125.7 392.7 123.4 384.8C121.1 376.8 119.2 368.9 117.4 361C115.6 353 113.8 345.1 112.5 337.2C111.2 329.2 110.2 321.3 109.5 313.4C108.9 305.4 108.5 297.5 108.5 289.5C108.5 281.6 108.5 273.7 109.5 265.7C110.5 257.8 112 249.7 114.5 241.9C116.9 234.2 120.2 226.7 124.4 219.1C128.5 211.5 132.8 204.2 139.2 196.3C145.6 188.4 156 177.6 162.9 171.5C169.8 165.4 174 163.6 180.7 159.6C187.5 155.6 193.7 151.8 203.5 147.7C213.2 143.6 226.2 138.4 239.1 134.8C251.9 131.2 264.5 127.7 280.6 125.9C296.8 124.1 317.5 124 336 124Z"/></clipPath><path d="M336 124C354.5 124 375.2 124.1 391.4 125.9C407.5 127.7 420.1 131.2 432.9 134.8C445.8 138.4 458.8 143.6 468.5 147.7C478.3 151.8 484.5 155.6 491.3 159.6C498 163.6 502.2 165.4 509.1 171.5C516 177.6 526.4 188.4 532.8 196.3C539.2 204.2 543.5 211.5 547.6 219.1C551.8 226.7 555.1 234.2 557.5 241.9C560 249.7 561.5 257.8 562.5 265.7C563.5 273.7 563.5 281.6 563.5 289.5C563.5 297.5 563.1 305.4 562.5 313.4C561.8 321.3 560.8 329.2 559.5 337.2C558.2 345.1 556.4 353 554.6 361C552.8 368.9 550.9 376.8 548.6 384.8C546.3 392.7 543.7 400.6 540.7 408.6C537.8 416.5 534.6 424.5 530.8 432.4C527 440.3 522.6 448.3 518 456.2C513.4 464.1 508.4 472.1 503.1 480C497.9 487.9 492.8 495.9 486.3 503.8C479.9 511.8 472.5 519.7 464.6 527.6C456.7 535.6 448.4 543.8 438.9 551.4C429.3 559 418.1 567.6 407.2 573.3C396.3 578.9 385.4 581.9 373.6 585.2C361.7 588.5 348.5 593 336 593C323.5 593 310.3 588.5 298.4 585.2C286.6 581.9 275.7 578.9 264.8 573.3C253.9 567.6 242.7 559 233.1 551.4C223.6 543.8 215.3 535.6 207.4 527.6C199.5 519.7 192.1 511.8 185.7 503.8C179.2 495.9 174.1 487.9 168.9 480C163.6 472.1 158.6 464.1 154 456.2C149.4 448.3 145 440.3 141.2 432.4C137.4 424.5 134.2 416.5 131.3 408.6C128.3 400.6 125.7 392.7 123.4 384.8C121.1 376.8 119.2 368.9 117.4 361C115.6 353 113.8 345.1 112.5 337.2C111.2 329.2 110.2 321.3 109.5 313.4C108.9 305.4 108.5 297.5 108.5 289.5C108.5 281.6 108.5 273.7 109.5 265.7C110.5 257.8 112 249.7 114.5 241.9C116.9 234.2 120.2 226.7 124.4 219.1C128.5 211.5 132.8 204.2 139.2 196.3C145.6 188.4 156 177.6 162.9 171.5C169.8 165.4 174 163.6 180.7 159.6C187.5 155.6 193.7 151.8 203.5 147.7C213.2 143.6 226.2 138.4 239.1 134.8C251.9 131.2 264.5 127.7 280.6 125.9C296.8 124.1 317.5 124 336 124Z" fill="#ED4B5F"/><path d="M468 150C470.3 155 477.3 170 482 180C486.7 190 492.2 200 496 210C499.8 220 502.3 230 505 240C507.7 250 510.3 260 512 270C513.7 280 514.5 290 515 300C515.5 310 515.5 320 515 330C514.5 340 513.7 350 512 360C510.3 370 507.2 380 505 390C502.8 400 503 410 499 420C495 430 487.2 440 481 450C474.8 460 469.5 470 462 480C454.5 490 446.8 500 436 510C425.2 520 409.7 532.2 397 540C384.3 547.8 372.8 552.7 360 557C347.2 561.3 332.5 563.3 320 566C307.5 568.7 295.8 570.3 285 573C274.2 575.7 260 580.5 255 582L250 640L640 640L640 120Z" fill="#C42E4C" clip-path="url(#mc)"/><g clip-path="url(#mc)"><g class="m-reflet"><ellipse cx="217.6" cy="217.4" rx="47.9" ry="22.6" transform="rotate(-31.1 217.6 217.4)" fill="#F38996"/></g></g><g clip-path="url(#mc)"><g class="m-graines"><g fill="#FFE48C"><ellipse cx="223" cy="193.5" rx="8.7" ry="12.8" transform="rotate(-29 223 193.5)"/><ellipse cx="449" cy="193.3" rx="8.7" ry="12.8" transform="rotate(29.5 449 193.3)"/><ellipse cx="162" cy="254" rx="9.5" ry="13.9" transform="rotate(-20.6 162 254)"/><ellipse cx="510" cy="254" rx="9.5" ry="13.9" transform="rotate(19.5 510 254)"/><ellipse cx="175" cy="406.5" rx="9.5" ry="13.9" transform="rotate(-26.2 175 406.5)"/><ellipse cx="497" cy="406.6" rx="9.5" ry="13.9" transform="rotate(25.5 497 406.6)"/><ellipse cx="336" cy="419.5" rx="9.5" ry="13.9" transform="rotate(0 336 419.5)"/><ellipse cx="249" cy="471.7" rx="9.5" ry="13.9" transform="rotate(-15 249 471.7)"/><ellipse cx="423" cy="471.7" rx="9.5" ry="13.9" transform="rotate(14.1 423 471.7)"/><ellipse cx="336" cy="532.7" rx="9.5" ry="13.9" transform="rotate(0 336 532.7)"/></g></g></g><path d="M336 124C354.5 124 375.2 124.1 391.4 125.9C407.5 127.7 420.1 131.2 432.9 134.8C445.8 138.4 458.8 143.6 468.5 147.7C478.3 151.8 484.5 155.6 491.3 159.6C498 163.6 502.2 165.4 509.1 171.5C516 177.6 526.4 188.4 532.8 196.3C539.2 204.2 543.5 211.5 547.6 219.1C551.8 226.7 555.1 234.2 557.5 241.9C560 249.7 561.5 257.8 562.5 265.7C563.5 273.7 563.5 281.6 563.5 289.5C563.5 297.5 563.1 305.4 562.5 313.4C561.8 321.3 560.8 329.2 559.5 337.2C558.2 345.1 556.4 353 554.6 361C552.8 368.9 550.9 376.8 548.6 384.8C546.3 392.7 543.7 400.6 540.7 408.6C537.8 416.5 534.6 424.5 530.8 432.4C527 440.3 522.6 448.3 518 456.2C513.4 464.1 508.4 472.1 503.1 480C497.9 487.9 492.8 495.9 486.3 503.8C479.9 511.8 472.5 519.7 464.6 527.6C456.7 535.6 448.4 543.8 438.9 551.4C429.3 559 418.1 567.6 407.2 573.3C396.3 578.9 385.4 581.9 373.6 585.2C361.7 588.5 348.5 593 336 593C323.5 593 310.3 588.5 298.4 585.2C286.6 581.9 275.7 578.9 264.8 573.3C253.9 567.6 242.7 559 233.1 551.4C223.6 543.8 215.3 535.6 207.4 527.6C199.5 519.7 192.1 511.8 185.7 503.8C179.2 495.9 174.1 487.9 168.9 480C163.6 472.1 158.6 464.1 154 456.2C149.4 448.3 145 440.3 141.2 432.4C137.4 424.5 134.2 416.5 131.3 408.6C128.3 400.6 125.7 392.7 123.4 384.8C121.1 376.8 119.2 368.9 117.4 361C115.6 353 113.8 345.1 112.5 337.2C111.2 329.2 110.2 321.3 109.5 313.4C108.9 305.4 108.5 297.5 108.5 289.5C108.5 281.6 108.5 273.7 109.5 265.7C110.5 257.8 112 249.7 114.5 241.9C116.9 234.2 120.2 226.7 124.4 219.1C128.5 211.5 132.8 204.2 139.2 196.3C145.6 188.4 156 177.6 162.9 171.5C169.8 165.4 174 163.6 180.7 159.6C187.5 155.6 193.7 151.8 203.5 147.7C213.2 143.6 226.2 138.4 239.1 134.8C251.9 131.2 264.5 127.7 280.6 125.9C296.8 124.1 317.5 124 336 124Z" fill="none" stroke="#173F2B" stroke-width="12" stroke-linejoin="round"/><g class="m-visage"><g fill="#FDA9B8"><ellipse cx="223" cy="332.4" rx="29.7" ry="16.9"/><ellipse cx="449" cy="332.4" rx="29.7" ry="16.9"/></g><g class="m-yeux"><g><ellipse cx="271" cy="284.5" rx="23.2" ry="29.6" fill="#173F2B"/><circle cx="262.7" cy="274" r="9.3" fill="#fff"/><circle cx="277.7" cy="293.3" r="4" fill="#fff"/></g><g><ellipse cx="401" cy="284.5" rx="23.2" ry="29.6" fill="#173F2B"/><circle cx="392.7" cy="274" r="9.3" fill="#fff"/><circle cx="407.7" cy="293.3" r="4" fill="#fff"/></g></g><g class="m-joie" visibility="hidden"><path d="M250 290.5Q271 262.5 292 290.5" fill="none" stroke="#173F2B" stroke-width="12" stroke-linecap="round"/><path d="M380 290.5Q401 262.5 422 290.5" fill="none" stroke="#173F2B" stroke-width="12" stroke-linecap="round"/></g><g class="m-bouche"><path d="M304 325H368Q373 325 370.5 329.5C363 346.8 350.4 353 336 353C321.6 353 309 346.8 301.5 329.5Q299 325 304 325Z" fill="#173F2B"/><ellipse cx="336" cy="341.8" rx="13.3" ry="7.6" fill="#FF91A2"/></g><g class="m-bouche-joie" visibility="hidden"><path d="M291 318H381Q386 318 383.5 322.5C376 349.2 355.6 358 336 358C316.4 358 296 349.2 288.5 322.5Q286 318 291 318Z" fill="#173F2B"/><ellipse cx="336" cy="342" rx="18.1" ry="10.8" fill="#FF91A2"/></g><g class="m-bouche-o" visibility="hidden"><ellipse cx="336" cy="342" rx="15" ry="18" fill="#173F2B"/></g></g><g class="m-couronne"><path d="M337 130C334 100 340 68 365 40" fill="none" stroke="#173F2B" stroke-width="39" stroke-linecap="round"/><path d="M337 130C334 100 340 68 365 40" fill="none" stroke="#5CAA6B" stroke-width="15" stroke-linecap="round"/><g fill="#5CAA6B" stroke="#173F2B" stroke-width="12" stroke-linejoin="round"><path d="M300 134C298 132 291.7 126 288 122C284.3 118 280.8 114 278 110C275.2 106 272.8 102 271 98C269.2 94 267.8 90 267 86C266.2 82 265.8 78.3 266 74C266.2 69.7 264.8 61.3 268 60C271.2 58.7 279.7 63 285 66C290.3 69 295.5 73.7 300 78C304.5 82.3 308.3 87.7 312 92C315.7 96.3 319 100 322 104C325 108 327.5 111.3 330 116C332.5 120.7 335.8 129.3 337 132Z"/><path d="M372 134C374 132 380.3 126 384 122C387.7 118 391.2 114 394 110C396.8 106 399.2 102 401 98C402.8 94 404.2 90 405 86C405.8 82 406.2 78.3 406 74C405.8 69.7 407.2 61.3 404 60C400.8 58.7 392.3 63 387 66C381.7 69 376.5 73.7 372 78C367.5 82.3 363.7 87.7 360 92C356.3 96.3 353 100 350 104C347 108 344.5 111.3 342 116C339.5 120.7 336.2 129.3 335 132Z"/><path d="M336 130C348 130 359.7 132.3 372 133C384.3 133.7 398 132.3 410 134C422 135.7 433.3 138.7 444 143C454.7 147.3 473.7 155 474 160C474.3 165 456 170 446 173C436 176 424.7 178 414 178C403.3 178 392 175.3 382 173C372 170.7 361.7 166.5 354 164C346.3 161.5 342 158 336 158C330 158 325.7 161.5 318 164C310.3 166.5 300 170.7 290 173C280 175.3 268.7 178 258 178C247.3 178 236 176 226 173C216 170 197.7 165 198 160C198.3 155 217.3 147.3 228 143C238.7 138.7 250 135.7 262 134C274 132.3 287.7 133.7 300 133C312.3 132.3 324 130 336 130Z"/></g></g></g></svg><span class="m-bulle" aria-hidden="true"></span></div>
       <div class="story-head wrap">
         <p class="kicker">How it works</p>
         <h2 class="h2 story-title">Skills sized for small hands</h2>
@@ -119,13 +118,13 @@
   <div class="wrap demo-grid">
     <div class="demo-copy">
       <h2 class="h2">Each their own task, on the same screen</h2>
-      <p class="lead">At every step, the child gets a task their size while the parent handles the oven, the hob and the knife. Try it with the giant cookie: go through the steps and listen to Pépin.</p>
+      <p class="lead">At every step, the child gets a task their size while the parent handles the oven, the hob and the knife. Try it with the giant cookie: go through the steps and listen to Popote.</p>
       <p class="gestes"><b>Skills learned:</b> weighing, mixing, folding in, setting the table.</p>
       <a class="btn btn-ink" href="#liste" data-track="demo">Try it with my child<svg><use href="#i-arrow"/></svg></a>
     </div>
 
     <div class="demo-device">
-      <p class="tab-hint"><svg aria-hidden="true"><use href="#i-voice"/></svg>Tap “Listen” to hear Pépin</p>
+      <p class="tab-hint"><svg aria-hidden="true"><use href="#i-voice"/></svg>Tap “Listen” to hear Popote</p>
       <div class="tab" aria-label="Cooking mode demo">
         <div class="tab-screen" id="tabScreen">
           <div class="ts-head">
@@ -136,7 +135,7 @@
           <div class="ts-body">
             <div class="ts-split">
               <div class="ts-kid" id="tsKid">
-                <div class="ts-who"><span class="av"><svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120.0 140.0"><path d="M60 40 C52 22 40 14 26 16 C32 30 44 40 58 44Z" fill="#3E9B4F"/><path d="M60 42 C60 22 66 8 78 4 C80 20 72 34 62 44Z" fill="#57B565"/><path d="M62 44 C74 30 88 26 99 30 C92 42 78 48 64 48Z" fill="#3E9B4F"/><path d="M60 44 C30 44 16 66 18 88 C20 112 40 128 60 128 C80 128 100 112 102 88 C104 66 90 44 60 44Z" fill="#D9415E"/><path d="M60 127 C60 133 62 137 67 139" stroke="#B8324C" stroke-width="3" fill="none" stroke-linecap="round"/><ellipse cx="38" cy="64" rx="9" ry="5" fill="#FFFFFF" opacity="0.35" transform="rotate(-35 38 64)"/><ellipse cx="46" cy="84" rx="7" ry="8.5" fill="#FFFFFF"/><ellipse cx="74" cy="84" rx="7" ry="8.5" fill="#FFFFFF"/><circle cx="47.5" cy="86" r="4.2" fill="#23201C"/><circle cx="75.5" cy="86" r="4.2" fill="#23201C"/><circle cx="49" cy="84.4" r="1.4" fill="#FFFFFF"/><circle cx="77" cy="84.4" r="1.4" fill="#FFFFFF"/><ellipse cx="35" cy="99" rx="6" ry="3.5" fill="#F7A3B0"/><ellipse cx="85" cy="99" rx="6" ry="3.5" fill="#F7A3B0"/><path d="M50 99 Q60 110 70 99" stroke="#23201C" stroke-width="3.2" fill="none" stroke-linecap="round"/></svg></span>For Lou, age 6</div>
+                <div class="ts-who"><span class="av"><img src="/assets/img/popote-avatar.svg" alt="" width="30" height="30"></span>For Lou, age 6</div>
                 <div class="ts-big">
                   <svg class="ts-ring" viewBox="0 0 80 80" aria-hidden="true"><circle class="bg" cx="40" cy="40" r="32"/><circle class="fg" cx="40" cy="40" r="32"/></svg>
                   <span class="num" id="tsBig">180 g</span>
@@ -154,9 +153,9 @@
               </div>
             </div>
             <div class="ts-done">
-              <img src="/assets/img/pepin-3d.webp" alt="" width="512" height="512" loading="lazy">
+              <img src="/assets/img/popote-bravo.svg" alt="" width="620" height="632" loading="lazy">
               <span class="done-title">Well done, Lou!</span>
-              <button class="btn-voice" id="tsBravo" type="button"><svg><use href="#i-voice"/></svg><span>Listen to Pépin</span></button>
+              <button class="btn-voice" id="tsBravo" type="button"><svg><use href="#i-voice"/></svg><span>Listen to Popote</span></button>
               <p>The cookie is ready. Tick the skills your child managed to fill in the book:</p>
               <ul class="badges" id="badges">
                 <li><button type="button" aria-pressed="false"><span class="b"><svg><use href="#i-check"/></svg></span>Weighing</button></li>
@@ -261,7 +260,7 @@
         <p class="plan-note">To discover the app at your own pace.</p>
         <ul class="feat">
           <li><svg><use href="#i-check"/></svg>6 recipes with two sets of instructions</li>
-          <li><svg><use href="#i-check"/></svg>Cooking mode with Pépin’s voice</li>
+          <li><svg><use href="#i-check"/></svg>Cooking mode with Popote’s voice</li>
           <li><svg><use href="#i-check"/></svg>One child profile</li>
         </ul>
         <a class="btn btn-line" href="#liste" data-track="tarif-gratuit">Join the beta</a>
@@ -314,7 +313,7 @@
     </div>
 
     <div class="form-card" id="formCard">
-      <img class="peek" src="/assets/img/pepin-3d.webp" alt="" width="512" height="512" loading="lazy">
+      <img class="peek" src="/assets/img/popote.svg" alt="" width="620" height="632" loading="lazy">
       <form id="joinForm" name="liste-attente" novalidate>
         <p hidden><label>Leave empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
         <h3>Sign me up</h3>
@@ -352,7 +351,7 @@
         <p class="fine">We only email you about Popote Duo. Unsubscribe in one click. <a href="/en/privacy.html">Privacy policy</a></p>
       </form>
       <div class="ok" id="joinOk" hidden>
-        <img src="/assets/img/pepin-3d.webp" alt="" width="512" height="512" loading="lazy">
+        <img src="/assets/img/popote-bravo.svg" alt="" width="620" height="632" loading="lazy">
         <span class="done-title">Got it!</span>
         <p id="joinOkText">You’re on the list. We’ll email you as soon as the beta opens in February.</p>
         <button class="btn btn-line" type="button" id="joinAgain">Add another address</button>
@@ -370,10 +369,10 @@
         <a href="#story">The app</a><a href="#mode-cuisine">Demo</a><a href="#recettes">Recipes</a><a href="#tarifs">Pricing</a><a href="#liste">Beta</a><a href="/en/privacy.html">Privacy</a><a href="/en/legal-notice.html">Legal notice</a>
       </nav>
     </div>
-    <p>© 2026 Popote Duo · The app for cooking together, parent and child. Stock photos: Unsplash. Pépin’s voice: Piper speech synthesis, “siwis” voice in French (CC&nbsp;BY&nbsp;4.0) and “LJ&nbsp;Speech” voice in English (public domain).</p>
+    <p>© 2026 Popote Duo · The app for cooking together, parent and child. Stock photos: Unsplash. Popote’s voice: Piper speech synthesis, “siwis” voice in French (CC&nbsp;BY&nbsp;4.0) and “LJ&nbsp;Speech” voice in English (public domain).</p>
   </div>
 </footer>
 
-<script src="/assets/js/main.js?v=27" defer></script>
+<script src="/assets/js/main.js?v=29" defer></script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-"""Génère les consignes parlées de Pépin (démo du mode cuisine) en MP3.
+"""Génère les consignes parlées de Popote (démo du mode cuisine) en MP3.
 
 Voix : « siwis » de Piper (synthèse vocale neuronale, locale), licence CC-BY 4.0.
 Version anglaise : voix « ljspeech » de Piper, domaine public, rangée dans assets/audio/en.
@@ -23,14 +23,14 @@ from pathlib import Path
 import piper
 from piper import PiperVoice, SynthesisConfig
 
-# Ce que Pépin dit à voix haute. Les nombres sont écrits en lettres pour être bien prononcés.
+# Ce que Popote dit à voix haute. Les nombres sont écrits en lettres pour être bien prononcés.
 # Recette de la démo : le cookie géant (fiche de l'équipe dans Notion).
 CLIPS = {
     "etape-1": "À toi de jouer ! Aide à peser les ingrédients : cent quatre-vingts grammes de sucre roux, puis cent quatre-vingts grammes de farine.",
     "etape-2": "Maintenant, mélange le beurre mou et le sucre, jusqu'à ce que ce soit tout crémeux. Tu te débrouilles super bien !",
     "etape-3": "Ajoute la farine et la levure, puis les pépites de chocolat. Mélange sans trop insister, et répartis la pâte dans le moule.",
     "etape-4": "Le cookie cuit pendant vingt-cinq minutes. Pendant ce temps, prépare les petites assiettes. Ça sent drôlement bon !",
-    "bravo": "Bravo ! Le cookie géant est prêt. Attends un peu qu'il refroidisse avant de le découper. Je suis trop fier de toi !",
+    "bravo": "Bravo ! Le cookie géant est prêt. Attends un peu qu'il refroidisse avant de le découper. Je suis trop fière de toi !",
 }
 
 # La même chose en anglais, pour la page /en.

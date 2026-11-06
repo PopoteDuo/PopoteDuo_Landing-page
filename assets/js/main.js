@@ -1,4 +1,4 @@
-/* Popote Duo · landing page : scène 3D de Pépin, histoire au scroll, démo du mode cuisine, liste d'attente. */
+/* Popote Duo · landing page : Popote animée, histoire au scroll, démo du mode cuisine, liste d'attente. */
 (function(){
 "use strict";
 const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
@@ -20,14 +20,16 @@ const THREE_SRC=BASE+'assets/js/three.min.js';
 /* ---------- Langue : la page française (/) ou anglaise (/en) ---------- */
 const LANG=document.documentElement.lang.indexOf('en')===0?'en':'fr';
 const T={
-  fr:{step:(i,n)=>`Étape ${i} sur ${n}`,geste:'Geste&nbsp;: ',next:'Étape suivante ',finish:'Terminer ',done:'Recette terminée',speaking:'Pépin parle…',listen:'Écouter',listenPepin:'Écouter Pépin',
+  fr:{step:(i,n)=>`Étape ${i} sur ${n}`,geste:'Geste&nbsp;: ',next:'Étape suivante ',finish:'Terminer ',done:'Recette terminée',speaking:'Popote parle…',listen:'Écouter',listenPopote:'Écouter Popote',
     noVoice:'Voix indisponible ici',bravo:'Bravo ! Le cookie géant est prêt.',sending:'Envoi… ',send:'M’inscrire',
     okPro:'Votre structure est sur la liste. On vous recontacte dès que l’offre pour les structures est prête.',
-    okBeta:'Vous êtes sur la liste. On vous écrit dès que la bêta ouvre, en février.',okLaunch:'Vous êtes sur la liste. On vous écrit au lancement de l’appli.'},
-  en:{step:(i,n)=>`Step ${i} of ${n}`,geste:'Skill: ',next:'Next step ',finish:'Finish ',done:'Recipe complete',speaking:'Pépin is talking…',listen:'Listen',listenPepin:'Listen to Pépin',
+    okBeta:'Vous êtes sur la liste. On vous écrit dès que la bêta ouvre, en février.',okLaunch:'Vous êtes sur la liste. On vous écrit au lancement de l’appli.',
+    hello:'Coucou, moi c’est Popote !',hop:'Hop !',wee:'Wiii !',giggle:'Hihi, ça chatouille !',boing:'Boing !'},
+  en:{step:(i,n)=>`Step ${i} of ${n}`,geste:'Skill: ',next:'Next step ',finish:'Finish ',done:'Recipe complete',speaking:'Popote is talking…',listen:'Listen',listenPopote:'Listen to Popote',
     noVoice:'Voice not available here',bravo:'Well done! The giant cookie is ready.',sending:'Sending… ',send:'Sign me up',
     okPro:'Your organisation is on the list. We’ll get back to you as soon as the offer for organisations is ready.',
-    okBeta:'You’re on the list. We’ll email you as soon as the beta opens in February.',okLaunch:'You’re on the list. We’ll email you when the app launches.'}
+    okBeta:'You’re on the list. We’ll email you as soon as the beta opens in February.',okLaunch:'You’re on the list. We’ll email you when the app launches.',
+    hello:'Hi, I’m Popote!',hop:'Hop!',wee:'Wheee!',giggle:'Hee hee, that tickles!',boing:'Boing!'}
 }[LANG];
 // Sélecteur FR / EN : le choix est retenu et passe avant la langue du navigateur (voir le script en tête de page).
 document.addEventListener('click',e=>{
@@ -53,77 +55,96 @@ function track(name,props){
 }
 document.addEventListener('click',e=>{const a=e.target.closest('[data-track]');if(a)track('Clic inscription',{emplacement:a.dataset.track})});
 
-/* ---------- Scène 3D ---------- */
-
-function initScene(){
-  if(!window.THREE) return null;
-  const canvas=$('#scene');
-  let renderer;
-  try{
-    const c=document.createElement('canvas');
-    if(!(c.getContext('webgl')||c.getContext('experimental-webgl'))) return null;
-    renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true,powerPreference:'high-performance'});
-  }catch(e){return null}
-  setupRenderer(renderer);
-  const scene=new THREE.Scene();
-  scene.environment=makeEnv(renderer);
-  addLights(scene);
-  // Le canvas ne couvre que Pépin et son ombre (VIEW_W × VIEW_H hauteurs de Pépin), au lieu de tout l'écran.
-  // Il est posé dans le bloc collant de l'histoire : il défile avec la page comme le texte, sans attendre le JavaScript.
-  const VIEW_W=.95, VIEW_H=1.45;
-  const camera=new THREE.PerspectiveCamera(22,VIEW_W/VIEW_H,.1,100);
-  camera.position.set(0,0,(VIEW_H*PEPIN_H/2)/Math.tan(THREE.MathUtils.degToRad(11)));
-
-  const pepin=buildPepin(true);
-  scene.add(pepin.root);
-  const shadow=makeShadow();
-  scene.add(shadow);
-
-  // box : la plus grande hauteur de Pépin à l'écran (hero ou histoire), en pixels.
-  let box=1, CW=1, CH=1, prCap=matchMedia('(pointer: coarse)').matches?1.5:2, ox=NaN, oy=NaN, shown=true;
+/* ---------- Popote ---------- */
+// Popote est un dessin SVG posé sur sa carte menthe (index.html, outils/dessiner-popote.py).
+// La carte vit dans le bloc collant de l'histoire : elle défile avec la page comme le texte, et le script la place
+// seulement sur le hero ou sur l'histoire. Le relief vient de la carte, qui s'incline en 3D (CSS) vers ce que
+// Popote regarde, avec Popote qui flotte au-dessus, et du visage, des graines et des feuilles qui se décalent
+// chacun à leur profondeur. Chaque image, le script change seulement les attributs qui ont bougé.
+function initMascotte(){
+  const el=$('#mascotte');
+  if(!el) return null;
+  const q=c=>el.querySelector(c);
+  const P={corps:q('.m-corps'),ombre:q('.m-ombre'),brasG:q('.m-bras-g'),brasD:q('.m-bras-d'),visage:q('.m-visage'),
+    graines:q('.m-graines'),reflet:q('.m-reflet'),yeux:q('.m-yeux'),joie:q('.m-joie'),
+    bouche:q('.m-bouche'),boucheJoie:q('.m-bouche-joie'),boucheO:q('.m-bouche-o'),couronne:q('.m-couronne'),bulle:q('.m-bulle')};
+  // Taille de la carte, en fraction de la hauteur de la place réservée à Popote (hero ou histoire) :
+  // plus grande sur ordinateur, où le hero a de la place autour d'elle.
+  const CARD=()=>innerWidth>=900?.7:.62, CARD_H=1.083;
+  // box : la plus grande de ces hauteurs (hero ou histoire), en pixels. La carte est dessinée à cette taille, puis seulement réduite.
+  let box=1, W=1, H=1, tf='', shown=false;
   function size(h){
-    const pr=Math.min(devicePixelRatio||1,prCap), w=Math.ceil(Math.max(1,h)*VIEW_W), hh=Math.ceil(Math.max(1,h)*VIEW_H);
-    // Rien à refaire si rien ne change (la barre d'adresse mobile déclenche souvent des « resize » pour rien).
-    if(w===CW&&hh===CH&&pr===renderer.getPixelRatio())return;
-    box=Math.max(1,h);CW=w;CH=hh;
-    renderer.setPixelRatio(pr);
-    renderer.setSize(CW,CH);
+    const w=Math.round(Math.max(1,h)*CARD()), hh=Math.round(w*CARD_H);
+    if(w===W&&hh===H)return;
+    box=Math.max(1,h);W=w;H=hh;
+    el.style.width=W+'px';el.style.height=H+'px';tf='';
   }
 
-  // pointeur : Pépin tourne la tête et suit des yeux
-  const ptr={x:0,y:0,tx:0,ty:0};
-  addEventListener('pointermove',e=>{ptr.tx=(e.clientX/innerWidth)*2-1;ptr.ty=(e.clientY/innerHeight)*2-1},{passive:true});
-  // câlin : un saut quand on touche Pépin
-  let jump=0;
-  [$('#spotHero'),$('#spotStory')].forEach(el=>el.addEventListener('click',e=>{if(e.target.closest('.pin'))return;jump=1}));
+  // Le pointeur, en pixels dans la fenêtre. Sur écran tactile, il ne bouge qu'au toucher : Popote regarde alors seule autour d'elle.
+  const ptr={x:0,y:0,at:-1e9,touch:true};
+  addEventListener('pointermove',e=>{ptr.x=e.clientX;ptr.y=e.clientY;ptr.at=performance.now();ptr.touch=e.pointerType==='touch'},{passive:true});
 
-  let intro=0, blinkAt=1.5, blink=0, last=performance.now(), pS=null;
-  // Qualité adaptative : si l'appareil peine (moins de 52 images/s), on allège par paliers :
-  // matières plus simples (sans vernis), puis résolution du rendu plus basse.
-  const perf={n:0,t:0,wait:1.5,lvl:0};
-  function degrade(){
-    perf.lvl++;
-    if(perf.lvl===1)simplify(scene);
-    else{prCap=perf.lvl===2?1.25:1;size(box)}
+  // Tirer Popote : elle s'étire, puis revient comme un ressort. Sur mobile, seulement à l'horizontale :
+  // un glissement vertical fait toujours défiler la page (touch-action: pan-y dans le CSS).
+  const pull={x:0,y:0,vx:0,vy:0,tx:0,ty:0};
+  let drag=null, noClick=false, unit=1;
+  const lim=v=>v/(1+Math.abs(v)/380);
+  [$('#spotHero'),$('#spotStory')].forEach(sp=>{
+    sp.addEventListener('pointerdown',e=>{
+      if(e.button>0||e.target.closest('.pin'))return;
+      drag={id:e.pointerId,x0:e.clientX,y0:e.clientY,moved:false,sp};
+      try{sp.setPointerCapture(e.pointerId)}catch(_){}
+    });
+    sp.addEventListener('pointermove',e=>{
+      if(!drag||e.pointerId!==drag.id)return;
+      const dx=e.clientX-drag.x0, dy=e.pointerType==='touch'?0:e.clientY-drag.y0;
+      if(!drag.moved&&Math.hypot(dx,dy)>8){drag.moved=true;sp.classList.add('grab')}
+      if(drag.moved){pull.tx=dx/unit;pull.ty=dy/unit}
+    });
+    const end=e=>{
+      if(!drag||e.pointerId!==drag.id)return;
+      if(drag.moved){
+        noClick=true;setTimeout(()=>{noClick=false});
+        if(Math.hypot(pull.x,pull.y)>90)react('boing');
+      }
+      sp.classList.remove('grab');pull.tx=pull.ty=0;drag=null;
+    };
+    sp.addEventListener('pointerup',end);sp.addEventListener('pointercancel',end);
+    sp.addEventListener('click',e=>{if(!e.target.closest('.pin')&&!noClick)react()});
+  });
+
+  // Toucher Popote : une réaction différente à chaque fois, avec une bulle.
+  let jump=0, spin=0, giggle=0, boing=0, nReact=0, said=false, bulleT=0;
+  function say(txt){
+    P.bulle.textContent=txt;P.bulle.classList.add('on');
+    clearTimeout(bulleT);bulleT=setTimeout(()=>P.bulle.classList.remove('on'),1900);
   }
-  const anchorsLocal=[[-.8,-.06,.34],[.8,.12,.34]].map(a=>new THREE.Vector3(...a));
-  const anchors=anchorsLocal.map(()=>({x:0,y:0,front:true}));
-  const tmp=new THREE.Vector3();
-  const res={p:0,anchors};
+  function react(kind){
+    if(kind==='boing'){boing=1;say(T.boing);return}
+    const k=nReact++%3;
+    if(k===0){jump=1;say(said?T.hop:T.hello);said=true}
+    else if(k===1){spin=1;say(T.wee)}
+    else{giggle=1;say(T.giggle)}
+    track('Popote touchée');
+  }
+
+  let intro=0, blinkAt=1.5, blink=0, waveAt=1.2, wave=0, wasNear=false, last=performance.now(), pS=null, expr=-1;
+  const look={x:0,y:0};
+  const anchors=[{x:0,y:0},{x:0,y:0}], res={p:0,anchors};
+  const set=(n,v)=>{if(n._t!==v){n._t=v;n.setAttribute('transform',v)}};
+  const css=(k,v)=>{if(el['_'+k]!==v){el['_'+k]=v;el.style.setProperty(k,v)}};
+  const show=(n,v)=>n.setAttribute('visibility',v?'visible':'hidden');
+  const r=v=>Math.round(v*10)/10, r3=v=>Math.round(v*1000)/1000;
+  const M=RM?0:1; // avec « Réduire les animations », Popote change seulement d'expression
 
   return {
     resize:size,
-    stats:()=>({lvl:perf.lvl,pr:renderer.getPixelRatio()}),
-    frame(now,st){ // st : positions de Pépin (hero, histoire) dans le bloc collant, passage de l'un à l'autre (b), scroll de l'histoire (p)
+    // st : positions de Popote (hero, histoire) dans le bloc collant, passage de l'un à l'autre (b), scroll de l'histoire (p),
+    // position du bloc collant dans la fenêtre (top, left) et bulle active de l'histoire (idx)
+    frame(now,st){
       const dt=Math.min(.05,(now-last)/1000);last=now;const t=now/1000;
-      if(perf.lvl<3&&dt>0){
-        if(perf.wait>0)perf.wait-=dt;
-        else{perf.n++;perf.t+=dt;if(perf.n===60){const avg=perf.t/60;perf.n=perf.t=0;if(avg>.019){degrade();perf.wait=1}}}
-      }
       intro=Math.min(1,intro+dt/1.1);
       const ib=RM?1:easeOutBack(intro);
-      const pk=1-Math.exp(-dt*5);
-      ptr.x+=(ptr.tx-ptr.x)*pk;ptr.y+=(ptr.ty-ptr.y)*pk;
 
       // b vient d'une animation dans le temps (voir la boucle) : il n'est jamais lié directement au scroll.
       // Seul le léger balancement dans l'histoire suit le scroll, amorti.
@@ -131,61 +152,94 @@ function initScene(){
       pS+=(st.p-pS)*(RM?1:1-Math.exp(-dt*6));
       const b=st.b;
 
-      // Le canvas se place sur Pépin ; dans le canvas, Pépin reste au centre et change seulement d'échelle.
-      const x=lerp(st.hero.x,st.story.x,b), y=lerp(st.hero.y,st.story.y,b), s=lerp(st.hero.h,st.story.h,b)/box*ib;
-      const nx=Math.round((x-CW/2)*4)/4, ny=Math.round((y-CH/2)*4)/4;
-      if(nx!==ox||ny!==oy){ox=nx;oy=ny;canvas.style.transform=`translate3d(${nx}px,${ny}px,0)`}
-      const idle=RM?0:1;
-      jump=Math.max(0,jump-dt*1.4);
-      // un petit bond pendant le passage du hero à l'histoire, en plus du saut quand on le touche
-      const jy=(Math.sin(jump*Math.PI)*.55+(RM?0:Math.sin(b*Math.PI)*.4))*s;
-      const root=pepin.root;
-      root.position.set(0, Math.sin(t*1.7)*.05*s*idle+jy, 0);
-      root.scale.setScalar(Math.max(s,.0001));
-      const squash=1+Math.sin(jump*Math.PI*2)*.08, breath=Math.sin(t*2.1)*.012*idle;
-      pepin.inner.scale.set((1-breath*.5)/Math.sqrt(squash),squash*(1+breath),(1-breath*.5)/Math.sqrt(squash));
-      const transfer=RM?0:b*Math.PI*2;
-      const spin=jump>0?(1-jump)*Math.PI*2:0;
-      root.rotation.y=ptr.x*.38+transfer+spin+Math.sin(pS*Math.PI*2)*.32*b;
-      root.rotation.x=ptr.y*.14+.04;
-      root.rotation.z=Math.sin(t*1.1)*.045*idle;
-      pepin.leaves.forEach((l,i)=>{l.rotation.z=l.userData.rz+Math.sin(t*2.2+i*1.3)*.06*idle;l.rotation.x=l.userData.rx+Math.sin(t*1.7+i)*.03*idle});
-      pepin.pupils.forEach(pu=>{pu.position.x=pu.userData.x+ptr.x*.028;pu.position.y=pu.userData.y-ptr.y*.022});
-      if(!RM){blinkAt-=dt;if(blinkAt<=0){blink=1;blinkAt=2.5+Math.random()*3}blink=Math.max(0,blink-dt*7);}
-      const eyeS=1-Math.sin(blink*Math.PI)*.9;
-      pepin.eyes.forEach(e=>e.scale.y=eyeS);
+      // La carte se place sur le hero ou sur l'histoire et change seulement d'échelle,
+      // avec un petit bond et une bascule pendant le passage de l'un à l'autre.
+      const hop=M*Math.sin(b*Math.PI);
+      const s=lerp(st.hero.h,st.story.h,b)/box*ib;
+      const x=lerp(st.hero.x,st.story.x,b), y=lerp(st.hero.y,st.story.y,b)-hop*H*s*.2;
+      unit=Math.max(.01,W*s/720); // pixels par unité du dessin
+      const cx=st.left+x, cy=st.top+y; // centre de la carte dans la fenêtre
 
-      // ombre de contact
-      shadow.position.set(0, -1.6*s*ib, -.2);
-      const sh=1-(jy/(s||1))*.6;
-      shadow.scale.set(2.2*s*sh,2.2*s*sh,1);
-      shadow.material.opacity=.55*(1-b*.3);
+      // Où regarde Popote (de -1 à 1) : vers où on la tire ; sinon la souris si elle a bougé il y a moins de 4 s ;
+      // sinon, dans l'histoire, la bulle active ; sinon son regard se promène.
+      const fresh=!ptr.touch&&now-ptr.at<4000;
+      let gx, gy;
+      if(drag&&drag.moved){gx=clamp(pull.tx/220,-1,1);gy=clamp(pull.ty/220,-1,1)}
+      else if(fresh){const R=Math.max(180,W*s);gx=(ptr.x-cx)/R;gy=(ptr.y-cy)/R;const m=Math.hypot(gx,gy);if(m>1){gx/=m;gy/=m}}
+      else if(b>.8){gx=st.idx===0?-.8:.8;gy=st.idx===0?-.25:.25}
+      else{gx=Math.sin(t*.43)*.55+Math.sin(t*.17+1)*.3;gy=Math.sin(t*.29+2)*.3}
+      const lk=1-Math.exp(-dt*(fresh||drag?8:2.5));
+      look.x+=(gx*M-look.x)*lk;look.y+=(gy*M-look.y)*lk;
+      const lx=look.x, ly=look.y;
 
-      renderer.render(scene,camera);
+      // La carte s'incline vers ce qu'elle regarde ; un reflet glisse dessus.
+      const rot=r(-hop*7+Math.sin(pS*Math.PI*2)*2*b*M), ns=r3(s);
+      const nt=`translate3d(${Math.round((x-W/2)*4)/4}px,${Math.round((y-H/2)*4)/4}px,0) perspective(${W*3}px) rotateX(${r(-ly*11)}deg) rotateY(${r(lx*15)}deg) rotate(${rot}deg) scale3d(${ns},${ns},${ns})`;
+      if(nt!==tf){tf=nt;el.style.transform=nt}
+      css('--gx',Math.round(-lx*W*.3)+'px');css('--gy',Math.round(-ly*H*.3)+'px');
+      css('--go',(Math.round(Math.hypot(lx,ly)*40)/100).toString());
+      css('--m-s',ns.toString());
 
-      // points d'ancrage des bulles, en pixels dans le bloc collant (objets réutilisés : rien à ramasser pour le ramasse-miettes)
-      anchorsLocal.forEach((a,i)=>{tmp.copy(a).applyMatrix4(pepin.inner.matrixWorld).project(camera);anchors[i].x=ox+(tmp.x+1)/2*CW;anchors[i].y=oy+(1-tmp.y)/2*CH});
+      // Le ressort quand on la tire (deux demi-pas : plus stable quand une image arrive en retard).
+      const k=190, c=11;
+      for(let i=0;i<2;i++){const h=dt/2;
+        pull.vx+=(k*(lim(pull.tx)-pull.x)-c*pull.vx)*h;pull.x+=pull.vx*h;
+        pull.vy+=(k*(lim(pull.ty)-pull.y)-c*pull.vy)*h;pull.y+=pull.vy*h;}
+      if(RM){pull.x=lim(pull.tx);pull.y=lim(pull.ty);pull.vx=pull.vy=0}
+
+      // Le corps : respiration, saut, pirouette, fou rire, étirement quand on le tire ; les pieds restent au sol.
+      jump=Math.max(0,jump-dt*1.5);spin=Math.max(0,spin-dt*1.25);giggle=Math.max(0,giggle-dt/1.3);boing=Math.max(0,boing-dt*1.2);
+      const jh=Math.sin(jump*Math.PI)*M, sh=Math.sin(spin*Math.PI)*M;
+      const squash=1+Math.sin(jump*Math.PI*2)*.07*M, breath=Math.sin(t*2.1)*.014*M;
+      const stretch=clamp(1-pull.y/700,.75,1.3);
+      const flip=spin>0&&M?Math.cos((1-spin)*Math.PI*2):1; // pirouette : le dessin se retourne et revient
+      const sy=squash*(1+breath)*stretch, sx=(1-breath*.5)/Math.sqrt(squash*stretch)*(1-Math.abs(lx)*.03)*flip;
+      const lean=r(clamp(-Math.atan2(pull.x,520)*57.3,-32,32));
+      const tilt=r((lx*3+Math.sin(t*1.1)*1.5+Math.sin(t*38)*7*giggle)*M);
+      const yOff=r((Math.sin(t*1.7)*7-jh*130-sh*90-hop*30)*M);
+      set(P.corps,`translate(${r(pull.x*.25)} ${yOff}) translate(336 620) rotate(${tilt}) skewX(${lean}) scale(${r3(sx)} ${r3(sy)}) translate(-336 -620)`);
+      set(P.ombre,`translate(336 634.5) scale(${Math.round((1-jh*.45-sh*.35-hop*.2)*100)/100} 1) translate(-336 -634.5)`);
+
+      // L'expression : surprise quand on la tire, joie après une réaction ou pendant le passage vers l'histoire.
+      const surpris=!!(drag&&drag.moved);
+      const joie=!surpris&&(jump>.02||spin>0||giggle>0||boing>0||b>.1&&b<.9);
+      const ex=surpris?2:joie?1:0;
+      if(ex!==expr){expr=ex;show(P.yeux,ex!==1);show(P.joie,ex===1);show(P.bouche,ex===0);show(P.boucheJoie,ex===1);show(P.boucheO,ex===2)}
+
+      // Les bras : un salut quand la souris s'approche, et de temps en temps ; levés de joie ; agités de surprise.
+      const near=fresh&&Math.hypot(ptr.x-cx,ptr.y-cy)<W*s*.8;
+      if(!RM){
+        if(near&&!wasNear&&wave<=0)wave=1;
+        waveAt-=dt;if(waveAt<=0){if(wave<=0)wave=1;waveAt=5+Math.random()*4}
+        wave=Math.max(0,wave-dt/1.6);
+      }
+      wasNear=near;
+      const waving=Math.sin((1-wave)*Math.PI*5)*18*Math.sin(wave*Math.PI);
+      const flail=surpris?Math.sin(t*16)*12:0;
+      set(P.brasD,`rotate(${r(waving+(Math.sin(t*1.3)*3-(joie?12:0)-(surpris?20:0)+flail)*M)} 561 322)`);
+      set(P.brasG,`rotate(${r((Math.sin(t*1.1+1)*4+(joie?78:0)+(surpris?45:0)-flail)*M)} 110 374)`);
+
+      // Le relief : le visage se décale le plus, puis les feuilles et les graines ; le reflet glisse en sens inverse.
+      set(P.visage,`translate(${r(lx*24)} ${r(ly*14)})`);
+      set(P.graines,`translate(${r(lx*9)} ${r(ly*5)})`);
+      set(P.reflet,`translate(${r(-lx*6)} ${r(-ly*4)})`);
+      set(P.couronne,`rotate(${r(Math.sin(t*2.2)*2.5*M-lx*4-lean*.4)} 336 152) translate(${r(lx*8)} ${r(ly*3)})`);
+
+      // Les yeux clignent.
+      if(!RM){blinkAt-=dt;if(blinkAt<=0){blink=1;blinkAt=2.5+Math.random()*3}blink=Math.max(0,blink-dt*7)}
+      set(P.yeux,`translate(0 284.5) scale(1 ${Math.round((1-Math.sin(blink*Math.PI)*.9)*100)/100}) translate(0 -284.5)`);
+
+      // Points d'ancrage des traits de l'histoire : les bords de la carte, en pixels dans le bloc collant.
+      const hw=W*s/2;
+      anchors[0].x=x-hw;anchors[0].y=y-H*s*.04;
+      anchors[1].x=x+hw;anchors[1].y=y+H*s*.08;
       res.p=pS;
       return res;
     },
-    setVisible(v){if(v!==shown){shown=v;canvas.style.visibility=v?'visible':'hidden'}}
+    setVisible(v){if(v!==shown){shown=v;el.style.visibility=v?'visible':'hidden'}}
   };
 }
 
-// Remplace les matières physiques (avec vernis) par des matières standard, bien moins coûteuses à dessiner.
-function simplify(scene){
-  const done=new Map();
-  scene.traverse(o=>{
-    const m=o.material;if(!m||!m.isMeshPhysicalMaterial)return;
-    if(!done.has(m)){
-      const n=new THREE.MeshStandardMaterial({color:m.color,map:m.map,roughness:Math.min(m.roughness,.35),metalness:m.metalness,vertexColors:m.vertexColors,bumpMap:m.bumpMap,bumpScale:m.bumpScale,side:m.side,transparent:m.transparent,opacity:m.opacity});
-      n.onBeforeCompile=m.onBeforeCompile;n.customProgramCacheKey=m.customProgramCacheKey;
-      done.set(m,n);
-    }
-    o.material=done.get(m);
-  });
-  done.forEach((n,m)=>m.dispose());
-}
 function easeInOut(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2}
 function easeOutBack(t){const c1=1.4,c3=c1+1;return 1+c3*Math.pow(t-1,3)+c1*Math.pow(t-1,2)}
 
@@ -219,15 +273,7 @@ function addLights(scene){
   const fill=new THREE.DirectionalLight(0xffffff,.22);fill.position.set(4,-1,5);scene.add(fill);
   const rim=new THREE.DirectionalLight(0xc8f5d4,1.5);rim.position.set(4,2.5,-4);scene.add(rim);
 }
-function makeShadow(){
-  const c=document.createElement('canvas');c.width=c.height=128;const x=c.getContext('2d');
-  const g=x.createRadialGradient(64,64,0,64,64,64);g.addColorStop(0,'rgba(2,12,7,.8)');g.addColorStop(.35,'rgba(2,12,7,.4)');g.addColorStop(1,'rgba(2,12,7,0)');
-  x.fillStyle=g;x.fillRect(0,0,128,128);
-  return new THREE.Mesh(new THREE.PlaneGeometry(1,.38),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(c),transparent:true,depthWrite:false,toneMapped:false}));
-}
-
-/* ---- Modèles ---- */
-const PEPIN_H=3.0;
+/* ---- Modèles 3D des ingrédients ---- */
 const col=h=>new THREE.Color(h).convertSRGBToLinear();
 const V=(x,y,z)=>new THREE.Vector3(x,y,z);
 const sstep=(a,b,x)=>{const t=clamp((x-a)/(b-a),0,1);return t*t*(3-2*t)};
@@ -256,7 +302,7 @@ function paint(geo,fn){
 }
 const S=h=>new THREE.Color(h);
 
-// Textures dessinées une fois : grain de peau, pores, coquille d'œuf, points lumineux, joues.
+// Textures dessinées une fois : grain de peau et pores.
 let TX=null;
 function tex(){
   if(TX) return TX;
@@ -266,8 +312,7 @@ function tex(){
     skin:make(512,512,(x,w,h)=>{const r=rnd(3);x.fillStyle='#808080';x.fillRect(0,0,w,h);
       for(let i=0;i<110;i++){x.fillStyle=r()<.5?'rgba(0,0,0,.05)':'rgba(255,255,255,.05)';x.fillRect(r()*w,0,1+r()*3,h)}
       dots(x,w,h,520,r,.5,1.5,'rgba(30,30,30,A)',.18,.42,2.4)}),
-    pores:make(512,512,(x,w,h)=>{const r=rnd(5);x.fillStyle='#8a8a8a';x.fillRect(0,0,w,h);dots(x,w,h,4200,r,.6,1.6,'rgba(20,20,20,A)',.25,.55)}),
-    blush:make(128,128,(x,w,h)=>{const g=x.createRadialGradient(64,64,0,64,64,64);g.addColorStop(0,'rgba(255,255,255,.95)');g.addColorStop(.55,'rgba(255,255,255,.55)');g.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=g;x.fillRect(0,0,w,h)})
+    pores:make(512,512,(x,w,h)=>{const r=rnd(5);x.fillStyle='#8a8a8a';x.fillRect(0,0,w,h);dots(x,w,h,4200,r,.6,1.6,'rgba(20,20,20,A)',.25,.55)})
   };
   TX.skin.repeat.set(2,1);TX.pores.repeat.set(2,1);
   return TX;
@@ -316,51 +361,7 @@ function tube(pts,r,color,taper,painter){
   return g;
 }
 
-function buildPepin(face){
-  const root=new THREE.Group(), inner=new THREE.Group();root.add(inner);inner.position.y=-.13;
-  const {geo,rAt}=lathe([[0,-.88],[.22,-.84],[.47,-.72],[.69,-.52],[.83,-.26],[.88,.02],[.83,.32],[.66,.58],[.37,.76],[0,.82]]);
-  // dégradé du radis : rouge profond en haut, rose puis blanc vers la racine, ombre douce sous les feuilles
-  const cTop=S('#93102D'), cBody=S('#D2264A'), cLow=S('#EC6F8A'), cTip=S('#F8DCE2');
-  paint(geo,(x,y,z,c)=>{
-    const r=Math.hypot(x,z);
-    c.copy(cBody).lerp(cTop,sstep(.3,.8,y)*.7).lerp(cLow,sstep(-.42,-.8,y)).lerp(cTip,sstep(-.72,-.88,y));
-    c.multiplyScalar(1-.38*sstep(.6,.8,y)*(1-sstep(.05,.42,r)));
-  });
-  const T=tex();
-  inner.add(new THREE.Mesh(geo,mat('#ffffff',{vertexColors:true,roughness:.3,clearcoat:.85,clearcoatRoughness:.16,bumpMap:T.skin,bumpScale:.0025},['#FF8FA8',.42,2.6])));
-  const tailA=S('#CF4562'), tailB=S('#F5D2DA');
-  inner.add(tube([V(0,-.84,0),V(0,-1.02,.02),V(.06,-1.18,.05),V(.19,-1.29,.08)],.034,null,.75,(x,y,z,c)=>c.copy(tailA).lerp(tailB,sstep(-.9,-1.25,y))));
-  const placeOn=(o,x,y,lift)=>{const r=rAt(y);const z=Math.sqrt(Math.max(r*r-x*x,1e-4));const n=V(x,y*.35,z).normalize();o.position.set(x,y,z).addScaledVector(n,lift);inner.add(o);o.lookAt(V(o.position.x+n.x,o.position.y+n.y-.13,o.position.z+n.z));};
-  const eyes=[], pupils=[];
-  if(face){
-    const whiteM=mat('#FBFCFF',{roughness:.12,clearcoat:1,clearcoatRoughness:.05}), pupM=mat('#1E1A1A',{roughness:.1,clearcoat:1,clearcoatRoughness:.04});
-    [-1,1].forEach(sd=>{
-      const e=new THREE.Group();
-      const w=new THREE.Mesh(new THREE.SphereGeometry(.128,40,24),whiteM);w.scale.set(1,1.22,.42);e.add(w);
-      const pu=new THREE.Mesh(new THREE.SphereGeometry(.076,32,16),pupM);pu.scale.set(1,1.06,.5);pu.position.set(.012,-.022,.048);pu.userData={x:.012,y:-.022};e.add(pu);pupils.push(pu);
-      const gl=new THREE.Mesh(new THREE.SphereGeometry(.026,16,10),new THREE.MeshBasicMaterial({color:0xffffff,toneMapped:false}));gl.position.set(.036,.02,.088);pu.add(gl);
-      const gl2=new THREE.Mesh(new THREE.SphereGeometry(.011,10,8),gl.material);gl2.position.set(-.03,-.035,.082);pu.add(gl2);
-      placeOn(e,sd*.27,.03,-.012);eyes.push(e);
-    });
-    [-1,1].forEach(sd=>{
-      const ck=new THREE.Mesh(new THREE.PlaneGeometry(.3,.19),new THREE.MeshBasicMaterial({map:T.blush,color:col('#FF8FA6'),transparent:true,opacity:.85,depthWrite:false}));
-      placeOn(ck,sd*.5,-.16,.016);
-    });
-    const pts=[];for(let i=0;i<=16;i++){const t=i/16;const x=-.15+.3*t;const y=-.18-.088*Math.sin(Math.PI*t);const r=rAt(y);pts.push(V(x,y,Math.sqrt(r*r-x*x)+.004))}
-    inner.add(tube(pts,.022,'#3A161E'));
-  }
-  const top=new THREE.Group();top.position.set(0,.79,0);inner.add(top);
-  const stem=new THREE.Mesh(new THREE.CylinderGeometry(.03,.05,.13,16),mat('#3C8F47',{roughness:.5}));stem.position.y=.03;top.add(stem);
-  const leaves=[];
-  [{L:.8,W:.25,rz:.8,ry:.45,rx:-.2},{L:.94,W:.27,rz:-.08,ry:0,rx:-.3,o:{mid:'#38A84B',tip:'#78CC62'}},{L:.76,W:.23,rz:-.95,ry:-.45,rx:-.14}].forEach(d=>{
-    const piv=new THREE.Group();piv.rotation.set(d.rx,d.ry,d.rz);piv.userData.rz=d.rz;piv.userData.rx=d.rx;
-    piv.add(leaf(d.L,d.W,Object.assign({bend:.34},d.o)));top.add(piv);leaves.push(piv);
-  });
-  return {root,inner,eyes,pupils,leaves};
-}
-
 const BUILD={
-  pepin(){const g=new THREE.Group();g.add(buildPepin(true).root);return g},
   tomato(){
     const g=new THREE.Group();
     const geo=new THREE.SphereGeometry(.5,72,48);const p=geo.attributes.position;const v=new THREE.Vector3();
@@ -449,12 +450,12 @@ const BUILD={
   }
 };
 
-/* ---- Images des ingrédients et de Pépin ---- */
+/* ---- Images des ingrédients ---- */
 // Elles sont rendues une fois pour toutes à partir des modèles ci-dessus et servies en WebP
-// (assets/img/ingredients, assets/img/pepin-3d.webp). Pour les refaire : ouvrir la page avec ?rendus,
+// (assets/img/ingredients). Pour les refaire : ouvrir la page avec ?rendus,
 // puis enregistrer chaque image proposée.
 function exportRenders(){
-  const pose={tomate:['tomato',[.45,0,.15]],carotte:['carrot',[0,.3,-.62]],banane:['banana',[.35,.25,.12]],cookie:['cookie',[.78,0,-.12]],'pepin-3d':['pepin',[.05,-.35,0]]};
+  const pose={tomate:['tomato',[.45,0,.15]],carotte:['carrot',[0,.3,-.62]],banane:['banana',[.35,.25,.12]],cookie:['cookie',[.78,0,-.12]]};
   const R=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true});
   setupRenderer(R);R.setPixelRatio(1);R.setSize(512,512,false);
   const sc=new THREE.Scene();sc.environment=makeEnv(R);addLights(sc);
@@ -475,23 +476,10 @@ function exportRenders(){
   R.dispose();
 }
 
-/* ---------- Démarrage de la 3D, après le premier affichage ---------- */
-// Le texte et les boutons s'affichent tout de suite ; Three.js (600 Ko) se charge ensuite, et Pépin arrive en sautillant.
-let GL=null;
-function giveUp3D(){document.documentElement.classList.add('no-gl');$('#scene').style.display='none'}
-function start3D(){
-  GL=initScene();
-  if(!GL){giveUp3D();return}
-  measure();
-  if(/[?&]rendus/.test(location.search))exportRenders();
-}
-const idle=f=>('requestIdleCallback' in window)?requestIdleCallback(f,{timeout:600}):setTimeout(f,60);
-function load3D(){
-  if(window.THREE){start3D();return}
-  const s=document.createElement('script');s.src=THREE_SRC;s.async=true;
-  s.onload=start3D;s.onerror=giveUp3D;document.head.appendChild(s);
-}
-if(document.readyState==='complete')idle(load3D);else addEventListener('load',()=>idle(load3D),{once:true});
+/* ---------- Démarrage ---------- */
+// Popote est là dès le premier affichage. Three.js (600 Ko) ne se charge que pour refaire les images des ingrédients (?rendus).
+const mascotte=initMascotte();
+if(/[?&]rendus/.test(location.search)){const s=document.createElement('script');s.src=THREE_SRC;s.onload=exportRenders;document.head.appendChild(s)}
 addEventListener('load',()=>setTimeout(loadAnalytics,1200),{once:true});
 
 /* ---------- Histoire au scroll ---------- */
@@ -540,19 +528,19 @@ function showRecipe(el){
   el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash');
 }
 
-// Positions mises en cache, relatives au bloc collant de l'histoire (où vit le canvas de Pépin).
+// Positions mises en cache, relatives au bloc collant de l'histoire (où vit la carte de Popote).
 // Elles ne changent qu'avec la mise en page : on les recalcule au redimensionnement, pas à chaque image.
-const geo={heroX:0,heroY:0,heroH:1,spotX:0,spotY:0,spotH:1,stickyH:1,pins:[],fallback:[]};
+const geo={heroX:0,heroY:0,heroH:1,spotX:0,spotY:0,spotH:1,stickyH:1,skLeft:0,pins:[],fallback:[]};
 function measure(){
   const st=story.getBoundingClientRect(), sk=sticky.getBoundingClientRect(), hr=spotHero.getBoundingClientRect(), sp=spotStory.getBoundingClientRect();
   // Le hero est mesuré par rapport au haut de l'histoire : c'est là que se trouve le bloc collant tant qu'il n'a pas glissé.
   geo.heroX=hr.left+hr.width/2-sk.left;geo.heroY=hr.top+hr.height/2-st.top;geo.heroH=hr.height;
   geo.spotX=sp.left+sp.width/2-sk.left;geo.spotY=sp.top+sp.height/2-sk.top;geo.spotH=sp.height;
-  geo.stickyH=sk.height;
+  geo.stickyH=sk.height;geo.skLeft=sk.left;
   // Le centre d'une bulle ne bouge pas quand elle grandit (elle est centrée sur son point) : une mesure suffit.
   geo.pins=pins.map(el=>{const r=el.getBoundingClientRect();return {x:r.left+r.width/2-sk.left,y:r.top+r.height/2-sk.top}});
   geo.fallback=FALLBACK_ANCH.map(([fx,fy])=>({x:sp.left+sp.width*fx-sk.left,y:sp.top+sp.height*fy-sk.top}));
-  if(GL)GL.resize(Math.max(geo.heroH,geo.spotH));
+  if(mascotte)mascotte.resize(Math.max(geo.heroH,geo.spotH));
 }
 measure();
 addEventListener('resize',measure);
@@ -562,16 +550,16 @@ if('ResizeObserver' in window){const ro=new ResizeObserver(()=>measure());[stage
 let wasVisible=false, storySeen=false;
 const heroEl=$('.hero');
 // Passage du hero à l'histoire : au lieu de suivre le scroll pixel par pixel (ce qui saccade sur mobile,
-// où la page défile sans attendre le JavaScript), Pépin bondit vers l'histoire en 0,9 s quand on passe un seuil.
+// où la page défile sans attendre le JavaScript), Popote bondit vers l'histoire en 0,9 s quand on passe un seuil.
 // Deux seuils différents évitent les allers-retours si l'on s'arrête juste dessus.
 const HOP=.9;
 let mode=-1, tB=0, tFrom=0, tStart=0;
-// Compteur de diagnostic, visible seulement avec ?fps dans l'adresse : images par seconde, palier de qualité, résolution.
+// Compteur de diagnostic, visible seulement avec ?fps dans l'adresse : images par seconde.
 const fpsBox=/[?&]fps/.test(location.search)?document.body.appendChild(Object.assign(document.createElement('div'),{style:'position:fixed;left:8px;bottom:8px;z-index:99;padding:6px 10px;border-radius:10px;background:#000c;color:#fff;font:600 13px/1.3 system-ui;pointer-events:none'})):null;
 let fpsN=0, fpsT=0;
 function loop(now){
   requestAnimationFrame(loop);
-  if(fpsBox){fpsN++;if(!fpsT)fpsT=now;if(now-fpsT>=1000){const q=GL?GL.stats():null;fpsBox.textContent=Math.round(fpsN*1000/(now-fpsT))+' i/s'+(q?' · palier '+q.lvl+' · rendu ×'+q.pr:' · 3D non chargée');fpsN=0;fpsT=now}}
+  if(fpsBox){fpsN++;if(!fpsT)fpsT=now;if(now-fpsT>=1000){fpsBox.textContent=Math.round(fpsN*1000/(now-fpsT))+' i/s';fpsN=0;fpsT=now}}
   // 1. Lecture : une seule mesure par image, avant toute écriture, pour ne jamais forcer un recalcul de la mise en page.
   const H=innerHeight, st=story.getBoundingClientRect();
   const stageVisible=st.bottom>0;
@@ -585,10 +573,11 @@ function loop(now){
   if(tStart){const k=RM?1:clamp((now-tStart)/1000/HOP,0,1);tB=lerp(tFrom,mode,easeInOut(k));if(k>=1)tStart=0}
   const b=tB;
   let res=null;
-  if(GL){
-    GL.setVisible(stageVisible);
+  if(mascotte){
+    mascotte.setVisible(stageVisible);
     if(stageVisible&&document.visibilityState!=='hidden'){
-      res=GL.frame(now,{hero:{x:geo.heroX,y:geo.heroY-slide,h:geo.heroH},story:{x:geo.spotX,y:geo.spotY,h:geo.spotH},b,p,reset});
+      res=mascotte.frame(now,{hero:{x:geo.heroX,y:geo.heroY-slide,h:geo.heroH},story:{x:geo.spotX,y:geo.spotY,h:geo.spotH},b,p,reset,
+        top:st.top+slide,left:geo.skLeft,idx:Math.min(pins.length-1,Math.floor(p*pins.length*.9999))});
       jumped=false;
     }
   }
@@ -597,7 +586,7 @@ function loop(now){
   if(p>.97&&!storySeen){storySeen=true;track('Histoire vue en entier')}
 }
 function updateStory(p,anchors,b){
-  // Les traits ne relient Pépin aux bulles qu'une fois qu'il est arrivé dans l'histoire.
+  // Les traits ne relient Popote aux bulles qu'une fois qu'elle est arrivée dans l'histoire.
   const lk=clamp((b-.8)/.2,0,1);
   const N=pins.length, idx=Math.min(N-1,Math.floor(p*N*.9999));
   if(idx!==curIdx){
@@ -660,7 +649,7 @@ $('#tsNext').addEventListener('click',()=>{if(step<STEPS.length-1){step++;render
 $('#tsPrev').addEventListener('click',()=>{if(step>0){step--;renderStep()}});
 $('#tsRestart').addEventListener('click',()=>{step=0;tsScreen.classList.remove('is-done');$$('#badges button').forEach(b=>b.setAttribute('aria-pressed','false'));renderStep()});
 $$('#badges button').forEach(b=>b.addEventListener('click',()=>b.setAttribute('aria-pressed',b.getAttribute('aria-pressed')==='true'?'false':'true')));
-// La voix de Pépin : des consignes pré-enregistrées avec une voix de synthèse neuronale (outils/generer-voix.py),
+// La voix de Popote : des consignes pré-enregistrées avec une voix de synthèse neuronale (outils/generer-voix.py),
 // chargées seulement au premier appui. Si un fichier ne se lit pas, on se rabat sur la plus naturelle des voix de l'appareil.
 const voice=new Audio();voice.preload='none';
 let voiceBtnCur=null;
@@ -687,7 +676,7 @@ function playVoice(btn,clip,text){
 }
 voiceBtn.dataset.label=T.listen;voiceBtn.classList.add('hint');
 voiceBtn.addEventListener('click',()=>playVoice(voiceBtn,'etape-'+(step+1),$('#tsKidText').textContent));
-const bravoBtn=$('#tsBravo');bravoBtn.dataset.label=T.listenPepin;
+const bravoBtn=$('#tsBravo');bravoBtn.dataset.label=T.listenPopote;
 bravoBtn.addEventListener('click',()=>playVoice(bravoBtn,'bravo',T.bravo));
 renderStep();
 

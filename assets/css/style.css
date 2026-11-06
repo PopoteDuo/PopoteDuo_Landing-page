@@ -5,8 +5,8 @@
 
 :root{
   /* Direction : un seul univers de couleur, comme les références Kumo et WildCrumb.
-     Vert profond pour la scène de Pépin, crème pour les cartes d'ingrédients, menthe de la marque
-     pour les actions. Le rouge radis est réservé à Pépin. La page est blanche, découpée en blocs arrondis. */
+     Vert profond pour la scène de Popote, crème pour les cartes d'ingrédients, menthe de la marque
+     pour les actions. Le rouge est réservé à Popote et au radis du logo. La page est blanche, découpée en blocs arrondis. */
   --page:#FFFFFF;
   --herb:#173F2E;
   --herb-hi:#22553D;
@@ -24,6 +24,8 @@
   --on-dark-2:rgba(243,238,226,.74);
   --glass:rgba(243,238,226,.1);
   --glass-line:rgba(243,238,226,.18);
+  /* La carte menthe de Popote, reprise de sa planche de personnage */
+  --mint-card:#C8ECC9;
   --radish:#D9415E;
   --radish-soft:#FBE7EB;
   --leaf:#3E9B4F;
@@ -101,13 +103,26 @@ h1,h2,h3,h4{margin:0;font-weight:700;letter-spacing:-.02em;text-wrap:balance}
 .lang .on{background:var(--on-dark);color:var(--herb)}
 .lang a:hover{color:var(--on-dark)}
 @media (min-width:860px){.nav-links{display:flex}}
-/* Sur mobile, la pilule de navigation est opaque : un flou par-dessus Pépin coûterait cher à chaque image */
+/* Sur mobile, la pilule de navigation est opaque : un flou par-dessus Popote coûterait cher à chaque image */
 @media (max-width:899px){.nav-pill{background:rgba(14,38,26,.94);-webkit-backdrop-filter:none;backdrop-filter:none}}
 @media (max-width:374px){.nav-pill{gap:6px;padding-left:12px}.nav-logo svg{height:24px}.nav-end{gap:4px}.lang a,.lang span{min-width:28px;padding:0 4px}.nav .btn{padding:0 11px;font-size:13.5px}}
 
-/* Canvas 3D */
-/* Le canvas de Pépin vit dans le bloc collant de l'histoire : il défile avec la page, et le script ne fait que le placer sur Pépin */
-#scene{position:absolute;left:0;top:0;z-index:0;pointer-events:none;will-change:transform}
+/* Popote, sur sa carte menthe. La carte vit dans le bloc collant de l'histoire : elle défile avec la page,
+   et le script ne fait que la placer sur le hero ou sur l'histoire (elle reste cachée jusque-là). */
+/* Le relief : la carte s'incline en 3D (script), Popote flotte au-dessus d'elle et sa bulle encore au-dessus. */
+.mascotte{position:absolute;left:0;top:0;z-index:0;visibility:hidden;pointer-events:none;will-change:transform;transform-style:preserve-3d;border-radius:15%/14%;background:var(--mint-card);box-shadow:0 30px 50px -24px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.55)}
+.m-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;transform:translateZ(36px)}
+/* Reflet de lumière qui glisse sur la carte quand elle s'incline (déplacé en transform, sans redessiner) */
+.m-lustre{position:absolute;inset:0;border-radius:inherit;overflow:hidden}
+.m-lustre::before{content:"";position:absolute;left:-40%;top:-40%;width:180%;height:180%;background:radial-gradient(circle,rgba(255,255,255,.55),rgba(255,255,255,0) 42%);opacity:var(--go,0);transform:translate(var(--gx,0px),var(--gy,0px))}
+/* La bulle de Popote quand on la touche ; elle garde sa taille quand la carte est réduite (--m-s) */
+.m-bulle{position:absolute;left:50%;bottom:92%;padding:9px 14px;border-radius:16px;background:var(--on-dark);color:var(--herb);font-size:15px;font-weight:700;line-height:1.2;white-space:nowrap;box-shadow:0 14px 30px -14px rgba(0,0,0,.55);opacity:0;transform-origin:50% 100%;transform:translateZ(70px) translateX(-50%) scale(calc(.6 / var(--m-s,1)));transition:opacity .2s,transform .4s cubic-bezier(.2,1.5,.4,1)}
+.m-bulle::after{content:"";position:absolute;left:50%;top:100%;margin-left:-7px;border:7px solid transparent;border-top-color:var(--on-dark);border-bottom:0}
+.m-bulle.on{opacity:1;transform:translateZ(70px) translateX(-50%) scale(calc(1 / var(--m-s,1)))}
+/* On peut attraper Popote ; sur mobile, seulement à l'horizontale, pour que la page défile toujours */
+.mascotte-spot,.story-spot{-webkit-user-select:none;user-select:none;touch-action:pan-y}
+.mascotte-spot,.story-spot{cursor:grab}
+.mascotte-spot.grab,.story-spot.grab{cursor:grabbing}
 
 /* La scène : hero et histoire, dans un même bloc vert profond */
 .stage{position:relative;overflow-x:clip;background:var(--herb);color:var(--on-dark)}
@@ -117,13 +132,11 @@ h1,h2,h3,h4{margin:0;font-weight:700;letter-spacing:-.02em;text-wrap:balance}
   radial-gradient(ellipse 46% 38% at 50% 36%,rgba(185,232,196,.2),transparent 72%),
   linear-gradient(180deg,var(--herb-hi),var(--herb) 70%)}
 .hero-scene{position:relative;flex:1 1 auto;min-height:0}
-.pepin-spot{position:absolute;left:50%;top:50%;height:min(100%,560px);aspect-ratio:3/4;transform:translate(-50%,-50%);cursor:pointer;-webkit-tap-highlight-color:transparent}
-.pepin-fallback{display:none;height:80%;width:auto;margin:10% auto 0}
-.no-gl .pepin-fallback{display:block}
+.mascotte-spot{position:absolute;left:50%;top:50%;height:min(100%,560px);aspect-ratio:3/4;transform:translate(-50%,-50%);-webkit-tap-highlight-color:transparent}
 
-/* Les ingrédients sur des cartes crème inclinées, qui s'écartent quand Pépin part vers l'histoire (--b de 0 à 1) */
+/* Les ingrédients sur des cartes crème inclinées, qui s'écartent quand Popote part vers l'histoire (--b de 0 à 1) */
 .ing{position:absolute;inset:0;margin:0;padding:0;list-style:none;pointer-events:none}
-/* Les cartes s'envolent par une transition CSS (jouée par la carte graphique) quand Pépin part vers l'histoire */
+/* Les cartes s'envolent par une transition CSS (jouée par la carte graphique) quand Popote part vers l'histoire */
 .hero.flown{--b:1}
 .flown .ing-card{visibility:hidden;transition:transform .8s cubic-bezier(.65,0,.35,1),opacity .45s ease .1s,visibility 0s .8s}
 .ing-card{position:absolute;left:var(--x);top:var(--y);width:var(--s,74px);aspect-ratio:1;transform:translate(-50%,-50%) translate(calc(var(--dx)*var(--b,0)*22vw),calc(var(--dy)*var(--b,0)*16vh)) rotate(calc(var(--r) + var(--dx)*var(--b,0)*18deg)) scale(calc(1 - var(--b,0)*.25));opacity:calc(1 - var(--b,0)*1.8);transition:transform .8s cubic-bezier(.65,0,.35,1),opacity .5s ease .15s,visibility 0s}
@@ -180,8 +193,8 @@ h1,h2,h3,h4{margin:0;font-weight:700;letter-spacing:-.02em;text-wrap:balance}
 .story-lines circle.r{fill:none;stroke:var(--on-dark);stroke-opacity:.4;transform-box:fill-box;transform-origin:center;animation:ring 1.8s ease-out infinite}
 @keyframes ring{from{transform:scale(.4);opacity:1}to{transform:scale(1.6);opacity:0}}
 .story-lines g{transition:opacity .4s}
-/* Bulles en verre dépoli, icône dans un petit carré, comme les infobulles de WildCrumb */
-.pin{position:absolute;left:var(--x);top:var(--y);transform:translate(-50%,-50%) scale(var(--s,.7));opacity:0;display:inline-flex;align-items:center;gap:9px;padding:5px 13px 5px 5px;border-radius:14px;background:var(--glass);border:1px solid var(--glass-line);color:var(--on-dark);font-weight:600;font-size:13px;white-space:nowrap;cursor:pointer;box-shadow:0 12px 30px -14px rgba(0,0,0,.5);transition:opacity .45s,transform .55s cubic-bezier(.2,1.4,.4,1),background-color .3s,color .3s}
+/* Bulles couleur verre, icône dans un petit carré, comme les infobulles de WildCrumb. Opaques : elles passent devant la carte de Popote. */
+.pin{position:absolute;left:var(--x);top:var(--y);transform:translate(-50%,-50%) scale(var(--s,.7));opacity:0;display:inline-flex;align-items:center;gap:9px;padding:5px 13px 5px 5px;border-radius:14px;background:rgba(45,82,64,.96);border:1px solid var(--glass-line);color:var(--on-dark);font-weight:600;font-size:13px;white-space:nowrap;cursor:pointer;box-shadow:0 12px 30px -14px rgba(0,0,0,.5);transition:opacity .45s,transform .55s cubic-bezier(.2,1.4,.4,1),background-color .3s,color .3s}
 .pin .ico{width:26px;height:26px;border-radius:9px;background:var(--on-dark);color:var(--herb);display:grid;place-items:center;flex:none;transition:background-color .3s,color .3s}
 .pin .ico svg{width:15px;height:15px}
 .pin.on{opacity:1;--s:1}
@@ -245,8 +258,8 @@ h1,h2,h3,h4{margin:0;font-weight:700;letter-spacing:-.02em;text-wrap:balance}
 @media (min-width:620px){.ts-split{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr)}}
 .ts-kid{background:var(--mint);border-radius:var(--r-s);padding:18px;display:flex;flex-direction:column;gap:12px;position:relative;overflow:hidden}
 .ts-who{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
-.ts-who .av{width:30px;height:30px;border-radius:50%;background:#fff;display:grid;place-items:center;overflow:hidden}
-.ts-who .av svg{width:22px;height:auto}
+.ts-who .av{width:30px;height:30px;flex:none}
+.ts-who .av img{display:block;width:100%;height:100%}
 .ts-big{display:flex;align-items:center;gap:14px;min-height:66px}
 .ts-big .num{font-size:clamp(36px,8vw,52px);font-weight:800;font-stretch:108%;line-height:1;letter-spacing:-.04em}
 .ts-ring{width:64px;height:64px;flex:none;display:none}
@@ -530,7 +543,7 @@ mark.todo{background:#FFE58A;color:var(--ink);padding:1px 6px;border-radius:6px;
 /* Page 404 */
 .lost-page{display:grid;place-items:center;min-height:100vh;min-height:100svh;background:var(--herb);color:var(--on-dark)}
 .lost{display:flex;flex-direction:column;align-items:center;gap:16px;max-width:560px;padding:40px var(--gut);text-align:center}
-.lost img{width:150px;height:150px;object-fit:contain;filter:drop-shadow(0 18px 20px rgba(0,0,0,.35))}
+.lost img{width:170px;height:auto;padding:16px 14px 8px;border-radius:30px;background:var(--mint-card);box-shadow:0 30px 50px -24px rgba(0,0,0,.6)}
 .lost .h1{color:var(--on-dark);font-size:clamp(30px,6vw,46px)}
 .lost .lead{color:var(--on-dark-2)}
 

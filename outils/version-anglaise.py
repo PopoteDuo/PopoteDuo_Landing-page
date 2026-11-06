@@ -46,7 +46,7 @@ TEXT = [
     ('<li><a href="#tarifs">Tarifs</a></li>', '<li><a href="#tarifs">Pricing</a></li>'),
     ('data-track="nav">Rejoindre la bêta</a>', 'data-track="nav">Join the beta</a>'),
     # Accueil
-    ('title="Pépin aime les câlins"', 'title="Pépin loves cuddles"'),
+    ('title="Popote aime les câlins"', 'title="Popote loves cuddles"'),
     ('aria-label="Les recettes de la bêta"', 'aria-label="The beta recipes"'),
     ('<b>Rougail saucisses</b>Plat · 1 h', '<b>Sausage rougail</b>Main · 1 hr'),
     ('<span class="sr">Voir la recette du rougail saucisses</span>', '<span class="sr">See the sausage rougail recipe</span>'),
@@ -74,11 +74,11 @@ TEXT = [
      '<h3>A skills book</h3><p>Weighing, cracking an egg, whisking: every skill the parent signs off goes into the book and earns a badge.</p>'),
     # Démo
     ('<h2 class="h2">Chacun sa consigne, sur le même écran</h2>', '<h2 class="h2">Each their own task, on the same screen</h2>'),
-    ('À chaque étape, l’enfant reçoit une mission à sa taille pendant que le parent s’occupe du four, du feu et du couteau. Essayez avec le cookie géant&nbsp;: passez les étapes et écoutez Pépin.',
-     'At every step, the child gets a task their size while the parent handles the oven, the hob and the knife. Try it with the giant cookie: go through the steps and listen to Pépin.'),
+    ('À chaque étape, l’enfant reçoit une mission à sa taille pendant que le parent s’occupe du four, du feu et du couteau. Essayez avec le cookie géant&nbsp;: passez les étapes et écoutez Popote.',
+     'At every step, the child gets a task their size while the parent handles the oven, the hob and the knife. Try it with the giant cookie: go through the steps and listen to Popote.'),
     ('<b>Gestes appris&nbsp;:</b> peser, mélanger, incorporer, mettre la table.', '<b>Skills learned:</b> weighing, mixing, folding in, setting the table.'),
     ('data-track="demo">Tester avec mon enfant', 'data-track="demo">Try it with my child'),
-    ('Touchez « Écouter » pour entendre Pépin', 'Tap “Listen” to hear Pépin'),
+    ('Touchez « Écouter » pour entendre Popote', 'Tap “Listen” to hear Popote'),
     ('aria-label="Démonstration du mode cuisine"', 'aria-label="Cooking mode demo"'),
     ('Cookie géant<small>8 parts · 10 min + 25 min de cuisson</small>', 'Giant cookie<small>Serves 8 · 10 min + 25 min baking</small>'),
     ('aria-live="polite">Étape 1 sur 4</div>', 'aria-live="polite">Step 1 of 4</div>'),
@@ -91,7 +91,7 @@ TEXT = [
     ('<p id="tsParent">Préchauffer le four à 180 °C et tapisser le moule de papier cuisson.</p>', '<p id="tsParent">Preheat the oven to 180 °C and line the tin with baking paper.</p>'),
     ('</svg>Four, réservé à l’adulte</span>', '</svg>Oven, grown-ups only</span>'),
     ('<span class="done-title">Bravo Lou&nbsp;!</span>', '<span class="done-title">Well done, Lou!</span>'),
-    ('<span>Écouter Pépin</span>', '<span>Listen to Pépin</span>'),
+    ('<span>Écouter Popote</span>', '<span>Listen to Popote</span>'),
     ('<p>Le cookie est prêt. Validez les gestes réussis pour remplir le carnet&nbsp;:</p>', '<p>The cookie is ready. Tick the skills your child managed to fill in the book:</p>'),
     ('</span>Peser</button>', '</span>Weighing</button>'),
     ('</span>Mélanger</button>', '</span>Mixing</button>'),
@@ -148,7 +148,7 @@ TEXT = [
     ('<p class="amount"><b>0&nbsp;€</b></p>', '<p class="amount"><b>€0</b></p>'),
     ('<p class="plan-note">Pour découvrir l’appli à votre rythme.</p>', '<p class="plan-note">To discover the app at your own pace.</p>'),
     ('</svg>6 recettes en double consigne</li>', '</svg>6 recipes with two sets of instructions</li>'),
-    ('</svg>Le mode cuisine avec la voix de Pépin</li>', '</svg>Cooking mode with Pépin’s voice</li>'),
+    ('</svg>Le mode cuisine avec la voix de Popote</li>', '</svg>Cooking mode with Popote’s voice</li>'),
     ('</svg>Un profil enfant</li>', '</svg>One child profile</li>'),
     ('data-track="tarif-gratuit">Rejoindre la bêta', 'data-track="tarif-gratuit">Join the beta'),
     ('<span class="badge">Première semaine offerte</span>', '<span class="badge">First week free</span>'),
@@ -206,8 +206,8 @@ TEXT = [
     ('<nav aria-label="Pied de page">', '<nav aria-label="Footer">'),
     ('<a href="#story">L’appli</a><a href="#mode-cuisine">Démo</a><a href="#recettes">Recettes</a><a href="#tarifs">Tarifs</a><a href="#liste">Bêta</a><a href="/en/privacy.html">Confidentialité</a><a href="/en/legal-notice.html">Mentions légales</a>',
      '<a href="#story">The app</a><a href="#mode-cuisine">Demo</a><a href="#recettes">Recipes</a><a href="#tarifs">Pricing</a><a href="#liste">Beta</a><a href="/en/privacy.html">Privacy</a><a href="/en/legal-notice.html">Legal notice</a>'),
-    ('<p>© 2026 Popote Duo · L’appli pour cuisiner en duo, parent et enfant. Photos d’illustration&nbsp;: Unsplash. Voix de Pépin&nbsp;: synthèse Piper, voix «&nbsp;siwis&nbsp;» en français (CC&nbsp;BY&nbsp;4.0) et «&nbsp;LJ&nbsp;Speech&nbsp;» en anglais (domaine public).</p>',
-     '<p>© 2026 Popote Duo · The app for cooking together, parent and child. Stock photos: Unsplash. Pépin’s voice: Piper speech synthesis, “siwis” voice in French (CC&nbsp;BY&nbsp;4.0) and “LJ&nbsp;Speech” voice in English (public domain).</p>'),
+    ('<p>© 2026 Popote Duo · L’appli pour cuisiner en duo, parent et enfant. Photos d’illustration&nbsp;: Unsplash. Voix de Popote&nbsp;: synthèse Piper, voix «&nbsp;siwis&nbsp;» en français (CC&nbsp;BY&nbsp;4.0) et «&nbsp;LJ&nbsp;Speech&nbsp;» en anglais (domaine public).</p>',
+     '<p>© 2026 Popote Duo · The app for cooking together, parent and child. Stock photos: Unsplash. Popote’s voice: Piper speech synthesis, “siwis” voice in French (CC&nbsp;BY&nbsp;4.0) and “LJ&nbsp;Speech” voice in English (public domain).</p>'),
 ]
 
 
