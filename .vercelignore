@@ -1,0 +1,4 @@
+# Fichiers du dossier qui ne doivent pas être publiés sur le site
+outils
+*.md
+.DS_Store

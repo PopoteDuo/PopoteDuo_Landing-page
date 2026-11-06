@@ -1,0 +1,12 @@
+{
+  "name": "popote-duo-landing",
+  "private": true,
+  "type": "module",
+  "description": "Landing page de Popote Duo, avec la fonction d'inscription à la liste d'attente (api/inscription.js).",
+  "engines": {
+    "node": "22.x"
+  },
+  "dependencies": {
+    "nodemailer": "^10.3.1"
+  }
+}
