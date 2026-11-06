@@ -77,13 +77,9 @@ L'offre gratuite compte 50 000 événements par mois. Elle ne suit pas les actio
 
 ### Mettre à jour le site
 
-Depuis ce dossier, avec l'outil Vercel connecté au compte contact.popoteduo@gmail.com :
+Le projet Vercel est relié au dépôt GitHub PopoteDuo/PopoteDuo_Landing-page : chaque envoi (push) sur la branche `main` met le site à jour tout seul, à l'adresse https://popote-duo.vercel.app.
 
-```bash
-vercel deploy --prod
-```
-
-Avant, augmenter le numéro de version (`?v=…`) de `style.css` et `main.js` dans `index.html` (et de `style.css` dans les pages légales et la 404), sinon les visiteurs gardent l'ancienne version en cache : ces fichiers sont gardés un an.
+Avant d'envoyer, augmenter le numéro de version (`?v=…`) de `style.css` et `main.js` dans `index.html` (et de `style.css` dans les pages légales et la 404), sinon les visiteurs gardent l'ancienne version en cache : ces fichiers sont gardés un an.
 
 ### Le reste
 
