@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Les pages à référencer, en français et en anglais. À mettre à jour si le site change d'adresse. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://popote-duo.vercel.app/</loc>
+    <lastmod>2026-11-20</lastmod>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://popote-duo.vercel.app/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://popote-duo.vercel.app/en"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://popote-duo.vercel.app/"/>
+  </url>
+  <url>
+    <loc>https://popote-duo.vercel.app/en</loc>
+    <lastmod>2026-11-20</lastmod>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://popote-duo.vercel.app/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://popote-duo.vercel.app/en"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://popote-duo.vercel.app/"/>
+  </url>
+</urlset>

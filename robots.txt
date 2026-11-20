@@ -1,0 +1,5 @@
+# Popote Duo : tout le site peut être exploré. Les pages légales et la 404 portent leur propre « noindex ».
+User-agent: *
+Allow: /
+
+Sitemap: https://popote-duo.vercel.app/sitemap.xml
