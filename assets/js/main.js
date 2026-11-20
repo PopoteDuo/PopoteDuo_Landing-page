@@ -171,82 +171,59 @@ function initMascotte(){
     }catch(_){}
   }
   function drawSplash(state){
-    const started=performance.now(), source={x:state.sourceX,y:state.sourceY};
-    const spots=[
-      {x:.50,y:.46,delay:250,size:.42,seed:2},
-      {x:.16,y:.28,delay:310,size:.24,seed:7},
-      {x:.84,y:.23,delay:345,size:.26,seed:11},
-      {x:.25,y:.80,delay:365,size:.25,seed:17},
-      {x:.79,y:.78,delay:395,size:.28,seed:23}
+    const started=performance.now(),source={x:state.sourceX,y:state.sourceY};
+    // Original hand-drawn silhouettes, in normalized coordinates.
+    const paths=[
+      new Path2D('M-0.82,-0.18 C-1.08,-0.28 -1.42,-0.27 -1.54,-0.42 C-1.66,-0.6 -1.42,-0.69 -1.26,-0.62 C-1.06,-0.53 -1.02,-0.79 -0.94,-0.94 C-0.83,-1.15 -0.67,-1.08 -0.62,-0.86 C-0.58,-0.69 -0.43,-0.7 -0.36,-0.83 C-0.18,-1.15 -0.2,-1.54 0,-1.6 C0.19,-1.64 0.24,-1.44 0.19,-1.17 C0.15,-0.94 0.26,-0.8 0.44,-0.84 C0.65,-0.87 0.76,-1.16 0.93,-1.06 C1.09,-0.97 0.92,-0.72 0.89,-0.58 C0.83,-0.38 1.03,-0.38 1.27,-0.43 C1.63,-0.51 1.7,-0.26 1.46,-0.13 C1.27,-0.03 1.02,-0.08 0.94,0.11 C0.88,0.26 1.05,0.36 1.2,0.44 C1.39,0.54 1.31,0.75 1.1,0.71 C0.88,0.66 0.83,0.53 0.66,0.63 C0.51,0.72 0.56,0.93 0.61,1.16 C0.67,1.51 0.4,1.6 0.28,1.27 C0.19,1.03 0.22,0.81 0.02,0.79 C-0.15,0.77 -0.2,0.99 -0.28,1.21 C-0.38,1.48 -0.62,1.45 -0.62,1.19 C-0.62,0.97 -0.52,0.75 -0.68,0.64 C-0.83,0.52 -0.98,0.74 -1.16,0.73 C-1.34,0.71 -1.38,0.53 -1.22,0.4 C-1.04,0.25 -0.83,0.24 -0.82,0.05 C-0.81,-0.05 -0.73,-0.1 -0.82,-0.18 Z'),
+      new Path2D('M-0.9,-0.12 C-1.05,-0.36 -1.54,-0.37 -1.46,-0.61 C-1.39,-0.82 -1.06,-0.61 -0.84,-0.71 C-0.66,-0.8 -0.81,-1.2 -0.57,-1.25 C-0.34,-1.28 -0.38,-0.87 -0.2,-0.83 C0,-0.78 0.03,-1.35 0.24,-1.3 C0.42,-1.25 0.28,-0.91 0.48,-0.8 C0.66,-0.7 0.87,-1.02 1.03,-0.87 C1.17,-0.72 0.9,-0.5 0.97,-0.31 C1.05,-0.13 1.48,-0.24 1.54,-0.03 C1.58,0.17 1.13,0.16 1.05,0.34 C0.97,0.51 1.21,0.73 1.04,0.86 C0.85,1 0.69,0.7 0.5,0.76 C0.29,0.82 0.42,1.36 0.17,1.37 C-0.04,1.37 0.01,0.93 -0.19,0.88 C-0.42,0.83 -0.42,1.22 -0.62,1.17 C-0.82,1.12 -0.7,0.83 -0.82,0.66 C-0.95,0.5 -1.29,0.69 -1.36,0.5 C-1.43,0.31 -1.07,0.19 -0.94,0.09 Z')
     ];
-    // Smooth, irregular radial contours stay stable across frames.
-    function outline(ctx,seed){
-      const n=48,points=[];
-      for(let i=0;i<n;i++){
-        const a=i*Math.PI*2/n;
-        const spike=Math.pow(Math.max(0,Math.sin(a*5+seed)),8)*.44+
-                    Math.pow(Math.max(0,Math.sin(a*9-seed*.7)),10)*.25;
-        const radius=1+.12*Math.sin(a*3+seed)+.09*Math.sin(a*7-seed)+spike;
-        points.push({x:Math.cos(a)*radius,y:Math.sin(a)*radius});
-      }
-      ctx.beginPath();
-      for(let i=0;i<n;i++){
-        const p=points[i],next=points[(i+1)%n];
-        if(!i){const prev=points[n-1];ctx.moveTo((prev.x+p.x)/2,(prev.y+p.y)/2)}
-        ctx.quadraticCurveTo(p.x,p.y,(p.x+next.x)/2,(p.y+next.y)/2);
-      }
-      ctx.closePath();
-    }
+    const spots=[
+      {x:.49,y:.46,delay:330,size:.31,shape:0,rotation:-.2},
+      {x:.14,y:.27,delay:385,size:.20,shape:1,rotation:.7},
+      {x:.85,y:.23,delay:410,size:.19,shape:0,rotation:1.1},
+      {x:.26,y:.83,delay:435,size:.20,shape:1,rotation:-.5},
+      {x:.82,y:.79,delay:460,size:.22,shape:0,rotation:.3}
+    ];
     const svg=el.querySelector('.m-svg');
     if(svg&&svg.animate)state.reaction=svg.animate(
-      [{transform:'scale(1)'},{transform:'scale(1.12,.82)'},{transform:'translateY(-5%) scale(.94,1.08)'},{transform:'none'}],
-      {duration:300,easing:'ease-out'}
+      [{transform:'scale(1)'},{transform:'scale(1.12,.82)'},{transform:'translateY(-5%) scale(.95,1.06)'},{transform:'none'}],
+      {duration:260,easing:'ease-out'}
     );
     function frame(now){
       if(veil!==state)return;
-      const ctx=state.ctx,w=innerWidth,h=innerHeight,t=Math.min(now-started,1050);
+      const ctx=state.ctx,w=innerWidth,h=innerHeight,t=Math.min(now-started,950);
       ctx.clearRect(0,0,w,h);
-      // A narrow stream leaves the lower part of the mascot before reaching the glass.
-      if(t<340){
-        const p=clamp((t-35)/230,0,1), ex=source.x+(w*.5-source.x)*p,ey=source.y+(h*.46-source.y)*p;
-        ctx.save();ctx.strokeStyle='#fff';ctx.lineCap='round';
-        ctx.shadowColor='rgba(120,92,75,.24)';ctx.shadowBlur=5;
-        ctx.lineWidth=5+21*p;ctx.beginPath();ctx.moveTo(source.x,source.y);
-        ctx.quadraticCurveTo(source.x-18*p,source.y+65*p,ex,ey);ctx.stroke();
-        ctx.restore();
+      if(t<390){
+        const p=clamp((t-50)/300,0,1),ease=p*p;
+        const tx=source.x+(w*.5-source.x)*ease,ty=source.y+(h*.46-source.y)*ease;
+        ctx.save();ctx.strokeStyle='#fffdf6';ctx.lineCap='round';
+        ctx.shadowColor='rgba(100,70,45,.22)';ctx.shadowBlur=8;
+        ctx.lineWidth=5+ease*45;ctx.beginPath();ctx.moveTo(source.x,source.y);
+        ctx.bezierCurveTo(source.x-30*p,source.y+70*p,tx+60*p,ty+55*p,tx,ty);ctx.stroke();
+        ctx.translate(tx,ty);ctx.rotate(-.4);ctx.scale(8+ease*72,11+ease*55);
+        ctx.fillStyle='#fffdf6';ctx.fill(paths[1]);ctx.restore();
       }
-      const extent=Math.hypot(w,h)*1.8;
-      for(const spot of spots){
-        const p=clamp((t-spot.delay)/650,0,1);
-        if(!p)continue;
-        const impact=1-Math.pow(1-clamp(p/.22,0,1),3);
-        const spread=Math.pow(clamp((p-.16)/.84,0,1),2.8);
-        const bounce=1+.12*Math.sin(Math.min(1,p/.35)*Math.PI);
-        const size=extent*(spot.size*impact*bounce+spread);
-        ctx.save();ctx.translate(w*spot.x,h*spot.y);
-        ctx.scale(size*(1+.13*(1-impact)),size*(1-.1*(1-impact)));
-        outline(ctx,spot.seed);
-        ctx.fillStyle='#fff';
-        if(p<.58){ctx.shadowColor='rgba(111,83,65,.28)';ctx.shadowBlur=12/size;ctx.shadowOffsetY=3/size}
-        ctx.fill();
-        ctx.shadowColor='transparent';
-        if(p<.48){
-          ctx.strokeStyle='rgba(255,247,230,.58)';ctx.lineWidth=.025;
-          ctx.beginPath();ctx.arc(-.16,-.22,.52,3.65,4.9);ctx.stroke();
-          ctx.strokeStyle='rgba(188,165,145,.20)';ctx.lineWidth=.014;
-          ctx.beginPath();ctx.arc(.06,.08,.68,.25,1.25);ctx.stroke();
+      const extent=Math.hypot(w,h);
+      spots.forEach(spot=>{
+        const p=clamp((t-spot.delay)/Math.max(1,950-spot.delay),0,1);
+        if(!p)return;
+        const impact=1-Math.pow(1-clamp(p/.25,0,1),3);
+        const spread=Math.pow(clamp((p-.18)/.82,0,1),2.5);
+        const size=extent*(spot.size*impact*(1+.10*Math.sin(Math.min(p/.42,1)*Math.PI))+spread*1.7);
+        ctx.save();ctx.translate(w*spot.x,h*spot.y);ctx.rotate(spot.rotation);
+        ctx.scale(size*(1+.16*(1-impact)),size*(1-.12*(1-impact)));
+        ctx.fillStyle='#fffdf6';
+        if(p<.65){ctx.shadowColor='rgba(125,99,77,.24)';ctx.shadowBlur=14/size;ctx.shadowOffsetY=3/size}
+        ctx.fill(paths[spot.shape]);ctx.shadowColor='transparent';
+        if(p<.5){
+          ctx.strokeStyle='rgba(255,255,255,.8)';ctx.lineWidth=.035;ctx.lineCap='round';
+          ctx.beginPath();ctx.bezierCurveTo(-.55,-.22,-.42,-.62,.08,-.69,.36,-.5);ctx.stroke();
+          ctx.strokeStyle='rgba(210,195,176,.22)';ctx.lineWidth=.025;
+          ctx.beginPath();ctx.bezierCurveTo(-.45,.28,-.18,.57,.34,.58,.57,.25);ctx.stroke();
         }
         ctx.restore();
-        if(p<.6){
-          for(let i=0;i<8;i++){
-            const angle=i*Math.PI/4+spot.seed,dist=size*(1.35+i%3*.13);
-            ctx.beginPath();ctx.fillStyle='#fff';
-            ctx.arc(w*spot.x+Math.cos(angle)*dist,h*spot.y+Math.sin(angle)*dist,
-              Math.max(2,size*(.025+i%3*.012)),0,Math.PI*2);ctx.fill();
-          }
-        }
-      }
-      if(t<1050)state.splashRaf=requestAnimationFrame(frame);
+      });
+      if(t<950)state.splashRaf=requestAnimationFrame(frame);
       else{state.ready=true;layerReady(state)}
     }
     state.splashRaf=requestAnimationFrame(frame);
