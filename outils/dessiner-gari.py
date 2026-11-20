@@ -1,16 +1,16 @@
-"""Dessine la Popote animée du haut de page, en SVG, dans index.html.
+"""Dessine la Gari animée du haut de page, en SVG, dans index.html.
 
 Le dessin est celui de la mascotte « version pop » de l'appli (planche « Gari, icônes et profils »
 de la DA de l'appli) : pas de contour, aplats francs et une seule ombre, yeux ronds noirs avec un reflet.
 Ses huit attitudes fixes (coucou, hourra, chef, réfléchit, oups, bien joué, dodo, miam) sont des copies
-de cette planche, dans assets/img/popote/.
+de cette planche, dans assets/img/gari/.
 
 Ici, chaque partie mobile reçoit une classe (m-corps, m-bras-d, m-yeux…) que main.js anime :
-respiration, salut, clignement, regard, saut, pirouette, étirement quand on la tire.
-Le script dessine aussi l'icône du site (assets/img/favicon.svg) : la tête de Popote sur le soleil jaune.
+salut, clignement, regard, saut, fou rire, étirement quand on la tire (la respiration est en CSS).
+Le script dessine aussi l'icône du site (assets/img/favicon.svg) : la tête de Gari sur le soleil jaune.
 
 Lancement, depuis le dossier du site (Python 3, rien à installer) :
-    python3 outils/dessiner-popote.py
+    python3 outils/dessiner-gari.py
 puis, pour reporter le dessin sur la page anglaise :
     python3 outils/version-anglaise.py
 """
@@ -20,7 +20,7 @@ import re
 FRAISE, OMBRE, JOUE, LANGUE, OEIL, GRAINE = '#FF2E54', '#D6123A', '#FF8FB0', '#FF7A93', '#25132B', '#FFC414'
 FEUILLE, FEUILLE_OMBRE = '#2BC85A', '#139A3E'
 
-# Repère : les pieds sont en (0, 0), Popote mesure 150 unités de haut, tige comprise.
+# Repère : les pieds sont en (0, 0), Gari mesure 150 unités de haut, tige comprise.
 CORPS = 'M0 -6C-38 -6 -62 -40 -62 -76C-62 -110 -34 -124 0 -122C34 -124 62 -110 62 -76C62 -40 38 -6 0 -6Z'
 OMBRE_CORPS = ('M30.8 -118.8C52.8 -110.8 62 -96 62 -76C62 -40 38 -6 0 -6C-16 -6 -27.2 -11.4 -37.2 -19.4'
                'C4.8 -17.4 40 -44 40 -86C40 -100 36.8 -110.8 30.8 -118.8Z')
@@ -66,7 +66,7 @@ def acteur():
 
 
 def icone(arrondi=True):
-    """La tête de Popote (corps, couronne, visage, sans bras ni pieds) sur le soleil jaune, dans un carré de 64."""
+    """La tête de Gari (corps, couronne, visage, sans bras ni pieds) sur le soleil jaune, dans un carré de 64."""
     graines = ''.join(f'<ellipse cx="{x}" cy="{y}" rx="3" ry="4.4" transform="rotate({a} {x} {y})"/>' for x, y, a in GRAINES if y < -20)
     yeux = ''.join(f'<ellipse cx="{x}" cy="-78" rx="10.5" ry="13" fill="{OEIL}"/><circle cx="{x + 3}" cy="-82" r="4" fill="#fff"/>' for x in (-24, 24))
     couronne = (f'<g transform="translate(0 -116) scale(1.22) translate(0 112)">'
@@ -86,9 +86,9 @@ def main():
     page = pathlib.Path(__file__).resolve().parent.parent / 'index.html'
     html, n = re.subn(r'<svg class="m-svg".*?</svg>', lambda m: acteur(), page.read_text(), count=1, flags=re.S)
     if not n:
-        raise SystemExit('Dessin de Popote (svg class="m-svg") introuvable dans index.html.')
+        raise SystemExit('Dessin de Gari (svg class="m-svg") introuvable dans index.html.')
     page.write_text(html)
-    print('Icône et Popote animée écrites. Relancez outils/version-anglaise.py pour la page anglaise.')
+    print('Icône et Gari animée écrites. Relancez outils/version-anglaise.py pour la page anglaise.')
 
 
 if __name__ == '__main__':

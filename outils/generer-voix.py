@@ -1,4 +1,4 @@
-"""Génère les consignes parlées de Popote (démo du mode cuisine) en MP3.
+"""Génère les consignes parlées de Gari (démo du mode cuisine) en MP3.
 
 Voix : « siwis » de Piper (synthèse vocale neuronale, locale), licence CC-BY 4.0.
 Version anglaise : voix « ljspeech » de Piper, domaine public, rangée dans assets/audio/en.
@@ -23,7 +23,7 @@ from pathlib import Path
 import piper
 from piper import PiperVoice, SynthesisConfig
 
-# Ce que Popote dit à voix haute. Les nombres sont écrits en lettres pour être bien prononcés.
+# Ce que Gari dit à voix haute. Les nombres sont écrits en lettres pour être bien prononcés.
 # Recette de la démo : le cookie géant (fiche de l'équipe dans Notion).
 CLIPS = {
     "etape-1": "À toi de jouer ! Aide à peser les ingrédients : cent quatre-vingts grammes de sucre roux, puis cent quatre-vingts grammes de farine.",

@@ -157,6 +157,7 @@ h3{font-size:22px;line-height:1.2}
 .hero .lead{color:var(--herbe);opacity:.86}
 .hero-note{margin:0;font-size:14.5px;font-weight:700;opacity:.8}
 .hero-note.ok{opacity:1;font-weight:800}
+.hero-note:empty{display:none}
 /* L'inscription rapide, dans le haut de page comme chez Seego : l'e-mail est repris dans le formulaire complet */
 .quick{display:flex;flex-direction:column;gap:8px;width:100%;max-width:520px;margin-top:4px}
 .quick .input{height:58px;border-radius:999px;padding:0 24px;border:0;box-shadow:var(--ombre-carte)}
@@ -169,21 +170,21 @@ h3{font-size:22px;line-height:1.2}
 .hud-br svg{transform:rotate(90deg)}
 .hud-br:hover{color:var(--herbe)}
 
-/* Le soleil : des rayons qui tournent lentement (animation CSS, jouée par la carte graphique), un halo, et Popote */
+/* Le soleil : des rayons fixes, un halo, et Gari qui respire (animation CSS, jouée par la carte graphique) */
 .soleil{position:relative;width:min(92vw,46svh,560px);aspect-ratio:1;display:grid;place-items:center;cursor:grab;touch-action:pan-y;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;perspective:900px}
 .soleil.grab{cursor:grabbing}
-.rayons{position:absolute;inset:-60%;width:220%;max-width:none;height:220%;opacity:.55;pointer-events:none;animation:tourne 90s linear infinite}
+.rayons{position:absolute;inset:-60%;width:220%;max-width:none;height:220%;opacity:.55;pointer-events:none}
 .halo{position:absolute;inset:17%;border-radius:50%;background:radial-gradient(circle,var(--halo) 0 52%,rgba(255,217,122,0) 72%);pointer-events:none}
-@keyframes tourne{to{transform:rotate(360deg)}}
-.hero.pause .rayons{animation-play-state:paused}
 .mascotte{position:relative;z-index:2;width:78%;aspect-ratio:220/196;transform-style:preserve-3d;will-change:transform;pointer-events:none}
-.m-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
-/* La bulle de Popote quand on la touche */
+.m-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;transform-origin:50% 92%;animation:respire 3.2s ease-in-out infinite}
+@keyframes respire{0%,100%{transform:none}50%{transform:translateY(-1.2%) scale(.992,1.014)}}
+.hero.pause .m-svg{animation-play-state:paused}
+/* La bulle de Gari quand on la touche */
 .m-bulle{position:absolute;left:50%;bottom:96%;padding:10px 16px;border-radius:18px;background:var(--blanc);color:var(--herbe);font-family:var(--titre);font-size:17px;font-weight:600;line-height:1.2;white-space:nowrap;box-shadow:var(--ombre-flottante);opacity:0;transform-origin:50% 100%;transform:translateX(-50%) scale(.6);transition:opacity .15s,transform .32s var(--rebond)}
 .m-bulle::after{content:"";position:absolute;left:50%;top:100%;margin-left:-8px;border:8px solid transparent;border-top-color:var(--blanc);border-bottom:0}
 .m-bulle.on{opacity:1;transform:translateX(-50%) scale(1)}
 
-/* Sur mobile, Popote d'abord, comme sur l'écran d'accueil de l'appli, puis le titre et l'inscription */
+/* Sur mobile, Gari d'abord, comme sur l'écran d'accueil de l'appli, puis le titre et l'inscription */
 @media (max-width:899px){.hero-scene{order:-1;min-height:0;margin-bottom:6px}.soleil{width:min(80vw,38svh,420px)}}
 
 @media (min-width:900px){
@@ -332,12 +333,12 @@ h3{font-size:22px;line-height:1.2}
 .feat li{display:flex;gap:10px;align-items:flex-start}
 .feat svg{width:24px;height:24px;flex:none;padding:5px;border-radius:50%;background:var(--lime-100)}
 .plan .btn{margin-top:auto}
-.plan.featured{background:var(--herbe);color:#fff;box-shadow:var(--ombre-modale)}
+.plan.featured{background:var(--herbe);color:#fff;box-shadow:var(--ombre-flottante)}
 .plan.featured .amount span,.plan.featured .plan-note{color:rgba(255,255,255,.72)}
 .plan.featured .plan-note b{color:#fff}
 .plan.featured .feat svg{background:var(--lime);color:var(--herbe)}
 .plan-fine{margin:0;font-size:14px;color:rgba(255,255,255,.7)}
-.addon{display:grid;gap:18px;align-items:center;margin-top:16px;padding:24px 28px;border-radius:var(--r-xl);background:var(--blanc);box-shadow:var(--ombre-carte)}
+.addon{position:relative;z-index:1;display:grid;gap:18px;align-items:center;margin-top:24px;padding:24px 28px;border-radius:var(--r-xl);background:var(--blanc);box-shadow:var(--ombre-carte)}
 .addon-ico{width:64px;height:64px;border-radius:20px}
 .addon-ico svg{width:42px;height:42px}
 .addon h3{font-size:24px;margin:2px 0 6px}
@@ -347,6 +348,8 @@ h3{font-size:22px;line-height:1.2}
 .addon-price{margin:0;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
 .addon-price b{font-family:var(--titre);font-size:34px;font-weight:600}
 .addon-price small{font-size:14px;font-weight:700;color:var(--texte-2)}
+.addon .badge{display:inline-block;margin:0;align-self:flex-start}
+@media (min-width:900px){.addon .badge{align-self:flex-end}}
 .soon{display:flex;align-items:center;gap:8px;margin:0;font-size:14.5px;font-weight:800}
 .soon i{width:8px;height:8px;border-radius:50%;background:var(--jaune)}
 @media (min-width:900px){.addon{grid-template-columns:auto minmax(0,1fr) auto;gap:28px}.addon-side{align-items:flex-end;text-align:right}}
@@ -371,7 +374,7 @@ h3{font-size:22px;line-height:1.2}
 .ticket{position:relative;display:grid;border-radius:var(--r-xl);background:var(--herbe);color:#fff;box-shadow:var(--ombre-modale)}
 .ticket-info{position:relative;display:flex;flex-direction:column;gap:18px;padding:28px 24px 34px}
 .ticket-top{display:flex;justify-content:space-between;gap:12px;margin:0;font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--lime)}
-.ticket-route{display:grid;grid-template-columns:auto minmax(40px,1fr) auto;align-items:center;gap:14px}
+.ticket-route{display:grid;grid-template-columns:auto minmax(40px,1fr) auto;align-items:center;gap:14px;padding-bottom:20px;border-bottom:1px solid rgba(255,255,255,.14)}
 .ticket-route p{margin:0;display:flex;flex-direction:column;gap:2px}
 .ticket-route b{font-family:var(--titre);font-size:clamp(26px,4vw,38px);font-weight:600;line-height:1}
 .ticket-route small{font-size:12.5px;font-weight:700;color:rgba(255,255,255,.66)}
@@ -380,11 +383,6 @@ h3{font-size:22px;line-height:1.2}
 .route-line::before{content:"";position:absolute;left:0;right:0;top:50%;border-top:2px dashed rgba(215,240,138,.55)}
 .route-line .tuile{position:relative;width:46px;height:46px;border-radius:50%}
 .route-line .tuile svg{width:30px;height:30px}
-.ticket-facts{display:grid;grid-template-columns:1fr 1fr;gap:14px 18px;margin:0;padding:18px 0;border-block:1px solid rgba(255,255,255,.14)}
-.ticket-facts div{display:flex;flex-direction:column;gap:2px}
-.ticket-facts dt{font-size:11.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.6)}
-.ticket-facts dd{margin:0;font-family:var(--titre);font-size:19px;font-weight:600}
-@media (min-width:600px){.ticket-facts{grid-template-columns:repeat(4,1fr)}}
 .ticket .lead{color:rgba(255,255,255,.8)}
 .perks{display:grid;gap:10px;margin:0;padding:0;list-style:none}
 .perks li{display:flex;align-items:center;gap:12px;font-weight:700}
@@ -464,7 +462,7 @@ h3{font-size:22px;line-height:1.2}
 /* Accessibilité : sans animation si le système le demande */
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.12s!important}
-  .rayons,.form-card .peek{animation:none!important}
+  .m-svg,.form-card .peek{animation:none!important}
 }
 
 /* ---------- Pages légales ---------- */
