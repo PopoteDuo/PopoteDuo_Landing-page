@@ -2,4 +2,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://popote-duo.vercel.app/sitemap.xml
+Sitemap: https://popoteduo.app/sitemap.xml
