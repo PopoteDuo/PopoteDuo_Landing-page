@@ -72,6 +72,146 @@ function initMascotte(){
     bouche:q('.m-bouche'),boucheJoie:q('.m-bouche-joie'),boucheO:q('.m-bouche-o'),couronne:q('.m-couronne'),bulle:q('.m-bulle')};
   if(!P.corps) return;
 
+
+  let veil=null, fruitCount=0, fruitTimer=0;
+
+  function fruitHit(e){
+    const r=el.getBoundingClientRect();
+    return e.clientX>=r.left&&e.clientX<=r.right&&e.clientY>=r.top&&e.clientY<=r.bottom;
+  }
+  function resetFruitCount(){
+    fruitCount=0;
+    clearTimeout(fruitTimer);
+    fruitTimer=0;
+  }
+  function closeVeil(state){
+    if(!veil||veil!==state)return;
+    veil=null;
+    window.removeEventListener('resize',state.resize);
+    state.layer.classList.add('closing');
+    setTimeout(()=>state.layer.remove(),260);
+  }
+  function erase(e,state){
+    if(!state.ready||!state.ctx)return;
+    const x=e.clientX,y=e.clientY;
+    state.ctx.save();
+    state.ctx.globalCompositeOperation='destination-out';
+    state.ctx.beginPath();
+    state.ctx.arc(x,y,state.radius,0,Math.PI*2);
+    state.ctx.fill();
+    state.ctx.restore();
+
+    const x0=Math.max(0,Math.floor((x-state.radius)/innerWidth*state.cols));
+    const x1=Math.min(state.cols-1,Math.ceil((x+state.radius)/innerWidth*state.cols));
+    const y0=Math.max(0,Math.floor((y-state.radius)/innerHeight*state.rows));
+    const y1=Math.min(state.rows-1,Math.ceil((y+state.radius)/innerHeight*state.rows));
+    for(let gy=y0;gy<=y1;gy++)for(let gx=x0;gx<=x1;gx++){
+      const i=gy*state.cols+gx;
+      if(!state.grid[i]){state.grid[i]=1;state.cleared++}
+    }
+    if(state.cleared>=state.grid.length*.92)closeVeil(state);
+  }
+  function openVeil(){
+    if(veil)return;
+    const r=el.getBoundingClientRect();
+    const x=Math.max(0,Math.min(innerWidth,r.left+r.width/2));
+    const y=Math.max(0,Math.min(innerHeight,r.top+r.height*.44));
+    const layer=document.createElement('div');
+    layer.className='screen-veil';
+    layer.setAttribute('aria-hidden','true');
+    layer.style.setProperty('--veil-x',x+'px');
+    layer.style.setProperty('--veil-y',y+'px');
+
+    const canvas=document.createElement('canvas');
+    canvas.className='veil-canvas';
+    const burst=document.createElement('div');
+    burst.className='veil-burst';
+    const drops=Array.from({length:14},(_,i)=>{
+      const a=(i/14)*Math.PI*2;
+      const d=70+(i%4)*34;
+      const s=18+(i%5)*8;
+      return '<i style="--tx:'+Math.round(Math.cos(a)*d)+'px;--ty:'+Math.round(Math.sin(a)*d)+'px;--size:'+s+'px;--delay:'+(i%4)*.025+'s"></i>';
+    }).join('');
+    burst.innerHTML='<span></span>'+drops;
+    const brush=document.createElement('div');
+    brush.className='veil-brush';
+    layer.append(canvas,burst,brush);
+    document.body.appendChild(layer);
+
+    const state={
+      layer,canvas,brush,ctx:null,ready:false,drawing:false,radius:0,
+      cols:18,rows:12,grid:new Uint8Array(18*12),cleared:0,resize:null
+    };
+    function resize(){
+      const dpr=Math.min(window.devicePixelRatio||1,2);
+      canvas.width=Math.max(1,Math.round(innerWidth*dpr));
+      canvas.height=Math.max(1,Math.round(innerHeight*dpr));
+      state.ctx=canvas.getContext('2d');
+      state.ctx.setTransform(dpr,0,0,dpr,0,0);
+      state.ctx.clearRect(0,0,innerWidth,innerHeight);
+      state.grid.fill(0);
+      state.cleared=0;
+      if(state.ready){
+        state.ctx.fillStyle='#fff';
+        state.ctx.fillRect(0,0,innerWidth,innerHeight);
+      }
+    }
+    state.resize=resize;
+    resize();
+    const brushSize=Math.max(84,Math.min(156,Math.max(innerWidth,innerHeight)*.12));
+    state.radius=brushSize/2;
+    brush.style.width=brushSize+'px';
+    brush.style.height=brushSize+'px';
+    layer.addEventListener('pointermove',e=>{
+      brush.style.left=e.clientX+'px';
+      brush.style.top=e.clientY+'px';
+      brush.classList.add('show');
+      if(state.drawing)erase(e,state);
+    },{passive:false});
+    layer.addEventListener('pointerleave',()=>brush.classList.remove('show'));
+    layer.addEventListener('pointerdown',e=>{
+      if(!state.ready)return;
+      e.preventDefault();
+      state.drawing=true;
+      try{layer.setPointerCapture(e.pointerId)}catch(_){}
+      brush.style.left=e.clientX+'px';
+      brush.style.top=e.clientY+'px';
+      brush.classList.add('show');
+      erase(e,state);
+    });
+    const stop=e=>{
+      state.drawing=false;
+      try{layer.releasePointerCapture(e.pointerId)}catch(_){}
+    };
+    layer.addEventListener('pointerup',stop);
+    layer.addEventListener('pointercancel',stop);
+    layer.addEventListener('wheel',e=>e.preventDefault(),{passive:false});
+    layer.addEventListener('contextmenu',e=>e.preventDefault());
+    window.addEventListener('resize',state.resize);
+    veil=state;
+    requestAnimationFrame(()=>layer.classList.add('active'));
+    setTimeout(()=>{
+      if(!veil||veil!==state)return;
+      state.ctx.fillStyle='#fff';
+      state.ctx.fillRect(0,0,innerWidth,innerHeight);
+      state.ready=true;
+      layer.classList.add('ready');
+      burst.remove();
+    },760);
+  }
+  function addFruitClick(){
+    fruitCount++;
+    clearTimeout(fruitTimer);
+    fruitTimer=setTimeout(resetFruitCount,1700);
+    if(fruitCount<10)return false;
+    resetFruitCount();
+    openVeil();
+    return true;
+  }
+  document.addEventListener('click',e=>{
+    if(!veil&&!fruitHit(e))resetFruitCount();
+  },true);
+
   // Le pointeur, en pixels dans la fenêtre. Sur écran tactile, il ne bouge qu'au toucher : Gari regarde alors seule autour d'elle.
   const ptr={x:0,y:0,at:-1e9,touch:true};
   addEventListener('pointermove',e=>{ptr.x=e.clientX;ptr.y=e.clientY;ptr.at=performance.now();ptr.touch=e.pointerType==='touch';if(!ptr.touch&&visible)wake()},{passive:true});
@@ -102,7 +242,13 @@ function initMascotte(){
     sun.classList.remove('grab');pull.tx=pull.ty=0;drag=null;
   };
   sun.addEventListener('pointerup',end);sun.addEventListener('pointercancel',end);
-  sun.addEventListener('click',()=>{if(!noClick)react()});
+  sun.addEventListener('click',e=>{
+    if(noClick)return;
+    if(fruitHit(e)){
+      if(addFruitClick()){react('boing');return}
+    }else resetFruitCount();
+    react();
+  });
 
   // Toucher Gari : un saut de joie ou un fou rire, en alternance, avec une bulle.
   let jump=0, giggle=0, boing=0, nReact=0, said=false, bulleT=0;

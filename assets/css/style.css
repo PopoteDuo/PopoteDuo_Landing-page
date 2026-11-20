@@ -511,3 +511,19 @@ mark.todo{background:var(--jaune);color:var(--herbe);padding:1px 6px;border-radi
 .lost .h1{font-size:clamp(32px,6vw,52px);max-width:14em}
 .lost .lead{color:var(--herbe);opacity:.86;max-width:30em}
 .lost .tag{margin-bottom:4px}
+
+
+.screen-veil{position:fixed;inset:0;z-index:120;overflow:hidden;background:transparent;touch-action:none;cursor:crosshair}
+.screen-veil::before{content:"";position:absolute;z-index:1;left:var(--veil-x);top:var(--veil-y);width:max(220vw,220vh);aspect-ratio:1;border-radius:50%;background:#fff;transform:translate(-50%,-50%) scale(0);pointer-events:none}
+.screen-veil.active::before{animation:veil-cover .76s cubic-bezier(.2,.72,.28,1) forwards}
+.screen-veil.ready::before{display:none}
+.screen-veil.closing{opacity:0;transition:opacity .26s ease}
+.veil-canvas{position:absolute;z-index:3;inset:0;width:100%;height:100%;pointer-events:none}
+.veil-burst{position:absolute;z-index:4;left:var(--veil-x);top:var(--veil-y);width:0;height:0;pointer-events:none}
+.veil-burst span{position:absolute;left:0;top:0;width:76px;height:54px;border-radius:58% 42% 52% 48%;background:#fff;transform:translate(-50%,-32%) scale(.1) rotate(-12deg);animation:veil-cream .7s cubic-bezier(.2,.9,.35,1) forwards}
+.veil-burst i{position:absolute;left:0;top:0;width:var(--size);height:var(--size);border-radius:56% 44% 58% 42%;background:#fff;opacity:0;transform:translate(-50%,-50%) scale(.15);animation:veil-drop .72s var(--delay) cubic-bezier(.2,.7,.3,1) forwards}
+.veil-brush{position:absolute;z-index:5;left:0;top:0;width:96px;height:96px;border:3px solid rgba(23,63,46,.5);border-radius:50%;background:rgba(255,255,255,.08);box-shadow:0 0 0 3px rgba(255,255,255,.7),0 3px 12px rgba(23,63,46,.18);pointer-events:none;opacity:0;transform:translate(-50%,-50%);transition:opacity .12s}
+.veil-brush.show{opacity:1}
+@keyframes veil-cover{0%{transform:translate(-50%,-50%) scale(0)}100%{transform:translate(-50%,-50%) scale(1)}}
+@keyframes veil-cream{0%{opacity:0;transform:translate(-50%,-32%) scale(.1) rotate(-12deg)}28%{opacity:1}100%{opacity:1;transform:translate(-50%,-32%) scale(1.55) rotate(8deg)}}
+@keyframes veil-drop{0%{opacity:0;transform:translate(-50%,-50%) scale(.15)}18%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--tx)),calc(-50% + var(--ty))) scale(1)}}
