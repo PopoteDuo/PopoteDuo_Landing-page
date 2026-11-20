@@ -171,93 +171,84 @@ function initMascotte(){
     }catch(_){}
   }
   function drawSplash(state){
-    const ctx=state.ctx,x=state.sourceX,y=state.sourceY;
-    const started=performance.now();
-    const reach=Math.hypot(innerWidth,innerHeight)*.72;
-    const arms=Array.from({length:13},(_,i)=>{
-      const a=i/13*Math.PI*2+(Math.random()-.5)*.18;
-      return {a,d:reach*(.55+Math.random()*.5),w:18+Math.random()*28,b:(Math.random()-.5)*120};
-    });
-    const drops=Array.from({length:28},(_,i)=>{
-      const a=i/28*Math.PI*2+(Math.random()-.5)*.32;
-      return {a,d:reach*(.35+Math.random()*.85),s:10+Math.random()*24,delay:.04+(i%7)*.018};
-    });
-    const frame=now=>{
-      if(!veil||veil!==state)return;
-      const p=Math.min(1,(now-started)/940);
-      const q=clamp((p-.06)/.82,0,1);
-      const ease=1-Math.pow(1-q,3);
-      ctx.clearRect(0,0,innerWidth,innerHeight);
-      ctx.fillStyle='#fff';
-      ctx.strokeStyle='#fff';
-      ctx.lineCap='round';
-      ctx.lineJoin='round';
-
-      const stream=clamp(p/.58,0,1);
-      if(stream>0){
-        ctx.save();
-        ctx.beginPath();
-        ctx.moveTo(x,y);
-        ctx.quadraticCurveTo(x-34*stream,y+92*stream,x+22*stream,y+218*stream);
-        ctx.lineWidth=24+stream*38;
-        ctx.stroke();
-        ctx.restore();
-        ctx.beginPath();
-        ctx.ellipse(x+22*stream,y+218*stream,30+stream*32,18+stream*28,.35,0,Math.PI*2);
-        ctx.fill();
+    const started=performance.now(), source={x:state.sourceX,y:state.sourceY};
+    const spots=[
+      {x:.50,y:.46,delay:250,size:.42,seed:2},
+      {x:.16,y:.28,delay:310,size:.24,seed:7},
+      {x:.84,y:.23,delay:345,size:.26,seed:11},
+      {x:.25,y:.80,delay:365,size:.25,seed:17},
+      {x:.79,y:.78,delay:395,size:.28,seed:23}
+    ];
+    // Smooth, irregular radial contours stay stable across frames.
+    function outline(ctx,seed){
+      const n=48,points=[];
+      for(let i=0;i<n;i++){
+        const a=i*Math.PI*2/n;
+        const spike=Math.pow(Math.max(0,Math.sin(a*5+seed)),8)*.44+
+                    Math.pow(Math.max(0,Math.sin(a*9-seed*.7)),10)*.25;
+        const radius=1+.12*Math.sin(a*3+seed)+.09*Math.sin(a*7-seed)+spike;
+        points.push({x:Math.cos(a)*radius,y:Math.sin(a)*radius});
       }
-
-      const core=clamp(p/.34,0,1);
       ctx.beginPath();
-      ctx.arc(x,y,10+core*82,0,Math.PI*2);
-      ctx.fill();
-
-      arms.forEach(arm=>{
-        const endX=x+Math.cos(arm.a)*arm.d*ease;
-        const endY=y+Math.sin(arm.a)*arm.d*ease;
-        const midX=x+Math.cos(arm.a)*arm.d*ease*.45+Math.sin(arm.a)*arm.b;
-        const midY=y+Math.sin(arm.a)*arm.d*ease*.45-Math.cos(arm.a)*arm.b;
-        ctx.beginPath();
-        ctx.moveTo(x,y);
-        ctx.quadraticCurveTo(midX,midY,endX,endY);
-        ctx.lineWidth=arm.w*(.28+ease*.92);
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.arc(endX,endY,arm.w*(.5+ease*.65),0,Math.PI*2);
-        ctx.fill();
-      });
-
-      drops.forEach(drop=>{
-        const d=clamp((p-drop.delay)/(1-drop.delay),0,1);
-        if(!d)return;
-        const dease=1-Math.pow(1-d,2.4);
-        const px=x+Math.cos(drop.a)*drop.d*dease;
-        const py=y+Math.sin(drop.a)*drop.d*dease;
-        ctx.save();
-        ctx.translate(px,py);
-        ctx.rotate(drop.a+.3);
-        ctx.globalAlpha=Math.min(1,d*3)*(1-Math.max(0,d-.78)/.22*.55);
-        ctx.beginPath();
-        ctx.ellipse(0,0,drop.s*(.45+dease*.72),drop.s*(.8+dease*.5),0,0,Math.PI*2);
-        ctx.fill();
+      for(let i=0;i<n;i++){
+        const p=points[i],next=points[(i+1)%n];
+        if(!i){const prev=points[n-1];ctx.moveTo((prev.x+p.x)/2,(prev.y+p.y)/2)}
+        ctx.quadraticCurveTo(p.x,p.y,(p.x+next.x)/2,(p.y+next.y)/2);
+      }
+      ctx.closePath();
+    }
+    const svg=el.querySelector('.m-svg');
+    if(svg&&svg.animate)state.reaction=svg.animate(
+      [{transform:'scale(1)'},{transform:'scale(1.12,.82)'},{transform:'translateY(-5%) scale(.94,1.08)'},{transform:'none'}],
+      {duration:300,easing:'ease-out'}
+    );
+    function frame(now){
+      if(veil!==state)return;
+      const ctx=state.ctx,w=innerWidth,h=innerHeight,t=Math.min(now-started,1050);
+      ctx.clearRect(0,0,w,h);
+      // A narrow stream leaves the lower part of the mascot before reaching the glass.
+      if(t<340){
+        const p=clamp((t-35)/230,0,1), ex=source.x+(w*.5-source.x)*p,ey=source.y+(h*.46-source.y)*p;
+        ctx.save();ctx.strokeStyle='#fff';ctx.lineCap='round';
+        ctx.shadowColor='rgba(120,92,75,.24)';ctx.shadowBlur=5;
+        ctx.lineWidth=5+21*p;ctx.beginPath();ctx.moveTo(source.x,source.y);
+        ctx.quadraticCurveTo(source.x-18*p,source.y+65*p,ex,ey);ctx.stroke();
         ctx.restore();
-      });
-
-      if(p>.7){
-        ctx.globalAlpha=clamp((p-.7)/.3,0,1)*.74;
-        ctx.fillRect(0,0,innerWidth,innerHeight);
-        ctx.globalAlpha=1;
       }
-      if(p<1){
-        state.splashRaf=requestAnimationFrame(frame);
-      }else{
-        ctx.globalAlpha=1;
+      const extent=Math.hypot(w,h)*1.8;
+      for(const spot of spots){
+        const p=clamp((t-spot.delay)/650,0,1);
+        if(!p)continue;
+        const impact=1-Math.pow(1-clamp(p/.22,0,1),3);
+        const spread=Math.pow(clamp((p-.16)/.84,0,1),2.8);
+        const bounce=1+.12*Math.sin(Math.min(1,p/.35)*Math.PI);
+        const size=extent*(spot.size*impact*bounce+spread);
+        ctx.save();ctx.translate(w*spot.x,h*spot.y);
+        ctx.scale(size*(1+.13*(1-impact)),size*(1-.1*(1-impact)));
+        outline(ctx,spot.seed);
         ctx.fillStyle='#fff';
-        ctx.fillRect(0,0,innerWidth,innerHeight);
-        state.ready=true;
-        layerReady(state);
+        if(p<.58){ctx.shadowColor='rgba(111,83,65,.28)';ctx.shadowBlur=12/size;ctx.shadowOffsetY=3/size}
+        ctx.fill();
+        ctx.shadowColor='transparent';
+        if(p<.48){
+          ctx.strokeStyle='rgba(255,247,230,.58)';ctx.lineWidth=.025;
+          ctx.beginPath();ctx.arc(-.16,-.22,.52,3.65,4.9);ctx.stroke();
+          ctx.strokeStyle='rgba(188,165,145,.20)';ctx.lineWidth=.014;
+          ctx.beginPath();ctx.arc(.06,.08,.68,.25,1.25);ctx.stroke();
+        }
+        ctx.restore();
+        if(p<.6){
+          for(let i=0;i<8;i++){
+            const angle=i*Math.PI/4+spot.seed,dist=size*(1.35+i%3*.13);
+            ctx.beginPath();ctx.fillStyle='#fff';
+            ctx.arc(w*spot.x+Math.cos(angle)*dist,h*spot.y+Math.sin(angle)*dist,
+              Math.max(2,size*(.025+i%3*.012)),0,Math.PI*2);ctx.fill();
+          }
+        }
       }
-    };
+      if(t<1050)state.splashRaf=requestAnimationFrame(frame);
+      else{state.ready=true;layerReady(state)}
+    }
     state.splashRaf=requestAnimationFrame(frame);
   }
   function layerReady(state){
@@ -267,6 +258,7 @@ function initMascotte(){
     if(!veil||veil!==state)return;
     veil=null;
     if(state.splashRaf)cancelAnimationFrame(state.splashRaf);
+    if(state.reaction)state.reaction.cancel();
     window.removeEventListener('resize',state.resize);
     window.removeEventListener('keydown',state.onKey);
     window.removeEventListener('pagehide',state.onExit);
@@ -350,7 +342,7 @@ function initMascotte(){
     }
     state.resize=resize;
     resize();
-    const brushSize=Math.max(160,Math.min(200,Math.max(innerWidth,innerHeight)*.15));
+    const brushSize=Math.max(180,Math.min(220,Math.max(innerWidth,innerHeight)*.16));
     state.radius=brushSize/2;
     brush.style.width=brushSize+'px';
     brush.style.height=brushSize+'px';
