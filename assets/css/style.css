@@ -512,39 +512,3 @@ mark.todo{background:var(--jaune);color:var(--herbe);padding:1px 6px;border-radi
 .lost .lead{color:var(--herbe);opacity:.86;max-width:30em}
 .lost .tag{margin-bottom:4px}
 
-
-.screen-veil{position:fixed;inset:0;z-index:120;overflow:hidden;background:transparent;touch-action:none;cursor:crosshair}
-.screen-veil::before{content:"";position:absolute;z-index:1;left:var(--veil-x);top:var(--veil-y);width:max(220vw,220vh);aspect-ratio:1;border-radius:50%;background:#fff;transform:translate(-50%,-50%) scale(0);pointer-events:none}
-.screen-veil.active::before{animation:veil-cover .76s cubic-bezier(.2,.72,.28,1) forwards}
-.screen-veil.ready::before{display:none}
-.screen-veil.closing{opacity:0;transition:opacity .26s ease}
-.veil-canvas{position:absolute;z-index:3;inset:0;width:100%;height:100%;pointer-events:none}
-.veil-burst{position:absolute;z-index:4;left:var(--veil-x);top:var(--veil-y);width:0;height:0;pointer-events:none}
-.veil-burst span{position:absolute;left:0;top:0;width:76px;height:54px;border-radius:58% 42% 52% 48%;background:#fff;transform:translate(-50%,-32%) scale(.1) rotate(-12deg);animation:veil-cream .7s cubic-bezier(.2,.9,.35,1) forwards}
-.veil-burst i{position:absolute;left:0;top:0;width:var(--size);height:var(--size);border-radius:56% 44% 58% 42%;background:#fff;opacity:0;transform:translate(-50%,-50%) scale(.15);animation:veil-drop .72s var(--delay) cubic-bezier(.2,.7,.3,1) forwards}
-.veil-brush{position:absolute;z-index:5;left:0;top:0;width:96px;height:96px;border:3px solid rgba(23,63,46,.5);border-radius:50%;background:rgba(255,255,255,.08);box-shadow:0 0 0 3px rgba(255,255,255,.7),0 3px 12px rgba(23,63,46,.18);pointer-events:none;opacity:0;transform:translate(-50%,-50%);transition:opacity .12s}
-.veil-brush.show{opacity:1}
-@keyframes veil-cover{0%{transform:translate(-50%,-50%) scale(0)}100%{transform:translate(-50%,-50%) scale(1)}}
-@keyframes veil-cream{0%{opacity:0;transform:translate(-50%,-32%) scale(.1) rotate(-12deg)}28%{opacity:1}100%{opacity:1;transform:translate(-50%,-32%) scale(1.55) rotate(8deg)}}
-@keyframes veil-drop{0%{opacity:0;transform:translate(-50%,-50%) scale(.15)}18%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--tx)),calc(-50% + var(--ty))) scale(1)}}
-
-
-.veil-liquid{position:absolute;z-index:4;left:var(--veil-x);top:var(--veil-y);width:94px;height:232px;border-radius:58% 42% 62% 38% / 22% 28% 72% 78%;background:linear-gradient(165deg,#fff 0 48%,#FAFAFA 100%);filter:drop-shadow(0 10px 8px rgba(255,255,255,.45));opacity:0;transform:translate(-50%,-10%) rotate(-7deg) scale(.08,.12);transform-origin:50% 8%;animation:veil-gush .76s cubic-bezier(.12,.82,.3,1) forwards;pointer-events:none}
-.veil-liquid::before{content:"";position:absolute;left:-25px;top:-18px;width:126px;height:88px;border-radius:56% 44% 52% 48%;background:#fff;transform:rotate(8deg) scale(.35);transform-origin:50% 90%;animation:veil-lobe .76s cubic-bezier(.16,.86,.3,1) forwards}
-.veil-liquid::after{content:"";position:absolute;left:25px;bottom:-34px;width:30px;height:78px;border-radius:50% 50% 62% 38%;background:#fff;transform:rotate(8deg) scaleY(.2);transform-origin:50% 0;animation:veil-drip .76s cubic-bezier(.2,.8,.3,1) forwards}
-.veil-liquid i{position:absolute;z-index:1;left:50%;top:30%;width:28px;height:48px;border-radius:54% 46% 62% 38%;background:#fff;opacity:0;transform:translate(-50%,-50%) scale(.1);animation:veil-lobe .64s cubic-bezier(.2,.8,.3,1) forwards}
-.veil-liquid i:nth-child(1){--tx:-58px;--ty:72px}
-.veil-liquid i:nth-child(2){--tx:52px;--ty:116px;animation-delay:.06s}
-.veil-liquid i:nth-child(3){--tx:-24px;--ty:168px;animation-delay:.11s}
-.screen-veil:not(.active) .veil-liquid{animation-play-state:paused}
-.screen-veil:not(.active) .veil-liquid::before,.screen-veil:not(.active) .veil-liquid::after,.screen-veil:not(.active) .veil-liquid i{animation-play-state:paused}
-.veil-burst{z-index:5}
-.veil-brush{z-index:6}
-@keyframes veil-gush{0%{opacity:0;transform:translate(-50%,-10%) rotate(-7deg) scale(.08,.12)}12%{opacity:1}45%{transform:translate(-50%,-14%) rotate(6deg) scale(.64,.72)}100%{opacity:1;transform:translate(-50%,-18%) rotate(13deg) scale(1.18,1.08)}}
-@keyframes veil-lobe{0%{opacity:0;transform:translate(-50%,-50%) scale(.1)}22%{opacity:1}100%{opacity:1;transform:translate(calc(-50% + var(--tx,0px)),calc(-50% + var(--ty,0px))) scale(1)}}
-@keyframes veil-drip{0%{opacity:0;transform:rotate(8deg) scaleY(.2)}30%{opacity:1}100%{opacity:1;transform:rotate(8deg) scaleY(1)}}
-
-
-.screen-veil::before{display:none!important}
-.veil-canvas{z-index:4}
-.veil-brush{z-index:6}
