@@ -3,9 +3,6 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "regions": ["cdg1"],
-  "functions": {
-    "api/inscription.js": { "maxDuration": 10 }
-  },
   "headers": [
     {
       "source": "/assets/:dir(css|js|fonts)/:file*",
@@ -14,10 +11,6 @@
     {
       "source": "/assets/:dir(audio|img)/:file*",
       "headers": [{ "key": "Cache-Control", "value": "public, max-age=604800" }]
-    },
-    {
-      "source": "/api/:path*",
-      "headers": [{ "key": "Cache-Control", "value": "no-store" }]
     },
     {
       "source": "/(.*)",

@@ -159,7 +159,7 @@ h3{font-size:22px;line-height:1.2}
 .hero-note.ok{opacity:1;font-weight:800}
 .hero-note:empty{display:none}
 /* Boutons vers l’appli (app.popoteduo.app), sous le formulaire de l’accueil et dans l’en-tête */
-.hero-app{display:flex;flex-wrap:wrap;align-items:center;gap:8px 20px;margin-top:4px}
+.hero-app{display:flex;flex-wrap:wrap;align-items:center;gap:8px 20px;margin-top:8px}
 @media (max-width:640px){.nav .nav-app{display:none}}
 /* L'inscription rapide, dans le haut de page comme chez Seego : l'e-mail est repris dans le formulaire complet */
 .quick{display:flex;flex-direction:column;gap:8px;width:100%;max-width:520px;margin-top:4px}
@@ -404,6 +404,10 @@ h3{font-size:22px;line-height:1.2}
 .form-card h3{font-size:28px;margin:0 0 4px}
 .form-card > form > p.sub{margin:0 0 22px;color:var(--texte-2);font-size:15.5px}
 .form-card > form > p.sub.ok{color:var(--herbe-700);font-weight:800}
+/* Fiche « Je commence » : les deux boutons vers l’appli, à la place de l’ancien formulaire */
+.join-app{display:flex;flex-direction:column}
+.form-card:has(.join-app){display:flex;flex-direction:column;justify-content:center}
+.join-app > p.sub{margin:0 0 16px;color:var(--texte-2);font-size:15.5px}
 @media (min-width:960px){
   .ticket{grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr)}
   .ticket-info{padding:44px 44px 48px}

@@ -1,4 +1,4 @@
-/* Popote Duo · landing page : Gari animée, repères de défilement, démo du mode cuisine, liste d'attente. */
+/* Popote Duo · landing page : Gari animée, repères de défilement, démo du mode cuisine. Les boutons mènent à l'appli (app.popoteduo.app). */
 (function(){
 "use strict";
 const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
@@ -7,10 +7,7 @@ const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
 const CONFIG={
   // Mesure d'audience Vercel Web Analytics : sans cookie, rien à régler ici, il suffit de l'activer dans le projet Vercel.
   // Laisser vide pour ne rien mesurer.
-  analytics:{provider:'vercel'},
-  // Liste d'attente : l'adresse de la fonction qui envoie l'inscription par e-mail (api/inscription.js).
-  // Laisser vide : rien n'est envoyé et la page affiche seulement la confirmation (mode démo).
-  waitlist:{endpoint:'/api/inscription'}
+  analytics:{provider:'vercel'}
 };
 // Racine du site, déduite de l'adresse de ce script : la page anglaise (en/) trouve ainsi les mêmes fichiers.
 const BASE=document.currentScript?new URL('../../',document.currentScript.src).href:'';
@@ -19,16 +16,10 @@ const BASE=document.currentScript?new URL('../../',document.currentScript.src).h
 const LANG=document.documentElement.lang.indexOf('en')===0?'en':'fr';
 const T={
   fr:{step:(i,n)=>`Étape ${i} sur ${n}`,geste:'Geste&nbsp;: ',next:'Étape suivante',finish:'Terminer',done:'Recette terminée',speaking:'Gari parle…',listen:'Écouter',listenGari:'Écouter Gari',
-    noVoice:'Voix indisponible ici',bravo:'Bravo ! Le cookie géant est prêt.',sending:'Envoi…',send:'M’inscrire',
-    okPro:'Votre structure est sur la liste. On vous recontacte dès que l’offre pour les structures est prête.',
-    okBeta:'Vous êtes sur la liste. On vous écrit dès que la bêta ouvre, en février.',okLaunch:'Vous êtes sur la liste. On vous écrit au lancement de l’appli.',
-    quickBad:'Ajoutez une adresse e-mail valide, par exemple prenom@exemple.fr.',quickOk:'C’est noté : plus que deux questions, juste en dessous.',
+    noVoice:'Voix indisponible ici',bravo:'Bravo ! Le cookie géant est prêt.',
     hello:'Coucou, moi c’est Gari !',hop:'Hop !',giggle:'Hihi, ça chatouille !',boing:'Boing !'},
   en:{step:(i,n)=>`Step ${i} of ${n}`,geste:'Skill: ',next:'Next step',finish:'Finish',done:'Recipe complete',speaking:'Gari is talking…',listen:'Listen',listenGari:'Listen to Gari',
-    noVoice:'Voice not available here',bravo:'Well done! The giant cookie is ready.',sending:'Sending…',send:'Sign me up',
-    okPro:'Your organisation is on the list. We’ll get back to you as soon as the offer for organisations is ready.',
-    okBeta:'You’re on the list. We’ll email you as soon as the beta opens in February.',okLaunch:'You’re on the list. We’ll email you when the app launches.',
-    quickBad:'Add a valid email address, for example name@example.com.',quickOk:'Got it: just two more questions, right below.',
+    noVoice:'Voice not available here',bravo:'Well done! The giant cookie is ready.',
     hello:'Hi, I’m Gari!',hop:'Hop!',giggle:'Hee hee, that tickles!',boing:'Boing!'}
 }[LANG];
 // Sélecteur FR / EN : le choix est retenu et passe avant la langue du navigateur (voir le script en tête de page).
@@ -49,11 +40,10 @@ function loadAnalytics(){
   const s=document.createElement('script');s.defer=true;s.src='/_vercel/insights/script.js';
   document.head.appendChild(s);
 }
-// Événements (clics, inscriptions, démo) : Vercel ne les enregistre qu'avec l'offre Pro. Sur l'offre gratuite, ils sont ignorés.
+// Événements (démo, Gari) : Vercel ne les enregistre qu'avec l'offre Pro. Sur l'offre gratuite, ils sont ignorés.
 function track(name,props){
   try{if(window.va)window.va('event',{name,data:props})}catch(e){}
 }
-document.addEventListener('click',e=>{const a=e.target.closest('[data-track]');if(a)track('Clic inscription',{emplacement:a.dataset.track})});
 addEventListener('load',()=>setTimeout(loadAnalytics,1200),{once:true});
 
 /* ---------- Gari ---------- */
@@ -326,56 +316,5 @@ const bravoBtn=$('#tsBravo');bravoBtn.dataset.label=T.listenGari;
 bravoBtn.addEventListener('click',()=>playVoice(bravoBtn,'bravo',T.bravo));
 renderStep();
 
-/* ---------- Liste d'attente ---------- */
-const form=$('#joinForm'), email=$('#email'), emailErr=$('#emailErr');
-$$('input[name="role"]').forEach(r=>r.addEventListener('change',syncRole));
-function syncRole(){const pro=$('#role-pro').checked;$('#ageField').hidden=pro;$('#orgField').hidden=!pro}
-email.addEventListener('input',()=>{if(email.getAttribute('aria-invalid')==='true'&&valid(email.value)){email.removeAttribute('aria-invalid');emailErr.hidden=true}});
-function valid(v){return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim())}
-
-// Inscription rapide du haut de page : l'e-mail passe dans le formulaire complet, qui n'a plus que deux questions.
-const quick=$('#quickForm'), qEmail=$('#qEmail'), qNote=$('#quickNote'), qNoteText=qNote.textContent;
-quick.addEventListener('submit',e=>{
-  e.preventDefault();
-  if(!valid(qEmail.value)){qEmail.setAttribute('aria-invalid','true');qNote.textContent=T.quickBad;qNote.classList.add('ok');qEmail.focus();return}
-  qEmail.removeAttribute('aria-invalid');qNote.textContent=qNoteText;qNote.classList.remove('ok');
-  email.value=qEmail.value.trim();
-  const sub=$('#formSub');sub.textContent=T.quickOk;sub.classList.add('ok');
-  $('#liste').scrollIntoView({behavior:RM?'auto':'smooth',block:'start'});
-  setTimeout(()=>{$('#age-4').focus({preventScroll:true})},RM?0:700);
-  track('Inscription rapide');
-});
-qEmail.addEventListener('input',()=>{if(qEmail.getAttribute('aria-invalid')==='true'&&valid(qEmail.value)){qEmail.removeAttribute('aria-invalid');qNote.textContent=qNoteText;qNote.classList.remove('ok')}});
-
-// Envoie l'inscription à la fonction du site, qui la transmet par e-mail à l'équipe.
-// Renvoie true si c'est parti (ou en mode démo, sans adresse réglée).
-async function sendWaitlist(d){
-  const url=CONFIG.waitlist.endpoint;
-  if(!url){console.warn('Popote Duo : liste d’attente en mode démo (CONFIG.waitlist), rien n’a été envoyé.');return true}
-  const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...d,lang:LANG})});
-  return r.ok;
-}
-const sendBtn=form.querySelector('button[type="submit"]'), sendErr=$('#sendErr');
-form.addEventListener('submit',async e=>{
-  e.preventDefault();
-  sendErr.hidden=true;
-  if(!valid(email.value)){email.setAttribute('aria-invalid','true');emailErr.hidden=false;email.focus();return}
-  const fd=new FormData(form), pro=fd.get('role')==='pro';
-  const d={email:email.value.trim(),role:pro?'pro':'parent',ages:pro?'':fd.getAll('age').join(', '),org:pro?(fd.get('org')||'').trim().slice(0,120):'',beta:$('#beta').checked};
-  if(!fd.get('bot-field')){ // champ piège : rempli seulement par les robots
-    sendBtn.disabled=true;sendBtn.firstChild.textContent=T.sending;
-    let ok=false;
-    try{ok=await sendWaitlist(d)}catch(err){ok=false}
-    sendBtn.disabled=false;sendBtn.firstChild.textContent=T.send;
-    if(!ok){sendErr.hidden=false;return}
-    track('Inscription liste d’attente',{profil:d.role,beta:d.beta?'oui':'non'});
-  }
-  $('#joinOkText').textContent=pro
-    ? T.okPro
-    : ($('#beta').checked?T.okBeta:T.okLaunch);
-  form.hidden=true;$('#joinOk').hidden=false;
-  $('#formCard .peek').hidden=true;
-});
-$('#joinAgain').addEventListener('click',()=>{form.reset();syncRole();form.hidden=false;$('#joinOk').hidden=true;$('#formCard .peek').hidden=false;email.focus()});
 })();
 
