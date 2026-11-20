@@ -543,3 +543,8 @@ mark.todo{background:var(--jaune);color:var(--herbe);padding:1px 6px;border-radi
 @keyframes veil-gush{0%{opacity:0;transform:translate(-50%,-10%) rotate(-7deg) scale(.08,.12)}12%{opacity:1}45%{transform:translate(-50%,-14%) rotate(6deg) scale(.64,.72)}100%{opacity:1;transform:translate(-50%,-18%) rotate(13deg) scale(1.18,1.08)}}
 @keyframes veil-lobe{0%{opacity:0;transform:translate(-50%,-50%) scale(.1)}22%{opacity:1}100%{opacity:1;transform:translate(calc(-50% + var(--tx,0px)),calc(-50% + var(--ty,0px))) scale(1)}}
 @keyframes veil-drip{0%{opacity:0;transform:rotate(8deg) scaleY(.2)}30%{opacity:1}100%{opacity:1;transform:rotate(8deg) scaleY(1)}}
+
+
+.screen-veil::before{display:none!important}
+.veil-canvas{z-index:4}
+.veil-brush{z-index:6}

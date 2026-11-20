@@ -90,19 +90,19 @@ function initMascotte(){
     try{
       const ctx=new AC();
       const master=ctx.createGain();
-      master.gain.value=.18;
+      master.gain.value=.42;
       master.connect(ctx.destination);
 
       const buffer=ctx.createBuffer(1,Math.max(1,Math.floor(ctx.sampleRate*.35)),ctx.sampleRate);
       const data=buffer.getChannelData(0);
-      for(let i=0;i<data.length;i++)data[i]=(Math.random()*2-1)*.55;
+      for(let i=0;i<data.length;i++)data[i]=(Math.random()*2-1)*.65;
       const noise=ctx.createBufferSource();
       noise.buffer=buffer;
       noise.loop=true;
       const filter=ctx.createBiquadFilter();
       filter.type='bandpass';
-      filter.frequency.value=2300;
-      filter.Q.value=2.8;
+      filter.frequency.value=2700;
+      filter.Q.value=4.8;
       const noiseGain=ctx.createGain();
       noiseGain.gain.value=0;
       noise.connect(filter).connect(noiseGain).connect(master);
@@ -110,13 +110,22 @@ function initMascotte(){
 
       const tone=ctx.createOscillator();
       tone.type='triangle';
-      tone.frequency.value=1650;
+      tone.frequency.value=1800;
       const toneGain=ctx.createGain();
       toneGain.gain.value=0;
       tone.connect(toneGain).connect(master);
       tone.start();
+
+      const wobble=ctx.createOscillator();
+      wobble.type='sine';
+      wobble.frequency.value=280;
+      const wobbleGain=ctx.createGain();
+      wobbleGain.gain.value=0;
+      wobble.connect(wobbleGain).connect(master);
+      wobble.start();
+
       if(ctx.state==='suspended')ctx.resume();
-      return {ctx,master,filter,noiseGain,tone,toneGain,last:0,x:0,y:0};
+      return {ctx,master,filter,noiseGain,tone,toneGain,wobble,wobbleGain,last:0,x:0,y:0};
     }catch(_){return null}
   }
   function rubSound(e,state){
@@ -127,19 +136,28 @@ function initMascotte(){
       const now=a.ctx.currentTime;
       const dx=e.clientX-a.x,dy=e.clientY-a.y;
       a.x=e.clientX;a.y=e.clientY;
-      if(now-a.last<.025)return;
+      if(now-a.last<.022)return;
       a.last=now;
-      const motion=Math.min(1,Math.max(.25,Math.hypot(dx,dy)/18));
+      const motion=Math.min(1,Math.max(.3,Math.hypot(dx,dy)/15));
       const pos=clamp(e.clientX/innerWidth,0,1);
-      a.filter.frequency.setTargetAtTime(1500+pos*2600,now,.02);
-      a.filter.Q.setTargetAtTime(2.2+motion*2.4,now,.03);
+      a.filter.frequency.setTargetAtTime(1700+pos*3000,now,.015);
+      a.filter.Q.setTargetAtTime(3+motion*3.5,now,.02);
+
       a.noiseGain.gain.cancelScheduledValues(now);
-      a.noiseGain.gain.setTargetAtTime(.12*motion,now,.01);
-      a.noiseGain.gain.setTargetAtTime(.018,now+.06,.07);
-      a.tone.frequency.setTargetAtTime(1250+pos*1800+motion*500,now,.025);
+      a.noiseGain.gain.setTargetAtTime(.24*motion,now,.008);
+      a.noiseGain.gain.setTargetAtTime(.025,now+.055,.06);
+
+      a.tone.frequency.cancelScheduledValues(now);
+      a.tone.frequency.setValueAtTime(1050+pos*1500,now);
+      a.tone.frequency.exponentialRampToValueAtTime(2800+motion*1700,now+.045);
       a.toneGain.gain.cancelScheduledValues(now);
-      a.toneGain.gain.setTargetAtTime(.035*motion,now,.01);
-      a.toneGain.gain.setTargetAtTime(0,now+.045,.06);
+      a.toneGain.gain.setTargetAtTime(.095*motion,now,.008);
+      a.toneGain.gain.setTargetAtTime(0,now+.06,.055);
+
+      a.wobble.frequency.setTargetAtTime(190+pos*220+motion*260,now,.02);
+      a.wobbleGain.gain.cancelScheduledValues(now);
+      a.wobbleGain.gain.setTargetAtTime(.075*motion,now,.008);
+      a.wobbleGain.gain.setTargetAtTime(0,now+.075,.08);
     }catch(_){}
   }
   function stopRubSound(state){
@@ -149,17 +167,116 @@ function initMascotte(){
       const now=a.ctx.currentTime;
       a.noiseGain.gain.setTargetAtTime(0,now,.06);
       a.toneGain.gain.setTargetAtTime(0,now,.05);
+      a.wobbleGain.gain.setTargetAtTime(0,now,.05);
     }catch(_){}
+  }
+  function drawSplash(state){
+    const ctx=state.ctx,x=state.sourceX,y=state.sourceY;
+    const started=performance.now();
+    const reach=Math.hypot(innerWidth,innerHeight)*.72;
+    const arms=Array.from({length:13},(_,i)=>{
+      const a=i/13*Math.PI*2+(Math.random()-.5)*.18;
+      return {a,d:reach*(.55+Math.random()*.5),w:18+Math.random()*28,b:(Math.random()-.5)*120};
+    });
+    const drops=Array.from({length:28},(_,i)=>{
+      const a=i/28*Math.PI*2+(Math.random()-.5)*.32;
+      return {a,d:reach*(.35+Math.random()*.85),s:10+Math.random()*24,delay:.04+(i%7)*.018};
+    });
+    const frame=now=>{
+      if(!veil||veil!==state)return;
+      const p=Math.min(1,(now-started)/940);
+      const q=clamp((p-.06)/.82,0,1);
+      const ease=1-Math.pow(1-q,3);
+      ctx.clearRect(0,0,innerWidth,innerHeight);
+      ctx.fillStyle='#fff';
+      ctx.strokeStyle='#fff';
+      ctx.lineCap='round';
+      ctx.lineJoin='round';
+
+      const stream=clamp(p/.58,0,1);
+      if(stream>0){
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(x,y);
+        ctx.quadraticCurveTo(x-34*stream,y+92*stream,x+22*stream,y+218*stream);
+        ctx.lineWidth=24+stream*38;
+        ctx.stroke();
+        ctx.restore();
+        ctx.beginPath();
+        ctx.ellipse(x+22*stream,y+218*stream,30+stream*32,18+stream*28,.35,0,Math.PI*2);
+        ctx.fill();
+      }
+
+      const core=clamp(p/.34,0,1);
+      ctx.beginPath();
+      ctx.arc(x,y,10+core*82,0,Math.PI*2);
+      ctx.fill();
+
+      arms.forEach(arm=>{
+        const endX=x+Math.cos(arm.a)*arm.d*ease;
+        const endY=y+Math.sin(arm.a)*arm.d*ease;
+        const midX=x+Math.cos(arm.a)*arm.d*ease*.45+Math.sin(arm.a)*arm.b;
+        const midY=y+Math.sin(arm.a)*arm.d*ease*.45-Math.cos(arm.a)*arm.b;
+        ctx.beginPath();
+        ctx.moveTo(x,y);
+        ctx.quadraticCurveTo(midX,midY,endX,endY);
+        ctx.lineWidth=arm.w*(.28+ease*.92);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(endX,endY,arm.w*(.5+ease*.65),0,Math.PI*2);
+        ctx.fill();
+      });
+
+      drops.forEach(drop=>{
+        const d=clamp((p-drop.delay)/(1-drop.delay),0,1);
+        if(!d)return;
+        const dease=1-Math.pow(1-d,2.4);
+        const px=x+Math.cos(drop.a)*drop.d*dease;
+        const py=y+Math.sin(drop.a)*drop.d*dease;
+        ctx.save();
+        ctx.translate(px,py);
+        ctx.rotate(drop.a+.3);
+        ctx.globalAlpha=Math.min(1,d*3)*(1-Math.max(0,d-.78)/.22*.55);
+        ctx.beginPath();
+        ctx.ellipse(0,0,drop.s*(.45+dease*.72),drop.s*(.8+dease*.5),0,0,Math.PI*2);
+        ctx.fill();
+        ctx.restore();
+      });
+
+      if(p>.7){
+        ctx.globalAlpha=clamp((p-.7)/.3,0,1)*.74;
+        ctx.fillRect(0,0,innerWidth,innerHeight);
+        ctx.globalAlpha=1;
+      }
+      if(p<1){
+        state.splashRaf=requestAnimationFrame(frame);
+      }else{
+        ctx.globalAlpha=1;
+        ctx.fillStyle='#fff';
+        ctx.fillRect(0,0,innerWidth,innerHeight);
+        state.ready=true;
+        layerReady(state);
+      }
+    };
+    state.splashRaf=requestAnimationFrame(frame);
+  }
+  function layerReady(state){
+    state.layer.classList.add('ready');
   }
   function closeVeil(state){
     if(!veil||veil!==state)return;
     veil=null;
+    if(state.splashRaf)cancelAnimationFrame(state.splashRaf);
     window.removeEventListener('resize',state.resize);
     stopRubSound(state);
     if(state.audio){
-      setTimeout(()=>{
-        try{state.audio.noise.stop();state.audio.tone.stop();state.audio.ctx.close()}catch(_){}
-      },220);
+      try{
+        const now=state.audio.ctx.currentTime;
+        state.audio.master.gain.setTargetAtTime(0,now,.06);
+        setTimeout(()=>{
+          try{state.audio.noise.stop();state.audio.tone.stop();state.audio.wobble.stop();state.audio.ctx.close()}catch(_){}
+        },220);
+      }catch(_){}
     }
     state.layer.classList.add('closing');
     setTimeout(()=>state.layer.remove(),260);
@@ -193,32 +310,20 @@ function initMascotte(){
     const layer=document.createElement('div');
     layer.className='screen-veil';
     layer.setAttribute('aria-hidden','true');
-    layer.style.setProperty('--veil-x',x+'px');
-    layer.style.setProperty('--veil-y',y+'px');
 
     const canvas=document.createElement('canvas');
     canvas.className='veil-canvas';
-    const liquid=document.createElement('div');
-    liquid.className='veil-liquid';
-    liquid.innerHTML='<i></i><i></i><i></i>';
-    const burst=document.createElement('div');
-    burst.className='veil-burst';
-    const drops=Array.from({length:14},(_,i)=>{
-      const a=(i/14)*Math.PI*2;
-      const d=70+(i%4)*34;
-      const s=18+(i%5)*8;
-      return '<i style="--tx:'+Math.round(Math.cos(a)*d)+'px;--ty:'+Math.round(Math.sin(a)*d)+'px;--size:'+s+'px;--delay:'+(i%4)*.025+'s"></i>';
-    }).join('');
-    burst.innerHTML='<span></span>'+drops;
     const brush=document.createElement('div');
     brush.className='veil-brush';
-    layer.append(canvas,liquid,burst,brush);
+    layer.append(canvas,brush);
     document.body.appendChild(layer);
 
     const state={
-      layer,canvas,liquid,brush,ctx:null,audio:makeWipeSound(),ready:false,drawing:false,radius:0,
-      cols:18,rows:12,grid:new Uint8Array(18*12),cleared:0,resize:null
+      layer,canvas,brush,ctx:null,audio:makeWipeSound(),ready:false,drawing:false,radius:0,
+      sourceX:x,sourceY:y,splashRaf:0,cols:18,rows:12,grid:new Uint8Array(18*12),cleared:0,resize:null
     };
+    layer.style.setProperty('--veil-x',x+'px');
+    layer.style.setProperty('--veil-y',y+'px');
     function resize(){
       const dpr=Math.min(window.devicePixelRatio||1,2);
       canvas.width=Math.max(1,Math.round(innerWidth*dpr));
@@ -267,16 +372,7 @@ function initMascotte(){
     layer.addEventListener('contextmenu',e=>e.preventDefault());
     window.addEventListener('resize',state.resize);
     veil=state;
-    requestAnimationFrame(()=>layer.classList.add('active'));
-    setTimeout(()=>{
-      if(!veil||veil!==state)return;
-      state.ctx.fillStyle='#fff';
-      state.ctx.fillRect(0,0,innerWidth,innerHeight);
-      state.ready=true;
-      layer.classList.add('ready');
-      liquid.remove();
-      burst.remove();
-    },760);
+    drawSplash(state);
   }
   function addFruitClick(){
     fruitCount++;
