@@ -84,15 +84,89 @@ function initMascotte(){
     clearTimeout(fruitTimer);
     fruitTimer=0;
   }
+  function makeWipeSound(){
+    const AC=window.AudioContext||window.webkitAudioContext;
+    if(!AC)return null;
+    try{
+      const ctx=new AC();
+      const master=ctx.createGain();
+      master.gain.value=.18;
+      master.connect(ctx.destination);
+
+      const buffer=ctx.createBuffer(1,Math.max(1,Math.floor(ctx.sampleRate*.35)),ctx.sampleRate);
+      const data=buffer.getChannelData(0);
+      for(let i=0;i<data.length;i++)data[i]=(Math.random()*2-1)*.55;
+      const noise=ctx.createBufferSource();
+      noise.buffer=buffer;
+      noise.loop=true;
+      const filter=ctx.createBiquadFilter();
+      filter.type='bandpass';
+      filter.frequency.value=2300;
+      filter.Q.value=2.8;
+      const noiseGain=ctx.createGain();
+      noiseGain.gain.value=0;
+      noise.connect(filter).connect(noiseGain).connect(master);
+      noise.start();
+
+      const tone=ctx.createOscillator();
+      tone.type='triangle';
+      tone.frequency.value=1650;
+      const toneGain=ctx.createGain();
+      toneGain.gain.value=0;
+      tone.connect(toneGain).connect(master);
+      tone.start();
+      if(ctx.state==='suspended')ctx.resume();
+      return {ctx,master,filter,noiseGain,tone,toneGain,last:0,x:0,y:0};
+    }catch(_){return null}
+  }
+  function rubSound(e,state){
+    const a=state.audio;
+    if(!a)return;
+    try{
+      if(a.ctx.state==='suspended')a.ctx.resume();
+      const now=a.ctx.currentTime;
+      const dx=e.clientX-a.x,dy=e.clientY-a.y;
+      a.x=e.clientX;a.y=e.clientY;
+      if(now-a.last<.025)return;
+      a.last=now;
+      const motion=Math.min(1,Math.max(.25,Math.hypot(dx,dy)/18));
+      const pos=clamp(e.clientX/innerWidth,0,1);
+      a.filter.frequency.setTargetAtTime(1500+pos*2600,now,.02);
+      a.filter.Q.setTargetAtTime(2.2+motion*2.4,now,.03);
+      a.noiseGain.gain.cancelScheduledValues(now);
+      a.noiseGain.gain.setTargetAtTime(.12*motion,now,.01);
+      a.noiseGain.gain.setTargetAtTime(.018,now+.06,.07);
+      a.tone.frequency.setTargetAtTime(1250+pos*1800+motion*500,now,.025);
+      a.toneGain.gain.cancelScheduledValues(now);
+      a.toneGain.gain.setTargetAtTime(.035*motion,now,.01);
+      a.toneGain.gain.setTargetAtTime(0,now+.045,.06);
+    }catch(_){}
+  }
+  function stopRubSound(state){
+    const a=state.audio;
+    if(!a)return;
+    try{
+      const now=a.ctx.currentTime;
+      a.noiseGain.gain.setTargetAtTime(0,now,.06);
+      a.toneGain.gain.setTargetAtTime(0,now,.05);
+    }catch(_){}
+  }
   function closeVeil(state){
     if(!veil||veil!==state)return;
     veil=null;
     window.removeEventListener('resize',state.resize);
+    stopRubSound(state);
+    if(state.audio){
+      setTimeout(()=>{
+        try{state.audio.noise.stop();state.audio.tone.stop();state.audio.ctx.close()}catch(_){}
+      },220);
+    }
     state.layer.classList.add('closing');
     setTimeout(()=>state.layer.remove(),260);
   }
   function erase(e,state){
     if(!state.ready||!state.ctx)return;
+    rubSound(e,state);
     const x=e.clientX,y=e.clientY;
     state.ctx.save();
     state.ctx.globalCompositeOperation='destination-out';
@@ -115,7 +189,7 @@ function initMascotte(){
     if(veil)return;
     const r=el.getBoundingClientRect();
     const x=Math.max(0,Math.min(innerWidth,r.left+r.width/2));
-    const y=Math.max(0,Math.min(innerHeight,r.top+r.height*.44));
+    const y=Math.max(0,Math.min(innerHeight,r.top+r.height*.56));
     const layer=document.createElement('div');
     layer.className='screen-veil';
     layer.setAttribute('aria-hidden','true');
@@ -124,6 +198,9 @@ function initMascotte(){
 
     const canvas=document.createElement('canvas');
     canvas.className='veil-canvas';
+    const liquid=document.createElement('div');
+    liquid.className='veil-liquid';
+    liquid.innerHTML='<i></i><i></i><i></i>';
     const burst=document.createElement('div');
     burst.className='veil-burst';
     const drops=Array.from({length:14},(_,i)=>{
@@ -135,11 +212,11 @@ function initMascotte(){
     burst.innerHTML='<span></span>'+drops;
     const brush=document.createElement('div');
     brush.className='veil-brush';
-    layer.append(canvas,burst,brush);
+    layer.append(canvas,liquid,burst,brush);
     document.body.appendChild(layer);
 
     const state={
-      layer,canvas,brush,ctx:null,ready:false,drawing:false,radius:0,
+      layer,canvas,liquid,brush,ctx:null,audio:makeWipeSound(),ready:false,drawing:false,radius:0,
       cols:18,rows:12,grid:new Uint8Array(18*12),cleared:0,resize:null
     };
     function resize(){
@@ -181,6 +258,7 @@ function initMascotte(){
     });
     const stop=e=>{
       state.drawing=false;
+      stopRubSound(state);
       try{layer.releasePointerCapture(e.pointerId)}catch(_){}
     };
     layer.addEventListener('pointerup',stop);
@@ -196,6 +274,7 @@ function initMascotte(){
       state.ctx.fillRect(0,0,innerWidth,innerHeight);
       state.ready=true;
       layer.classList.add('ready');
+      liquid.remove();
       burst.remove();
     },760);
   }
