@@ -1,7 +1,9 @@
 # Popote Duo · landing page
 
-La page d'accueil de Popote Duo, avec l'inscription à la bêta gratuite en familles (février 2027).
-Un site statique hébergé sur Vercel (offre gratuite), avec une seule petite fonction : celle qui envoie chaque inscription par e-mail à l'équipe.
+La page d'accueil de Popote Duo. Elle présente l'appli et mène à la création de compte sur https://app.popoteduo.app.
+Un site statique hébergé sur Vercel (offre gratuite), sans fonction serveur.
+
+La liste d'attente de la bêta est fermée depuis le 20 novembre 2026, jour de l'ouverture de l'appli : le formulaire et la fonction `api/inscription.js` qui envoyait chaque inscription par e-mail ont été retirés (ils restent dans l'historique Git).
 
 ## Ce qu'il y a dans le dossier
 
@@ -9,17 +11,16 @@ Un site statique hébergé sur Vercel (offre gratuite), avec une seule petite fo
 index.html                         la page en français (textes, structure, icônes et Gari animée en SVG)
 en/index.html                      la page en anglais, fabriquée par outils/version-anglaise.py (ne pas la modifier à la main)
 en/privacy.html, en/legal-notice.html  les traductions des deux pages légales
-politique-de-confidentialite.html  la politique de confidentialité du site et de la liste d'attente
+politique-de-confidentialite.html  la politique de confidentialité du site (et de l'ancienne liste d'attente)
 mentions-legales.html              les mentions légales (éditeur, hébergeur, crédits)
 404.html                           la page affichée pour une adresse qui n'existe pas
-api/inscription.js                 la fonction qui reçoit une inscription et l'envoie par e-mail à l'équipe
-package.json                       déclare la bibliothèque d'envoi d'e-mails (nodemailer) utilisée par la fonction
-vercel.json                        réglages Vercel : cache, sécurité, adresses sans .html, fonction en région Paris
+package.json                       nom du projet et version de Node pour Vercel (aucune dépendance)
+vercel.json                        réglages Vercel : cache, sécurité, adresses sans .html, région Paris
 .vercelignore                      ce qui n'est pas publié (cette documentation, outils/)
 assets/
   css/style.css                    la mise en page, les couleurs et la typo
-  js/main.js                       réglages (en haut), Gari animée, repères de défilement, la démo,
-                                   la liste d'attente et la mesure d'audience
+  js/main.js                       réglages (en haut), Gari animée, repères de défilement, la démo
+                                   et la mesure d'audience
   audio/                           la voix de Gari dans la démo (MP3), en anglais dans audio/en/
   fonts/                           Fredoka (titres) et Nunito (texte), les polices de l'appli, en WOFF2 (licence OFL)
   img/                             icône du site (favicon.svg, la tête de Gari, et apple-touch-icon.png), images de partage
@@ -40,45 +41,29 @@ L'audit UI/UX (tailles testées, corrections, points à décider) est dans `AUDI
 
 ## La direction visuelle
 
-Le site reprend la direction artistique de l'appli, « version pop » (planche « Le village de Gari », maquettes « pop complètes final ») : mêmes couleurs, mêmes polices, même mascotte, mêmes icônes. La mise en page s'inspire de Seego (seego.fr) : sections numérotées, repères dans les coins, points de navigation à droite, manifeste qui se colore au fil du scroll, cartes avec les écrans de l'appli, questions fréquentes et inscription en forme de fiche à détacher.
+Le site reprend la direction artistique de l'appli, « version pop » (planche « Le village de Gari », maquettes « pop complètes final ») : mêmes couleurs, mêmes polices, même mascotte, mêmes icônes. La mise en page s'inspire de Seego (seego.fr) : sections numérotées, repères dans les coins, points de navigation à droite, manifeste qui se colore au fil du scroll, cartes avec les écrans de l'appli, questions fréquentes et, pour finir, une fiche à détacher qui mène à l'appli.
 
 - **Les couleurs** : fond presque blanc `#F5F7F0`, cartes blanches, vert foncé de la marque `#173F2E` pour le texte et les boutons, lime `#D7F08A` pour les flèches et les mises en avant. Comme dans l'appli, les couleurs pop (soleil, fraise, feuille, myrtille…) sont réservées aux illustrations, aux icônes et aux récompenses.
 - **Les polices** : Fredoka, arrondie, pour les titres et les boutons ; Nunito pour le texte.
 - **Les boutons** : la pilule vert foncé de l'appli, avec la flèche dans un rond lime.
 - **L'icône du site** : la tête de Gari sur le soleil jaune (`favicon.svg`, dessinée par `outils/dessiner-gari.py`) ; `apple-touch-icon.png` en est la version carrée de 180 px.
 - **Les icônes** : les 21 icônes de l'appli (tuile pastel et glyphe pop), réunies en haut de `index.html` (symboles `p-…`).
-- **Gari** : la mascotte « pop » de l'appli, sans contour, devant le soleil de l'écran d'accueil. Elle a du relief : elle s'incline en 3D vers ce qu'elle regarde, et son visage, ses feuilles et ses graines se décalent chacun à leur profondeur, comme une tête qui tourne. Elle regarde la souris (sur téléphone, elle jette un coup d'œil ailleurs de temps en temps), salue quand on s'approche, respire et cligne des yeux. Quand on la touche, elle saute de joie ou part en fou rire, en alternance, avec une bulle. On peut aussi la tirer (à l'horizontale sur téléphone, pour que la page défile toujours) : elle s'étire, l'air surpris, puis revient comme un ressort. Les textes des bulles sont dans `T` (`hello`, `hop`, `giggle`, `boing`), dans `main.js`. Ailleurs, ses attitudes fixes : chef (démo), hourra (fin de la démo, inscription réussie), réfléchit (questions, page 404), coucou (formulaire). Pour modifier la Gari animée : `outils/dessiner-gari.py`.
-- **Le haut de page** : le soleil jaune de l'écran d'accueil de l'appli, avec Gari seule au centre. L'inscription commence dès le haut de page : l'e-mail tapé là passe dans le formulaire complet, qui n'a plus que deux questions.
-- **Les sections** : (01) le principe, (02) l'appli en trois écrans, (03) la démo, (04) la sécurité, (05) les tarifs, (06) les questions, puis l'inscription. Sur mobile, les écrans de l'appli défilent à l'horizontale.
-- **Les boutons vers l'inscription** : dans la barre, le haut de page, la démo, les deux offres et la box.
+- **Gari** : la mascotte « pop » de l'appli, sans contour, devant le soleil de l'écran d'accueil. Elle a du relief : elle s'incline en 3D vers ce qu'elle regarde, et son visage, ses feuilles et ses graines se décalent chacun à leur profondeur, comme une tête qui tourne. Elle regarde la souris (sur téléphone, elle jette un coup d'œil ailleurs de temps en temps), salue quand on s'approche, respire et cligne des yeux. Quand on la touche, elle saute de joie ou part en fou rire, en alternance, avec une bulle. On peut aussi la tirer (à l'horizontale sur téléphone, pour que la page défile toujours) : elle s'étire, l'air surpris, puis revient comme un ressort. Les textes des bulles sont dans `T` (`hello`, `hop`, `giggle`, `boing`), dans `main.js`. Ailleurs, ses attitudes fixes : chef (démo), hourra (fin de la démo), réfléchit (questions, page 404), coucou (fiche « Je commence »). Pour modifier la Gari animée : `outils/dessiner-gari.py`.
+- **Le haut de page** : le soleil jaune de l'écran d'accueil de l'appli, avec Gari seule au centre, et les boutons « Créer mon compte » et « J’ai déjà un compte ».
+- **Les sections** : (01) le principe, (02) l'appli en trois écrans, (03) la démo, (04) la sécurité, (05) les tarifs, (06) les questions, puis la fiche « Je commence ». Sur mobile, les écrans de l'appli défilent à l'horizontale.
+- **Les boutons vers l'appli** : « Créer mon compte » dans la barre, le haut de page, les deux offres et la fiche « Je commence » ; « Tester avec mon enfant » après la démo ; « J’ai déjà un compte » dans le haut de page et la fiche. La box n'est pas encore en vente : son bouton « Nous écrire » ouvre un e-mail à l'équipe.
 
 ## Le site en ligne (Vercel)
-
-### Les inscriptions arrivent par e-mail
-
-Chaque inscription au formulaire est envoyée par la fonction `api/inscription.js` à **contact.popoteduo@gmail.com** : e-mail, profil (parent ou pro), âge des enfants ou nom de la structure, accord pour la bêta et date. Répondre au message écrit directement à la personne inscrite. Rien n'est stocké ailleurs.
-
-La fonction envoie depuis la boîte Gmail de l'équipe vers elle-même. Il faut lui donner un **mot de passe d'application** Google (pas le mot de passe du compte), une seule fois :
-
-1. Sur le compte Google contact.popoteduo@gmail.com, activer la **validation en deux étapes** (Compte Google → Sécurité).
-2. Créer un **mot de passe d'application** (Compte Google → Sécurité → Mots de passe des applications), nommé par exemple « Site Popote Duo ». Google affiche 16 lettres : les copier.
-3. Dans Vercel, projet popote-duo → **Settings → Environment Variables**, ajouter `GMAIL_APP_PASSWORD` avec ces 16 lettres, pour Production et Preview, en type « Sensitive ».
-4. Vérifier que `GMAIL_USER` vaut bien `contact.popoteduo@gmail.com`.
-5. Redéployer (Deployments → les trois points du dernier déploiement → Redeploy), puis faire une inscription de test.
-
-Tant que le mot de passe n'est pas réglé, le formulaire affiche « L'inscription n'a pas abouti » : **ne pas partager le lien du site avant d'avoir fait le test**.
-
-La fonction refuse les envois qui ne viennent pas du site, ignore les robots qui remplissent le champ piège, et le pare-feu Vercel limite les envois à 5 par minute et par adresse IP.
 
 ### La mesure d'audience (Vercel Web Analytics)
 
 Sans cookie, donc sans bandeau. À activer une fois dans le projet Vercel : onglet **Analytics → Enable**. On y voit les visiteurs, les pages vues, les pays, les appareils et les sites d'où viennent les visiteurs (instagram.com, tiktok.com…).
 
-L'offre gratuite compte 50 000 événements par mois. Elle ne suit pas les actions (clics sur « Rejoindre la bêta », écoute de la démo…) ni les paramètres `utm_` des liens : il faut pour cela l'offre Pro avec l'option Web Analytics Plus. Le code envoie déjà ces actions : elles apparaîtront d'elles-mêmes si vous passez à l'offre Pro. Le nombre d'inscriptions, lui, se lit directement dans la boîte e-mail.
+L'offre gratuite compte 50 000 événements par mois. Elle ne suit pas les actions (écoute de la démo, Gari touchée…) ni les paramètres `utm_` des liens : il faut pour cela l'offre Pro avec l'option Web Analytics Plus. Le code envoie déjà ces actions : elles apparaîtront d'elles-mêmes si vous passez à l'offre Pro.
 
 ### Le pare-feu (Vercel Firewall)
 
-- Une règle limite `/api/inscription` à 5 envois par minute et par adresse IP.
+- La règle qui limitait `/api/inscription` à 5 envois par minute ne sert plus : elle peut être supprimée (Firewall → Rules).
 - La protection contre les robots (Firewall → Bot Management) est en mode « observer » : elle note le trafic suspect sans bloquer, pour ne pas gêner les aperçus de lien de WhatsApp ou Instagram. En cas d'abus, la passer en « Challenge ».
 - En cas d'attaque, **Firewall → Attack Challenge Mode** fait passer un test à tous les visiteurs, d'un clic.
 
@@ -93,8 +78,8 @@ Avant d'envoyer, augmenter le numéro de version (`?v=…`) de `style.css` et `m
 ### Le reste
 
 - **Champs jaunes** : compléter le responsable du traitement dans `politique-de-confidentialite.html`, et le responsable de la publication et l'école dans `mentions-legales.html`.
-- **Usage commercial** : l'offre gratuite de Vercel est réservée aux projets non commerciaux. Elle convient pour la liste d'attente d'un projet d'école ; il faudra passer à l'offre Pro le jour où vous vendez.
-- **Prix** : un bandeau rappelle que **la bêta est entièrement gratuite, Premium compris**. Le Premium affiche **4,99 € par mois** (« ou 49,99 € par an »), avec la **première semaine offerte**. Les deux offres suivent le tableau gratuit / payant de l'équipe : en gratuit, 1 recette par mois parmi 6, la voix de Gari sur 1 ou 2 étapes, un profil enfant ; en Premium, toutes les recettes, la voix à chaque étape, plusieurs profils, le suivi détaillé, les recettes à télécharger et 10 € de réduction sur la box (29,90 € au lieu de 39,90 €). Le business plan prévoyait un pass découverte de 7 jours à 2,49 € : à aligner. La box affiche 39,90 € (page Kit de Notion, « proposé, à valider ») alors que le business plan parle de 30 € : à trancher. L'offre pro n'a pas de tarif pour l'instant.
+- **Usage commercial** : l'offre gratuite de Vercel est réservée aux projets non commerciaux. Elle convient pour la vitrine d'un projet d'école ; il faudra passer à l'offre Pro le jour où vous vendez.
+- **Prix** : un bandeau rappelle que **pour l'instant, tout est gratuit, Premium compris** ; les tarifs s'appliqueront plus tard. Le Premium affiche **4,99 € par mois** (« ou 49,99 € par an »), avec la **première semaine offerte**. Les deux offres suivent le tableau gratuit / payant de l'équipe : en gratuit, 1 recette par mois parmi 6, la voix de Gari sur 1 ou 2 étapes, un profil enfant ; en Premium, toutes les recettes, la voix à chaque étape, plusieurs profils, le suivi détaillé, les recettes à télécharger et 10 € de réduction sur la box (29,90 € au lieu de 39,90 €). Le business plan prévoyait un pass découverte de 7 jours à 2,49 € : à aligner. La box affiche 39,90 € (page Kit de Notion, « proposé, à valider ») alors que le business plan parle de 30 € : à trancher. L'offre pro n'a pas de tarif pour l'instant.
 
 ## Voir la page en local
 
@@ -104,14 +89,14 @@ Avec MAMP lancé : http://localhost:8888/popote-duo-landing/. Sans MAMP, depuis 
 python3 -m http.server 8000
 ```
 
-puis http://localhost:8000. En local, Gari et la voix marchent, mais pas le formulaire (la fonction n'existe que sur Vercel) ni la mesure d'audience.
+puis http://localhost:8000. En local, Gari et la voix marchent, mais pas la mesure d'audience.
 
 ## Modifier les textes
 
 Tous les textes sont dans `index.html`, sauf ceux qui changent pendant l'utilisation, qui sont dans `assets/js/main.js` :
 
 - `STEPS` : les 4 étapes de la démo du cookie géant (consigne enfant, consigne parent, geste appris) ;
-- les messages de confirmation du formulaire.
+- `T` : les bulles de Gari et les textes de la démo.
 
 ## Le site en deux langues
 
@@ -120,7 +105,6 @@ Le site existe en français (`/`) et en anglais (`/en`). Le sélecteur FR / EN e
 - **Au premier passage**, la page suit la langue du navigateur : un navigateur en français reste sur `/`, tous les autres vont sur `/en`.
 - **Ensuite, le choix fait avec le sélecteur l'emporte** : il est retenu dans le navigateur du visiteur, et la page le respecte aux visites suivantes.
 - Les robots des moteurs de recherche et des réseaux sociaux ne sont jamais redirigés : chacun voit la page demandée, et les liens `hreflang` leur indiquent l'autre langue.
-- Les inscriptions venues de la page anglaise arrivent avec « (EN) » dans l'objet de l'e-mail, et la ligne « Langue du site : anglais » : il faut leur répondre en anglais.
 
 **Pour modifier un texte**, changer d'abord la version française dans `index.html`, puis sa traduction dans `outils/version-anglaise.py` (chaque paire : le français à gauche, l'anglais à droite), et relancer :
 
@@ -128,7 +112,7 @@ Le site existe en français (`/`) et en anglais (`/en`). Le sélecteur FR / EN e
 python3 outils/version-anglaise.py
 ```
 
-Si un texte français a changé sans que sa paire suive, le script s'arrête et indique lequel. Les textes de la démo et du formulaire qui changent en direct sont dans `assets/js/main.js` (`T` et `STEPS`, en français et en anglais). Les pages légales anglaises (`en/`) sont à tenir à jour à la main, en même temps que les françaises, y compris les champs jaunes à compléter.
+Si un texte français a changé sans que sa paire suive, le script s'arrête et indique lequel. Les textes de la démo qui changent en direct sont dans `assets/js/main.js` (`T` et `STEPS`, en français et en anglais). Les pages légales anglaises (`en/`) sont à tenir à jour à la main, en même temps que les françaises, y compris les champs jaunes à compléter.
 
 Les images de partage (`og-image.png`, `og-image-en.png`) reprennent le haut de page : Gari devant son soleil, avec le titre de chaque langue.
 

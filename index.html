@@ -6,7 +6,7 @@
 <script>/* Langue : celle du navigateur au premier passage, puis celle choisie avec le sélecteur FR / EN. Les robots restent sur la page demandée. */
 document.documentElement.className+=' js';(function(){var c=null;try{c=localStorage.getItem('popote-lang')}catch(e){}if(!c&&/bot|crawl|spider|slurp|facebookexternalhit|whatsapp|telegram|preview/i.test(navigator.userAgent))return;var b=((navigator.languages&&navigator.languages[0])||navigator.language||'fr').toLowerCase();if((c||(b.indexOf('fr')===0?'fr':'en'))==='en')location.replace('/en'+location.search+location.hash)})();</script>
 <title>Popote Duo · L’appli pour cuisiner à deux, parent et enfant</title>
-<meta name="description" content="Popote Duo, l’appli de cuisine où l’enfant et le parent ont chacun leur mission sur le même écran, dès 4 ans. Rejoignez la bêta gratuite de février 2027.">
+<meta name="description" content="Popote Duo, l’appli de cuisine où l’enfant et le parent ont chacun leur mission sur le même écran, dès 4 ans. Gratuite, dans le navigateur.">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="theme-color" content="#F5F7F0">
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
@@ -21,7 +21,7 @@ document.documentElement.className+=' js';(function(){var c=null;try{c=localStor
 <meta property="og:site_name" content="Popote Duo">
 <meta property="og:locale" content="fr_FR">
 <meta property="og:title" content="Popote Duo · Cuisiner ensemble, chacun sa mission">
-<meta property="og:description" content="Une mission pour l’enfant, une autre pour le parent, sur le même écran. Rejoignez la bêta gratuite en famille.">
+<meta property="og:description" content="Une mission pour l’enfant, une autre pour le parent, sur le même écran. Créez votre compte gratuit.">
 <meta property="og:image" content="https://popoteduo.app/assets/img/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -29,20 +29,20 @@ document.documentElement.className+=' js';(function(){var c=null;try{c=localStor
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preload" href="assets/fonts/fredoka-var.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/nunito-var.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/style.css?v=32">
+<link rel="stylesheet" href="assets/css/style.css?v=33">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[
 {"@type":"Organization","@id":"https://popoteduo.app/#organisation","name":"Popote Duo","url":"https://popoteduo.app/","logo":"https://popoteduo.app/assets/img/apple-touch-icon.png","email":"contact.popoteduo@gmail.com"},
 {"@type":"WebSite","@id":"https://popoteduo.app/#site","url":"https://popoteduo.app/","name":"Popote Duo","inLanguage":"fr-FR","publisher":{"@id":"https://popoteduo.app/#organisation"}},
 {"@type":"WebApplication","name":"Popote Duo","operatingSystem":"Web","applicationCategory":"LifestyleApplication","inLanguage":"fr-FR","description":"L’appli de cuisine où l’enfant et le parent ont chacun leur mission sur le même écran, dès 4 ans.","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"publisher":{"@id":"https://popoteduo.app/#organisation"}},
 {"@type":"FAQPage","mainEntity":[
-{"@type":"Question","name":"Quand sort l’appli ?","acceptedAnswer":{"@type":"Answer","text":"La bêta ouvre en février 2027, et l’appli sort en juin 2027."}},
-{"@type":"Question","name":"Combien coûte Popote Duo ?","acceptedAnswer":{"@type":"Answer","text":"En gratuit, 1 recette par mois parmi 6. Le Premium coûte 4,99 € par mois ou 49,99 € par an, première semaine offerte. Pendant la bêta, tout est gratuit."}},
+{"@type":"Question","name":"Quand sort l’appli ?","acceptedAnswer":{"@type":"Answer","text":"Elle est déjà ouverte, dans le navigateur : créez votre compte sur app.popoteduo.app."}},
+{"@type":"Question","name":"Combien coûte Popote Duo ?","acceptedAnswer":{"@type":"Answer","text":"En gratuit, 1 recette par mois parmi 6. Le Premium coûte 4,99 € par mois ou 49,99 € par an, première semaine offerte. Pour l’instant, tout est gratuit."}},
 {"@type":"Question","name":"Dès quel âge ?","acceptedAnswer":{"@type":"Answer","text":"De 4 à 10 ans. Les plus petits ont des missions sans lame ni flamme."}},
 {"@type":"Question","name":"Mon enfant touche-t-il au couteau ou au four ?","acceptedAnswer":{"@type":"Answer","text":"Non. Tout ce qui coupe ou chauffe est réservé à l’adulte, et l’écran le rappelle à chaque étape."}},
 {"@type":"Question","name":"Faut-il savoir cuisiner ?","acceptedAnswer":{"@type":"Answer","text":"Non. Des recettes simples, guidées pas à pas, à voix haute."}},
 {"@type":"Question","name":"Sur quels appareils ?","acceptedAnswer":{"@type":"Answer","text":"C’est une appli web : elle s’ouvre dans le navigateur du téléphone, de la tablette ou de l’ordinateur, sans rien installer."}},
-{"@type":"Question","name":"Que faites-vous de mon e-mail ?","acceptedAnswer":{"@type":"Answer","text":"Uniquement pour vous prévenir de la bêta et de la sortie. Jamais revendu, désinscription en un clic."}}
+{"@type":"Question","name":"Que faites-vous de mes données ?","acceptedAnswer":{"@type":"Answer","text":"Le strict nécessaire pour votre compte. Rien n’est revendu, et vous pouvez tout exporter ou supprimer depuis l’appli."}}
 ]}
 ]}
 </script>
@@ -93,7 +93,7 @@ document.documentElement.className+=' js';(function(){var c=null;try{c=localStor
     <div class="nav-end">
       <div class="lang" role="group" aria-label="Langue"><span class="on" aria-current="true">FR</span><a href="/en" hreflang="en" lang="en" data-lang="en" title="English version">EN</a></div>
       <a class="btn btn-line btn-s nav-app" href="https://app.popoteduo.app/connexion">Se connecter</a>
-      <a class="btn btn-ink btn-s" href="#liste" data-track="nav">Rejoindre la bêta</a>
+      <a class="btn btn-ink btn-s" href="https://app.popoteduo.app/compte">Créer mon compte</a>
     </div>
   </div>
 </header>
@@ -107,7 +107,7 @@ document.documentElement.className+=' js';(function(){var c=null;try{c=localStor
   <a href="#confiance" aria-label="La sécurité"><span>La sécurité</span></a>
   <a href="#tarifs" aria-label="Les tarifs"><span>Les tarifs</span></a>
   <a href="#faq" aria-label="Les questions"><span>Les questions</span></a>
-  <a href="#liste" aria-label="La bêta"><span>La bêta</span></a>
+  <a href="#liste" aria-label="Commencer"><span>Commencer</span></a>
 </nav>
 
 <main>
@@ -116,17 +116,11 @@ document.documentElement.className+=' js';(function(){var c=null;try{c=localStor
     <p class="hud hud-tl" aria-hidden="true"><svg><use href="#i-plus"/></svg>Popote Duo // Carnet de cuisine</p>
 
     <div class="hero-copy">
-      <p class="tag"><span class="dot"></span>Bêta gratuite · février 2027</p>
+      <p class="tag"><span class="dot"></span>Gratuit · dans le navigateur</p>
       <h1 class="h1">Cuisiner ensemble, chacun sa mission</h1>
       <p class="lead">Une mission pour l’enfant, une pour le parent, sur le même écran. Vous gardez le feu et les couteaux. Dès 4&nbsp;ans.</p>
-      <form class="quick" id="quickForm" novalidate>
-        <label class="sr" for="qEmail">Votre e-mail</label>
-        <input class="input" id="qEmail" type="email" autocomplete="email" inputmode="email" placeholder="prenom@exemple.fr">
-        <button class="btn btn-ink" type="submit" data-track="hero">Rejoindre la bêta<span class="arr"><svg><use href="#i-arrow"/></svg></span></button>
-      </form>
-      <p class="hero-note" id="quickNote" aria-live="polite"></p>
       <div class="hero-app">
-        <a class="btn btn-lime" href="https://app.popoteduo.app/compte">Créer mon compte<span class="arr"><svg><use href="#i-arrow"/></svg></span></a>
+        <a class="btn btn-ink" href="https://app.popoteduo.app/compte">Créer mon compte<span class="arr"><svg><use href="#i-arrow"/></svg></span></a>
         <a class="link" href="https://app.popoteduo.app/connexion">J’ai déjà un compte<svg><use href="#i-arrow"/></svg></a>
       </div>
     </div>
@@ -194,7 +188,7 @@ document.documentElement.className+=' js';(function(){var c=null;try{c=localStor
       <p class="num">(03) Essayez</p>
       <h2 class="h2">Chacun sa mission, sur le même écran</h2>
       <p class="lead">Essayez avec le cookie géant&nbsp;: passez les étapes et écoutez Gari.</p>
-      <a class="btn btn-ink" href="#liste" data-track="demo">Tester avec mon enfant<span class="arr"><svg><use href="#i-arrow"/></svg></span></a>
+      <a class="btn btn-ink" href="https://app.popoteduo.app/compte">Tester avec mon enfant<span class="arr"><svg><use href="#i-arrow"/></svg></span></a>
     </div>
 
     <div class="demo-device">
@@ -282,7 +276,7 @@ document.documentElement.className+=' js';(function(){var c=null;try{c=localStor
       </div>
       <p class="lead">Une recette par mois en gratuit, et le Premium pour tout le reste.</p>
     </div>
-    <p class="beta-note"><span class="dot"></span><span><b>Pendant la bêta, tout est gratuit, Premium compris.</b> Ces tarifs s’appliqueront à la sortie.</span></p>
+    <p class="beta-note"><span class="dot"></span><span><b>Pour l’instant, tout est gratuit, Premium compris.</b> Ces tarifs s’appliqueront plus tard.</span></p>
     <div class="plans">
       <article class="plan" data-reveal>
         <div class="plan-head"><h3 class="plan-name">Gratuit</h3></div>
@@ -293,7 +287,7 @@ document.documentElement.className+=' js';(function(){var c=null;try{c=localStor
           <li><svg><use href="#i-check"/></svg>La voix de Gari sur 1 ou 2 étapes</li>
           <li><svg><use href="#i-check"/></svg>Un profil enfant</li>
         </ul>
-        <a class="btn btn-line" href="#liste" data-track="tarif-gratuit">Rejoindre la bêta</a>
+        <a class="btn btn-line" href="https://app.popoteduo.app/compte">Créer mon compte</a>
       </article>
       <article class="plan featured" data-reveal>
         <div class="plan-head"><h3 class="plan-name">Premium</h3><span class="badge">Première semaine offerte</span></div>
@@ -307,8 +301,8 @@ document.documentElement.className+=' js';(function(){var c=null;try{c=localStor
           <li><svg><use href="#i-check"/></svg>Les recettes à télécharger</li>
           <li><svg><use href="#i-check"/></svg>10&nbsp;€ de réduction sur la box</li>
         </ul>
-        <a class="btn btn-lime" href="#liste" data-track="tarif-premium">Tester le Premium gratuitement<span class="arr"><svg><use href="#i-arrow"/></svg></span></a>
-        <p class="plan-fine">Annulez pendant l’essai, vous ne payez rien.</p>
+        <a class="btn btn-lime" href="https://app.popoteduo.app/compte">Créer mon compte<span class="arr"><svg><use href="#i-arrow"/></svg></span></a>
+        <p class="plan-fine">Aujourd’hui compris gratuitement, sans carte bancaire.</p>
       </article>
     </div>
     <article class="addon" data-reveal>
@@ -322,7 +316,7 @@ document.documentElement.className+=' js';(function(){var c=null;try{c=localStor
         <p class="addon-price"><b>39,90&nbsp;€</b><small>une fois, livraison incluse</small></p>
         <p class="badge">29,90&nbsp;€ avec le Premium</p>
         <p class="soon"><i></i>Précommande au printemps 2027</p>
-        <a class="link" href="#liste" data-track="box">Être prévenu<svg><use href="#i-arrow"/></svg></a>
+        <a class="link" href="mailto:contact.popoteduo@gmail.com?subject=La%20box%20Popote%20Duo">Nous écrire<svg><use href="#i-arrow"/></svg></a>
       </div>
     </article>
   </div>
@@ -337,13 +331,13 @@ document.documentElement.className+=' js';(function(){var c=null;try{c=localStor
       <img class="faq-popote" src="assets/img/gari/reflechit.svg" alt="" width="240" height="236" loading="lazy">
     </div>
     <div class="faq-list">
-      <details><summary>Quand sort l’appli ?</summary><p>La bêta ouvre en février 2027, et l’appli sort en juin 2027.</p></details>
-      <details><summary>Combien coûte Popote Duo ?</summary><p>En gratuit, 1 recette par mois parmi 6. Le Premium coûte 4,99 € par mois ou 49,99 € par an, première semaine offerte. Pendant la bêta, tout est gratuit.</p></details>
+      <details><summary>Quand sort l’appli ?</summary><p>Elle est déjà ouverte, dans le navigateur&nbsp;: <a href="https://app.popoteduo.app/compte">créez votre compte</a>.</p></details>
+      <details><summary>Combien coûte Popote Duo ?</summary><p>En gratuit, 1 recette par mois parmi 6. Le Premium coûte 4,99 € par mois ou 49,99 € par an, première semaine offerte. Pour l’instant, tout est gratuit.</p></details>
       <details><summary>Dès quel âge ?</summary><p>De 4 à 10 ans. Les plus petits ont des missions sans lame ni flamme.</p></details>
       <details><summary>Mon enfant touche-t-il au couteau ou au four ?</summary><p>Non. Tout ce qui coupe ou chauffe est réservé à l’adulte, et l’écran le rappelle à chaque étape.</p></details>
       <details><summary>Faut-il savoir cuisiner ?</summary><p>Non. Des recettes simples, guidées pas à pas, à voix haute.</p></details>
       <details><summary>Sur quels appareils ?</summary><p>C’est une appli web : elle s’ouvre dans le navigateur du téléphone, de la tablette ou de l’ordinateur, sans rien installer.</p></details>
-      <details><summary>Que faites-vous de mon e-mail ?</summary><p>Uniquement pour vous prévenir de la bêta et de la sortie. Jamais revendu, désinscription en un clic.</p><p class="faq-more"><a href="politique-de-confidentialite.html">Lire la politique de confidentialité</a></p></details>
+      <details><summary>Que faites-vous de mes données ?</summary><p>Le strict nécessaire pour votre compte. Rien n’est revendu, et vous pouvez tout exporter ou supprimer depuis l’appli.</p><p class="faq-more"><a href="https://app.popoteduo.app/confidentialite">Lire la politique de confidentialité de l’appli</a></p></details>
     </div>
   </div>
 </section>
@@ -352,65 +346,30 @@ document.documentElement.className+=' js';(function(){var c=null;try{c=localStor
   <div class="wrap">
     <div class="ticket">
       <div class="ticket-info">
-        <p class="ticket-top"><span>Fiche recette · Bêta</span><span>N°&nbsp;001</span></p>
+        <p class="ticket-top"><span>Fiche recette · Première mission</span><span>N°&nbsp;001</span></p>
         <div class="ticket-route" aria-hidden="true">
           <p><b>Parent</b><small>le feu et les couteaux</small></p>
           <span class="route-line"><span class="tuile t-lime"><svg><use href="#p-melanger"/></svg></span></span>
           <p class="to"><b>Enfant</b><small>une mission à sa taille</small></p>
         </div>
-        <h2 class="h2">Devenez famille testeuse</h2>
-        <p class="lead">Testez l’appli chez vous&nbsp;: vos retours décident de ce qu’on améliore avant la sortie.</p>
+        <h2 class="h2">Votre première mission vous attend</h2>
+        <p class="lead">Créez votre compte, ajoutez votre enfant, et Gari vous guide pour la première recette.</p>
         <ul class="perks">
           <li><span class="ck"><svg><use href="#i-check"/></svg></span>Sur téléphone, tablette ou ordinateur</li>
-          <li><span class="ck"><svg><use href="#i-check"/></svg></span>Les inscrits sont contactés en premier</li>
+          <li><span class="ck"><svg><use href="#i-check"/></svg></span>Gratuit, sans rien installer</li>
         </ul>
-        <p class="who-we"><b>Qui on est&nbsp;?</b> Cinq étudiants qui construisent Popote Duo avec les familles testeuses.</p>
-        <span class="stamp" aria-hidden="true">Bientôt<br>en cuisine</span>
+        <p class="who-we"><b>Qui on est&nbsp;?</b> Cinq étudiants qui construisent Popote Duo avec les familles.</p>
+        <span class="stamp" aria-hidden="true">En route<br>pour la cuisine</span>
       </div>
 
       <div class="form-card" id="formCard">
         <img class="peek" src="assets/img/gari/coucou.svg" alt="" width="240" height="236" loading="lazy">
-        <form id="joinForm" name="liste-attente" novalidate>
-          <p hidden><label>Ne pas remplir <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
-          <h3>Je m’inscris</h3>
-          <p class="sub" id="formSub">Trois questions, une minute.</p>
-          <div class="field">
-            <label for="email">Votre e-mail</label>
-            <input class="input" id="email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="prenom@exemple.fr" aria-describedby="emailErr">
-            <p class="err" id="emailErr" hidden>Ajoutez une adresse e-mail valide, par exemple prenom@exemple.fr.</p>
-          </div>
-          <fieldset class="field">
-            <legend>Vous êtes</legend>
-            <div class="seg">
-              <input type="radio" name="role" id="role-parent" value="parent" checked><label for="role-parent">Parent</label>
-              <input type="radio" name="role" id="role-pro" value="pro"><label for="role-pro">Pro de l’animation</label>
-            </div>
-          </fieldset>
-          <fieldset class="field" id="ageField">
-            <legend>Âge des enfants</legend>
-            <div class="chips">
-              <input type="checkbox" id="age-4" name="age" value="4-5"><label for="age-4">4–5 ans</label>
-              <input type="checkbox" id="age-6" name="age" value="6-7"><label for="age-6">6–7 ans</label>
-              <input type="checkbox" id="age-8" name="age" value="8-10"><label for="age-8">8–10 ans</label>
-            </div>
-          </fieldset>
-          <div class="field" id="orgField" hidden>
-            <label for="org">Nom de la structure</label>
-            <input class="input" id="org" name="org" type="text" autocomplete="organization" placeholder="Centre de loisirs des Tilleuls">
-          </div>
-          <div class="field check">
-            <input type="checkbox" id="beta" name="beta" checked>
-            <label for="beta"><span class="box"><svg><use href="#i-check"/></svg></span>Je veux bien tester la bêta en février 2027</label>
-          </div>
-          <button class="btn btn-ink" type="submit">M’inscrire<span class="arr"><svg><use href="#i-arrow"/></svg></span></button>
-          <p class="err" id="sendErr" hidden>L’inscription n’a pas abouti. Vérifiez votre connexion puis réessayez.</p>
-          <p class="fine">On vous écrit uniquement au sujet de Popote Duo. Désinscription en un clic. <a href="politique-de-confidentialite.html">Politique de confidentialité</a></p>
-        </form>
-        <div class="ok" id="joinOk" hidden>
-          <img src="assets/img/gari/hourra.svg" alt="" width="240" height="236" loading="lazy">
-          <span class="done-title">C’est noté&nbsp;!</span>
-          <p id="joinOkText">Vous êtes sur la liste. On vous écrit dès que la bêta ouvre, en février.</p>
-          <button class="btn btn-line" type="button" id="joinAgain">Inscrire une autre adresse</button>
+        <div class="join-app">
+          <h3>Je commence</h3>
+          <p class="sub">Un compte pour le parent, puis un profil par enfant.</p>
+          <a class="btn btn-ink" href="https://app.popoteduo.app/compte">Créer mon compte<span class="arr"><svg><use href="#i-arrow"/></svg></span></a>
+          <a class="btn btn-line" href="https://app.popoteduo.app/connexion">J’ai déjà un compte</a>
+          <p class="fine">Gratuit. <a href="https://app.popoteduo.app/confidentialite">Politique de confidentialité de l’appli</a></p>
         </div>
       </div>
     </div>
@@ -423,7 +382,7 @@ document.documentElement.className+=' js';(function(){var c=null;try{c=localStor
     <div class="foot-grid">
       <a class="logo" href="#top" aria-label="Popote Duo, retour en haut">Popote<span>Duo</span></a>
       <nav aria-label="Pied de page">
-        <a href="#appli">L’appli</a><a href="#mode-cuisine">Démo</a><a href="#tarifs">Tarifs</a><a href="#faq">FAQ</a><a href="#liste">Bêta</a><a href="politique-de-confidentialite.html">Confidentialité</a><a href="mentions-legales.html">Mentions légales</a>
+        <a href="#appli">L’appli</a><a href="#mode-cuisine">Démo</a><a href="#tarifs">Tarifs</a><a href="#faq">FAQ</a><a href="#liste">Commencer</a><a href="politique-de-confidentialite.html">Confidentialité</a><a href="mentions-legales.html">Mentions légales</a>
       </nav>
     </div>
     <p>© 2026 Popote Duo · Photo&nbsp;: Unsplash. Voix de Gari&nbsp;: Piper, «&nbsp;siwis&nbsp;» (CC&nbsp;BY&nbsp;4.0) et «&nbsp;LJ&nbsp;Speech&nbsp;» (domaine public).</p>
@@ -432,6 +391,6 @@ document.documentElement.className+=' js';(function(){var c=null;try{c=localStor
 
 <a class="to-top" id="toTop" href="#top" aria-label="Retour en haut"><svg><use href="#i-up"/></svg></a>
 
-<script src="assets/js/main.js?v=31" defer></script>
+<script src="assets/js/main.js?v=32" defer></script>
 </body>
 </html>

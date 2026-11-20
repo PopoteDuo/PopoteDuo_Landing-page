@@ -1,8 +1,8 @@
 # PopoteDuo_Landing-page
 
-La landing page de Popote Duo, l'appli de cuisine où l'enfant et le parent ont chacun leur consigne sur le même écran. Elle sert à remplir la liste d'attente de la bêta gratuite (février 2027).
+La landing page de Popote Duo, l'appli de cuisine où l'enfant et le parent ont chacun leur consigne sur le même écran. Elle présente l’appli et mène à la création de compte sur https://app.popoteduo.app.
 
 - Site statique (HTML, CSS, JavaScript), dans la direction artistique de l’appli, avec Gari, la mascotte fraise, dessinée en SVG et animée. Hébergé sur Vercel.
-- Une seule fonction, `api/inscription.js`, envoie chaque inscription par e-mail à l'équipe.
+- Pas de fonction serveur : la liste d’attente de la bêta est fermée depuis le 20 novembre 2026.
 
-Le mode d'emploi complet (réglages Vercel, mot de passe Gmail, pare-feu, statistiques, modification des textes et des images) est dans [LISEZMOI.md](LISEZMOI.md). L'audit UI/UX et les points à décider sont dans [AUDIT-UX.md](AUDIT-UX.md).
+Le mode d'emploi complet (réglages Vercel, pare-feu, statistiques, modification des textes et des images) est dans [LISEZMOI.md](LISEZMOI.md). L'audit UI/UX et les points à décider sont dans [AUDIT-UX.md](AUDIT-UX.md).
