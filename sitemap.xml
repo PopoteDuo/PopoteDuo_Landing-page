@@ -2,17 +2,17 @@
 <!-- Les pages à référencer, en français et en anglais. À mettre à jour si le site change d'adresse. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://popote-duo.vercel.app/</loc>
+    <loc>https://popoteduo.app/</loc>
     <lastmod>2026-11-20</lastmod>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://popote-duo.vercel.app/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://popote-duo.vercel.app/en"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://popote-duo.vercel.app/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://popoteduo.app/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://popoteduo.app/en"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://popoteduo.app/"/>
   </url>
   <url>
-    <loc>https://popote-duo.vercel.app/en</loc>
+    <loc>https://popoteduo.app/en</loc>
     <lastmod>2026-11-20</lastmod>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://popote-duo.vercel.app/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://popote-duo.vercel.app/en"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://popote-duo.vercel.app/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://popoteduo.app/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://popoteduo.app/en"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://popoteduo.app/"/>
   </url>
 </urlset>

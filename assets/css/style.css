@@ -158,6 +158,9 @@ h3{font-size:22px;line-height:1.2}
 .hero-note{margin:0;font-size:14.5px;font-weight:700;opacity:.8}
 .hero-note.ok{opacity:1;font-weight:800}
 .hero-note:empty{display:none}
+/* Boutons vers l’appli (app.popoteduo.app), sous le formulaire de l’accueil et dans l’en-tête */
+.hero-app{display:flex;flex-wrap:wrap;align-items:center;gap:8px 20px;margin-top:4px}
+@media (max-width:640px){.nav .nav-app{display:none}}
 /* L'inscription rapide, dans le haut de page comme chez Seego : l'e-mail est repris dans le formulaire complet */
 .quick{display:flex;flex-direction:column;gap:8px;width:100%;max-width:520px;margin-top:4px}
 .quick .input{height:58px;border-radius:999px;padding:0 24px;border:0;box-shadow:var(--ombre-carte)}

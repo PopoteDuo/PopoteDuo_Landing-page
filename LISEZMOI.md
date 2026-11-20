@@ -84,7 +84,9 @@ L'offre gratuite compte 50 000 événements par mois. Elle ne suit pas les actio
 
 ### Mettre à jour le site
 
-Le projet Vercel est relié au dépôt GitHub PopoteDuo/PopoteDuo_Landing-page : chaque envoi (push) sur la branche `main` met le site à jour tout seul, à l'adresse https://popote-duo.vercel.app.
+Le projet Vercel est relié au dépôt GitHub PopoteDuo/PopoteDuo_Landing-page : chaque envoi (push) sur la branche `main` met le site à jour tout seul. Il répond sur https://popoteduo.app (domaine du projet Vercel, DNS chez Cloudflare : l'enregistrement `@` pointe vers Vercel, en « DNS only » ; `www.popoteduo.app` y est redirigé par une règle Cloudflare) et sur https://popote-duo.vercel.app.
+
+Les boutons « Se connecter », « Créer mon compte » et « J’ai déjà un compte » mènent à l’appli, https://app.popoteduo.app (`/connexion` et `/compte`). Ils sont en dur dans `index.html` ; la version anglaise les reprend par `outils/version-anglaise.py`.
 
 Avant d'envoyer, augmenter le numéro de version (`?v=…`) de `style.css` et `main.js` dans `index.html` (et de `style.css` dans les pages légales et la 404), sinon les visiteurs gardent l'ancienne version en cache : ces fichiers sont gardés un an.
 
@@ -163,7 +165,7 @@ Pour l'appli, une voix encore plus expressive est possible avec un service payan
 
 - **Ce qui est en place** : titre et description par langue, adresse canonique, liens `hreflang` entre `/` et `/en`, `robots.txt`, `sitemap.xml` (les deux langues), images de partage, et des données structurées (`application/ld+json` en tête de page) qui décrivent l'organisation, le site, l'appli et les questions fréquentes. Les pages légales et la 404 sont exclues (`noindex`).
 - **Les questions fréquentes** sont écrites deux fois : dans la page et dans les données structurées. Le texte doit rester identique aux deux endroits (le script de traduction les remplace ensemble).
-- **Google** : créer une propriété dans Google Search Console (search.google.com/search-console) pour `https://popote-duo.vercel.app/`, la valider par la balise HTML proposée (à ajouter dans le `<head>` de `index.html`), puis envoyer le sitemap `https://popote-duo.vercel.app/sitemap.xml`.
+- **Google** : créer une propriété dans Google Search Console (search.google.com/search-console) pour `https://popoteduo.app/`, la valider par la balise HTML proposée (à ajouter dans le `<head>` de `index.html`), puis envoyer le sitemap `https://popoteduo.app/sitemap.xml`.
 - **Bing (et les moteurs qui s'en servent : DuckDuckGo, Ecosia, Qwant…)** : le site est signalé par IndexNow, avec la clé du fichier `*.txt` à la racine. Bing Webmaster Tools peut aussi importer la propriété depuis Google Search Console.
-- **Pour aller plus loin** : un nom de domaine à vous (popoteduo.fr, par exemple) se référence mieux qu'une adresse en vercel.app. Il faudra alors changer les adresses complètes en tête des pages, dans `sitemap.xml`, `robots.txt` et `outils/version-anglaise.py`. Les liens venant d'autres sites (école, réseaux, articles) aident beaucoup.
+- **Le nom de domaine** : le site est sur `popoteduo.app`. Si l’adresse change, il faut changer les adresses complètes en tête des pages, dans `sitemap.xml`, `robots.txt` et `outils/version-anglaise.py`. Les liens venant d'autres sites (école, réseaux, articles) aident beaucoup.
 
