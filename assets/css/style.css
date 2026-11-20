@@ -406,6 +406,7 @@ h3{font-size:22px;line-height:1.2}
 .form-card > form > p.sub.ok{color:var(--herbe-700);font-weight:800}
 /* Fiche « Je commence » : les deux boutons vers l’appli, à la place de l’ancien formulaire */
 .join-app{display:flex;flex-direction:column}
+.form-card:has(.join-app){display:flex;flex-direction:column;justify-content:center}
 .join-app > p.sub{margin:0 0 16px;color:var(--texte-2);font-size:15.5px}
 @media (min-width:960px){
   .ticket{grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr)}
