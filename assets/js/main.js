@@ -268,6 +268,9 @@ function initMascotte(){
     veil=null;
     if(state.splashRaf)cancelAnimationFrame(state.splashRaf);
     window.removeEventListener('resize',state.resize);
+    window.removeEventListener('keydown',state.onKey);
+    window.removeEventListener('pagehide',state.onExit);
+    resetFruitCount();
     stopRubSound(state);
     if(state.audio){
       try{
@@ -287,9 +290,15 @@ function initMascotte(){
     const x=e.clientX,y=e.clientY;
     state.ctx.save();
     state.ctx.globalCompositeOperation='destination-out';
+    const previous=state.previous||{x,y};
+    state.ctx.lineWidth=state.radius*2;
+    state.ctx.lineCap='round';
+    state.ctx.strokeStyle='rgba(0,0,0,.92)';
     state.ctx.beginPath();
-    state.ctx.arc(x,y,state.radius,0,Math.PI*2);
-    state.ctx.fill();
+    state.ctx.moveTo(previous.x,previous.y);
+    state.ctx.lineTo(x,y);
+    state.ctx.stroke();
+    state.previous={x,y};
     state.ctx.restore();
 
     const x0=Math.max(0,Math.floor((x-state.radius)/innerWidth*state.cols));
@@ -298,15 +307,16 @@ function initMascotte(){
     const y1=Math.min(state.rows-1,Math.ceil((y+state.radius)/innerHeight*state.rows));
     for(let gy=y0;gy<=y1;gy++)for(let gx=x0;gx<=x1;gx++){
       const i=gy*state.cols+gx;
-      if(!state.grid[i]){state.grid[i]=1;state.cleared++}
+      const cx=(gx+.5)*innerWidth/state.cols,cy=(gy+.5)*innerHeight/state.rows;
+      if(!state.grid[i]&&Math.hypot(cx-x,cy-y)<state.radius){state.grid[i]=1;state.cleared++}
     }
-    if(state.cleared>=state.grid.length*.92)closeVeil(state);
+    if(state.cleared>=state.grid.length*.70)closeVeil(state);
   }
   function openVeil(){
     if(veil)return;
     const r=el.getBoundingClientRect();
     const x=Math.max(0,Math.min(innerWidth,r.left+r.width/2));
-    const y=Math.max(0,Math.min(innerHeight,r.top+r.height*.56));
+    const y=Math.max(0,Math.min(innerHeight,r.top+r.height*.85));
     const layer=document.createElement('div');
     layer.className='screen-veil';
     layer.setAttribute('aria-hidden','true');
@@ -340,7 +350,7 @@ function initMascotte(){
     }
     state.resize=resize;
     resize();
-    const brushSize=Math.max(84,Math.min(156,Math.max(innerWidth,innerHeight)*.12));
+    const brushSize=Math.max(160,Math.min(200,Math.max(innerWidth,innerHeight)*.15));
     state.radius=brushSize/2;
     brush.style.width=brushSize+'px';
     brush.style.height=brushSize+'px';
@@ -348,9 +358,9 @@ function initMascotte(){
       brush.style.left=e.clientX+'px';
       brush.style.top=e.clientY+'px';
       brush.classList.add('show');
-      if(state.drawing)erase(e,state);
+      if(e.pointerType!=='touch'||state.drawing)erase(e,state);
     },{passive:false});
-    layer.addEventListener('pointerleave',()=>brush.classList.remove('show'));
+    layer.addEventListener('pointerleave',()=>{brush.classList.remove('show');state.previous=null;stopRubSound(state)});
     layer.addEventListener('pointerdown',e=>{
       if(!state.ready)return;
       e.preventDefault();
@@ -363,6 +373,7 @@ function initMascotte(){
     });
     const stop=e=>{
       state.drawing=false;
+      state.previous=null;
       stopRubSound(state);
       try{layer.releasePointerCapture(e.pointerId)}catch(_){}
     };
@@ -371,13 +382,18 @@ function initMascotte(){
     layer.addEventListener('wheel',e=>e.preventDefault(),{passive:false});
     layer.addEventListener('contextmenu',e=>e.preventDefault());
     window.addEventListener('resize',state.resize);
+    state.onKey=e=>{if(e.key==='Escape')closeVeil(state)};
+    state.onExit=()=>closeVeil(state);
+    window.addEventListener('keydown',state.onKey);
+    window.addEventListener('pagehide',state.onExit,{once:true});
     veil=state;
-    drawSplash(state);
+    if(RM){state.ctx.fillStyle='#fff';state.ctx.fillRect(0,0,innerWidth,innerHeight);state.ready=true;layerReady(state)}
+    else drawSplash(state);
   }
   function addFruitClick(){
     fruitCount++;
     clearTimeout(fruitTimer);
-    fruitTimer=setTimeout(resetFruitCount,1700);
+    fruitTimer=setTimeout(resetFruitCount,2000);
     if(fruitCount<10)return false;
     resetFruitCount();
     openVeil();
@@ -698,3 +714,4 @@ form.addEventListener('submit',async e=>{
 });
 $('#joinAgain').addEventListener('click',()=>{form.reset();syncRole();form.hidden=false;$('#joinOk').hidden=true;$('#formCard .peek').hidden=false;email.focus()});
 })();
+
