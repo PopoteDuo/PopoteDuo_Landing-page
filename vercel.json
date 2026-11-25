@@ -3,6 +3,11 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "regions": ["cdg1"],
+  "redirects": [
+    { "source": "/compte", "destination": "https://app.popoteduo.app/compte", "permanent": false },
+    { "source": "/connexion", "destination": "https://app.popoteduo.app/connexion", "permanent": false },
+    { "source": "/confidentialite", "destination": "https://app.popoteduo.app/confidentialite", "permanent": false }
+  ],
   "rewrites": [
     { "source": "/bienvenue", "destination": "/" },
     { "source": "/bienvenue/:path*", "destination": "/:path*" }
