@@ -1,6 +1,6 @@
 # Popote Duo · landing page
 
-La page d'accueil de Popote Duo. Elle présente l'appli et mène à la création de compte sur https://app.popoteduo.app.
+La page d'accueil de Popote Duo. Elle présente l'appli et mène à la création de compte sur https://popoteduo.app. Elle est en ligne sous https://popoteduo.app/bienvenue (POP-150).
 Un site statique hébergé sur Vercel (offre gratuite), sans fonction serveur.
 
 La liste d'attente de la bêta est fermée depuis le 20 novembre 2026, jour de l'ouverture de l'appli : le formulaire et la fonction `api/inscription.js` qui envoyait chaque inscription par e-mail ont été retirés (ils restent dans l'historique Git).
@@ -69,9 +69,19 @@ L'offre gratuite compte 50 000 événements par mois. Elle ne suit pas les actio
 
 ### Mettre à jour le site
 
-Le projet Vercel est relié au dépôt GitHub PopoteDuo/PopoteDuo_Landing-page : chaque envoi (push) sur la branche `main` met le site à jour tout seul. Il répond sur https://popoteduo.app (domaine du projet Vercel, DNS chez Cloudflare : l'enregistrement `@` pointe vers Vercel, en « DNS only » ; `www.popoteduo.app` y est redirigé par une règle Cloudflare) et sur https://popote-duo.vercel.app.
+Le projet Vercel est relié au dépôt GitHub PopoteDuo/PopoteDuo_Landing-page : chaque envoi (push) sur la branche `main` met le site à jour tout seul. Il répond sur https://popote-duo.vercel.app.
 
-Les boutons « Se connecter », « Créer mon compte » et « J’ai déjà un compte » mènent à l’appli, https://app.popoteduo.app (`/connexion` et `/compte`). Ils sont en dur dans `index.html` ; la version anglaise les reprend par `outils/version-anglaise.py`.
+**Le site est servi sous `/bienvenue` (POP-150)** : depuis POP-148, `popoteduo.app` est l'adresse de l'appli, et l'appli relaie ce site sous https://popoteduo.app/bienvenue. Pour que tout marche sous ce chemin :
+
+- les fichiers restent à la racine du dépôt, et `vercel.json` les sert aussi sous `/bienvenue` (réécriture de `/bienvenue/:path*` vers `/:path*`) ;
+- toutes les adresses internes des pages sont absolues et commencent par `/bienvenue/` (styles, polices, images, script, pages légales, version anglaise), en adresses propres, sans `.html` : une redirection de Vercel vers une adresse en `.html` sortirait du chemin ;
+- le choix de la langue mène à `/bienvenue/en` et `/bienvenue` ;
+- la mesure d'audience passe par `/bienvenue/_vercel/insights` ;
+- les adresses complètes (canonique, partage, `hreflang`, données structurées, `sitemap.xml`) sont en `https://popoteduo.app/bienvenue…`.
+
+Le projet Vercel n'a plus besoin du domaine `popoteduo.app`. Pour vérifier une préversion, ouvrir son adresse suivie de `/bienvenue`.
+
+Les boutons « Se connecter », « Créer mon compte » et « J’ai déjà un compte » mènent à l’appli, https://popoteduo.app (`/connexion` et `/compte`). Ils sont en dur dans `index.html` ; la version anglaise les reprend par `outils/version-anglaise.py`.
 
 Avant d'envoyer, augmenter le numéro de version (`?v=…`) de `style.css` et `main.js` dans `index.html` (et de `style.css` dans les pages légales et la 404), sinon les visiteurs gardent l'ancienne version en cache : ces fichiers sont gardés un an.
 
@@ -147,9 +157,9 @@ Pour l'appli, une voix encore plus expressive est possible avec un service payan
 
 ## Référencement
 
-- **Ce qui est en place** : titre et description par langue, adresse canonique, liens `hreflang` entre `/` et `/en`, `robots.txt`, `sitemap.xml` (les deux langues), images de partage, et des données structurées (`application/ld+json` en tête de page) qui décrivent l'organisation, le site, l'appli et les questions fréquentes. Les pages légales et la 404 sont exclues (`noindex`).
+- **Ce qui est en place** : titre et description par langue, adresse canonique, liens `hreflang` entre `/bienvenue` et `/bienvenue/en`, `robots.txt`, `sitemap.xml` (les deux langues), images de partage, et des données structurées (`application/ld+json` en tête de page) qui décrivent l'organisation, le site, l'appli et les questions fréquentes. Les pages légales et la 404 sont exclues (`noindex`).
 - **Les questions fréquentes** sont écrites deux fois : dans la page et dans les données structurées. Le texte doit rester identique aux deux endroits (le script de traduction les remplace ensemble).
-- **Google** : créer une propriété dans Google Search Console (search.google.com/search-console) pour `https://popoteduo.app/`, la valider par la balise HTML proposée (à ajouter dans le `<head>` de `index.html`), puis envoyer le sitemap `https://popoteduo.app/sitemap.xml`.
-- **Bing (et les moteurs qui s'en servent : DuckDuckGo, Ecosia, Qwant…)** : le site est signalé par IndexNow, avec la clé du fichier `*.txt` à la racine. Bing Webmaster Tools peut aussi importer la propriété depuis Google Search Console.
-- **Le nom de domaine** : le site est sur `popoteduo.app`. Si l’adresse change, il faut changer les adresses complètes en tête des pages, dans `sitemap.xml`, `robots.txt` et `outils/version-anglaise.py`. Les liens venant d'autres sites (école, réseaux, articles) aident beaucoup.
+- **Google** : créer une propriété dans Google Search Console (search.google.com/search-console) pour `https://popoteduo.app/` (une propriété « domaine » couvre aussi `/bienvenue`), puis envoyer le sitemap `https://popoteduo.app/bienvenue/sitemap.xml`.
+- **Bing (et les moteurs qui s'en servent : DuckDuckGo, Ecosia, Qwant…)** : le site est signalé par IndexNow, avec la clé du fichier `*.txt` à la racine. Sous `/bienvenue`, cette clé doit aussi être servie à la racine de `popoteduo.app`, par l'appli (POP-148), tout comme `robots.txt` : les robots ne lisent que ceux de la racine du domaine. Bing Webmaster Tools peut aussi importer la propriété depuis Google Search Console.
+- **Le nom de domaine** : le site est sur `popoteduo.app/bienvenue`. Si l’adresse change, il faut changer les adresses complètes en tête des pages, dans `sitemap.xml`, `robots.txt` et `outils/version-anglaise.py`. Les liens venant d'autres sites (école, réseaux, articles) aident beaucoup.
 

@@ -2,17 +2,17 @@
 <!-- Les pages à référencer, en français et en anglais. À mettre à jour si le site change d'adresse. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://popoteduo.app/</loc>
+    <loc>https://popoteduo.app/bienvenue</loc>
     <lastmod>2026-11-20</lastmod>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://popoteduo.app/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://popoteduo.app/en"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://popoteduo.app/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://popoteduo.app/bienvenue"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://popoteduo.app/bienvenue/en"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://popoteduo.app/bienvenue"/>
   </url>
   <url>
-    <loc>https://popoteduo.app/en</loc>
+    <loc>https://popoteduo.app/bienvenue/en</loc>
     <lastmod>2026-11-20</lastmod>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://popoteduo.app/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://popoteduo.app/en"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://popoteduo.app/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://popoteduo.app/bienvenue"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://popoteduo.app/bienvenue/en"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://popoteduo.app/bienvenue"/>
   </url>
 </urlset>

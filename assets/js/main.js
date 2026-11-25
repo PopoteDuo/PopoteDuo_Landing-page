@@ -37,7 +37,8 @@ const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
 function loadAnalytics(){
   if(CONFIG.analytics.provider!=='vercel'||/^(localhost|127\.|\[::1\]|0\.0\.0\.0)/.test(location.hostname)||location.protocol==='file:')return;
   window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};
-  const s=document.createElement('script');s.defer=true;s.src='/_vercel/insights/script.js';
+  // Sous popoteduo.app/bienvenue (POP-150) : le script et ses envois passent par le même chemin.
+  const s=document.createElement('script');s.defer=true;s.src='/bienvenue/_vercel/insights/script.js';s.dataset.endpoint='/bienvenue/_vercel/insights';
   document.head.appendChild(s);
 }
 // Événements (démo, Gari) : Vercel ne les enregistre qu'avec l'offre Pro. Sur l'offre gratuite, ils sont ignorés.
