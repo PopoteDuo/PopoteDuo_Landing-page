@@ -55,11 +55,13 @@ Le site reprend la direction artistique de l'appli, « version pop » (planche �
 
 ## Le site en ligne (Vercel)
 
-### La mesure d'audience (Vercel Web Analytics)
+### La mesure d'audience (PostHog, POP-152)
 
-Sans cookie, donc sans bandeau. À activer une fois dans le projet Vercel : onglet **Analytics → Enable**. On y voit les visiteurs, les pages vues, les pays, les appareils et les sites d'où viennent les visiteurs (instagram.com, tiktok.com…).
+La landing utilise PostHog, le même projet que l'appli (POP-124 du dépôt `popote-app`), avec les mêmes réglages : région UE (Francfort), sans cookie (donc sans bandeau), pas de profil de personne, seulement les pages vues (pas de capture automatique des clics, pas d'enregistrement de session), adresses sans paramètres, et rien si le navigateur demande à ne pas être pisté. Les réglages sont en haut de `assets/js/main.js` (`CONFIG.analytics`) ; le « project token » qui y figure est public, l'appli l'envoie aussi à chaque visiteur.
 
-L'offre gratuite compte 50 000 événements par mois. Elle ne suit pas les actions (écoute de la démo, Gari touchée…) ni les paramètres `utm_` des liens : il faut pour cela l'offre Pro avec l'option Web Analytics Plus. Le code envoie déjà ces actions : elles apparaîtront d'elles-mêmes si vous passez à l'offre Pro.
+La mesure ne part que du site en ligne (`popoteduo.app`) : rien en local ni sur les préversions Vercel. C'est le navigateur qui envoie directement à PostHog, donc les pays sont justes. Vercel Web Analytics n'est plus utilisé : sous `popoteduo.app/bienvenue`, il ne se chargeait plus (Vercel ne le sert qu'à `/_vercel/insights`, et à travers le relais de l'appli les pays auraient été faux). Il peut être désactivé dans le projet Vercel (onglet **Analytics**).
+
+Dans PostHog, les pages de la landing sont celles dont le chemin commence par `/bienvenue` ; on suit dans le même outil le passage de la landing à la création de compte.
 
 ### Le pare-feu (Vercel Firewall)
 
