@@ -71,10 +71,12 @@
 
   <section id="audience">
     <h2>Visitor statistics, without cookies</h2>
-    <p>To know whether the website is useful, we count visits: number of visitors, pages viewed, country, type of device and the website you came from. These statistics come from Vercel Web Analytics:</p>
+    <p>To know whether the website is useful, we count visits: number of visitors, pages viewed, country, type of device and the website you came from. These statistics come from PostHog, hosted in the European Union (Frankfurt), the same tool as the Popote Duo app:</p>
     <ul>
       <li>no cookie or other tracker is stored on your device;</li>
-      <li>you are recognised for one day by a fingerprint computed from the request, which is then deleted: you cannot be followed from one day to the next or from one website to another;</li>
+      <li>you are recognised for one day by a fingerprint computed from the request, which is then deleted: you cannot be followed from one day to the next or from one website to another; your IP address is not kept;</li>
+      <li>only page views are measured, without recording your clicks or your browsing;</li>
+      <li>if your browser asks not to be tracked (“Do Not Track” or “Global Privacy Control”), nothing is measured;</li>
       <li>we only see overall figures, never combined with other data;</li>
       <li>statistics are kept for a limited time, less than 25&nbsp;months.</li>
     </ul>
@@ -88,7 +90,8 @@
       <table>
         <thead><tr><th>Provider</th><th>Role</th><th>Where</th></tr></thead>
         <tbody>
-          <tr><td data-label="Provider">Vercel</td><td data-label="Role">Website hosting, sending the form (from Paris) and visitor statistics</td><td data-label="Where">Global network, US company; transfer covered by the Data Privacy Framework</td></tr>
+          <tr><td data-label="Provider">Vercel</td><td data-label="Role">Website hosting and sending the form (from Paris)</td><td data-label="Where">Global network, US company; transfer covered by the Data Privacy Framework</td></tr>
+          <tr><td data-label="Provider">PostHog</td><td data-label="Role">Visitor statistics, without cookies</td><td data-label="Where">European Union (Frankfurt)</td></tr>
           <tr><td data-label="Provider">Google (Gmail)</td><td data-label="Role">The team’s inbox, which receives sign-ups</td><td data-label="Where">European Union and United States; transfer covered by the Data Privacy Framework</td></tr>
         </tbody>
       </table>

@@ -1,13 +1,14 @@
-/* Popote Duo · landing page : Gari animée, repères de défilement, démo du mode cuisine. Les boutons mènent à l'appli (app.popoteduo.app). */
+/* Popote Duo · landing page : Gari animée, repères de défilement, démo du mode cuisine. Les boutons mènent à l'appli (popoteduo.app). */
 (function(){
 "use strict";
 const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
 const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
 /* ---------- Réglages à remplir avant la mise en ligne (voir LISEZMOI.md) ---------- */
 const CONFIG={
-  // Mesure d'audience Vercel Web Analytics : sans cookie, rien à régler ici, il suffit de l'activer dans le projet Vercel.
-  // Laisser vide pour ne rien mesurer.
-  analytics:{provider:'vercel'}
+  // Mesure d'audience PostHog (POP-152), le même projet que l'appli (POP-124) : région UE, sans cookie.
+  // `key` est le « project token » du projet PostHog : il est public, l'appli l'envoie aussi à chaque visiteur.
+  // Seulement sur le site en ligne (`host`). Mettre provider:'' pour ne rien mesurer.
+  analytics:{provider:'posthog',key:'phc_xHAzxjfVGfveBKPR9pSABzgAYnubjBPfjwGuXUXrGTAs',api:'https://eu.i.posthog.com',host:'popoteduo.app'}
 };
 // Racine du site, déduite de l'adresse de ce script : la page anglaise (en/) trouve ainsi les mêmes fichiers.
 const BASE=document.currentScript?new URL('../../',document.currentScript.src).href:'';
@@ -33,18 +34,33 @@ const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* ---------- Mesure d'audience ---------- */
 // Chargée après la page, uniquement si elle est réglée. Les événements ne contiennent jamais de donnée personnelle.
-// Le script n'existe que sur le site en ligne (Vercel le sert lui-même) : rien n'est chargé en local.
+// Les mêmes réglages que l'appli (apps/web/src/lib/analytics.ts) : seulement les pages vues, sans cookie,
+// sans profil de personne, sans capture automatique ni enregistrement de session, et rien si le navigateur
+// demande à ne pas être pisté (« Do Not Track », « Global Privacy Control »). Le navigateur envoie
+// directement à PostHog : le pays est le vrai (à travers le relais de l'appli, il ne le serait pas).
+// Rien en local ni sur les préversions : seulement sur l'adresse en ligne.
 function loadAnalytics(){
-  if(CONFIG.analytics.provider!=='vercel'||/^(localhost|127\.|\[::1\]|0\.0\.0\.0)/.test(location.hostname)||location.protocol==='file:')return;
-  window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};
-  // Sous popoteduo.app/bienvenue (POP-150) : le script et ses envois passent par le même chemin.
-  const s=document.createElement('script');s.defer=true;s.src='/bienvenue/_vercel/insights/script.js';s.dataset.endpoint='/bienvenue/_vercel/insights';
+  const a=CONFIG.analytics;
+  if(a.provider!=='posthog'||!a.key||location.hostname!==a.host)return;
+  if(navigator.doNotTrack==='1'||window.doNotTrack==='1'||navigator.globalPrivacyControl===true)return;
+  // Les adresses partent sans paramètres ni « #… ».
+  const clean=v=>typeof v==='string'?v.split(/[?#]/,1)[0]:v;
+  const config={
+    api_host:a.api,defaults:'2026-08-30',cookieless_mode:'always',person_profiles:'never',
+    capture_pageview:true,autocapture:false,capture_dead_clicks:false,capture_heatmaps:false,
+    capture_exceptions:false,capture_performance:false,disable_session_recording:true,disable_surveys:true,
+    disable_product_tours:true,disable_conversations:true,disable_web_experiments:true,
+    disable_external_dependency_loading:true,advanced_disable_flags:true,respect_dnt:true,
+    before_send:e=>{if(!e)return e;const p={};for(const[k,v]of Object.entries(e.properties||{}))p[k]=/url|pathname|referrer/i.test(k)?clean(v):v;return Object.assign({},e,{properties:p,$set:undefined,$set_once:undefined})}
+  };
+  // Le chargeur officiel de PostHog lit cette file au démarrage (« snippet » réduit à l'initialisation).
+  window.posthog=Object.assign([],{_i:[[a.key,config]],__SV:1});
+  const s=document.createElement('script');s.async=true;s.crossOrigin='anonymous';
+  s.src=a.api.replace('.i.posthog.com','-assets.i.posthog.com')+'/static/array.js';
   document.head.appendChild(s);
 }
-// Événements (démo, Gari) : Vercel ne les enregistre qu'avec l'offre Pro. Sur l'offre gratuite, ils sont ignorés.
-function track(name,props){
-  try{if(window.va)window.va('event',{name,data:props})}catch(e){}
-}
+// Événements (démo, Gari) : comme dans l'appli, seulement les pages vues sont mesurées ; rien d'autre ne part.
+function track(name,props){}
 addEventListener('load',()=>setTimeout(loadAnalytics,1200),{once:true});
 
 /* ---------- Gari ---------- */

@@ -70,10 +70,12 @@
 
   <section id="audience">
     <h2>Mesure d’audience, sans cookie</h2>
-    <p>Pour savoir si le site est utile, nous comptons les visites&nbsp;: nombre de visiteurs, pages vues, pays, type d’appareil et site d’où vous venez. Ces statistiques sont produites par Vercel Web Analytics&nbsp;:</p>
+    <p>Pour savoir si le site est utile, nous comptons les visites&nbsp;: nombre de visiteurs, pages vues, pays, type d’appareil et site d’où vous venez. Ces statistiques sont produites par PostHog, hébergé dans l’Union européenne (Francfort), le même outil que l’appli Popote Duo&nbsp;:</p>
     <ul>
       <li>aucun cookie ni autre traceur n’est déposé sur votre appareil&nbsp;;</li>
-      <li>vous êtes reconnu le temps d’une journée par une empreinte calculée à partir de la requête, puis elle est effacée&nbsp;: impossible de vous suivre d’un jour à l’autre ni d’un site à l’autre&nbsp;;</li>
+      <li>vous êtes reconnu le temps d’une journée par une empreinte calculée à partir de la requête, puis elle est effacée&nbsp;: impossible de vous suivre d’un jour à l’autre ni d’un site à l’autre&nbsp;; votre adresse IP n’est pas conservée&nbsp;;</li>
+      <li>seules les pages vues sont mesurées, sans enregistrement de vos clics ni de votre navigation&nbsp;;</li>
+      <li>si votre navigateur demande à ne pas être pisté («&nbsp;Do Not Track&nbsp;» ou «&nbsp;Global Privacy Control&nbsp;»), rien n’est mesuré&nbsp;;</li>
       <li>nous ne voyons que des chiffres d’ensemble, jamais croisés avec d’autres données&nbsp;;</li>
       <li>les statistiques sont conservées pour une durée limitée, moins de 25&nbsp;mois.</li>
     </ul>
@@ -87,7 +89,8 @@
       <table>
         <thead><tr><th>Fournisseur</th><th>Rôle</th><th>Où</th></tr></thead>
         <tbody>
-          <tr><td data-label="Fournisseur">Vercel</td><td data-label="Rôle">Hébergement du site, transmission du formulaire (depuis Paris) et statistiques de visite</td><td data-label="Où">Réseau mondial, société aux États-Unis&nbsp;; transfert encadré par le Data Privacy Framework</td></tr>
+          <tr><td data-label="Fournisseur">Vercel</td><td data-label="Rôle">Hébergement du site et transmission du formulaire (depuis Paris)</td><td data-label="Où">Réseau mondial, société aux États-Unis&nbsp;; transfert encadré par le Data Privacy Framework</td></tr>
+          <tr><td data-label="Fournisseur">PostHog</td><td data-label="Rôle">Statistiques de visite, sans cookie</td><td data-label="Où">Union européenne (Francfort)</td></tr>
           <tr><td data-label="Fournisseur">Google (Gmail)</td><td data-label="Rôle">Boîte e-mail de l’équipe, qui reçoit les inscriptions</td><td data-label="Où">Union européenne et États-Unis&nbsp;; transfert encadré par le Data Privacy Framework</td></tr>
         </tbody>
       </table>
