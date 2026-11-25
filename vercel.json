@@ -3,13 +3,17 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "regions": ["cdg1"],
+  "rewrites": [
+    { "source": "/bienvenue", "destination": "/" },
+    { "source": "/bienvenue/:path*", "destination": "/:path*" }
+  ],
   "headers": [
     {
-      "source": "/assets/:dir(css|js|fonts)/:file*",
+      "source": "/bienvenue/assets/:dir(css|js|fonts)/:file*",
       "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
     },
     {
-      "source": "/assets/:dir(audio|img)/:file*",
+      "source": "/bienvenue/assets/:dir(audio|img)/:file*",
       "headers": [{ "key": "Cache-Control", "value": "public, max-age=604800" }]
     },
     {

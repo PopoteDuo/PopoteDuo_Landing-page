@@ -2,4 +2,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://popoteduo.app/sitemap.xml
+Sitemap: https://popoteduo.app/bienvenue/sitemap.xml
