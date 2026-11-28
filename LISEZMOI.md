@@ -57,11 +57,22 @@ Le site reprend la direction artistique de l'appli, « version pop » (planche �
 
 ### La mesure d'audience (PostHog, POP-152)
 
-La landing utilise PostHog, le même projet que l'appli (POP-124 du dépôt `popote-app`), avec les mêmes réglages : région UE (Francfort), sans cookie (donc sans bandeau), pas de profil de personne, seulement les pages vues (pas de capture automatique des clics, pas d'enregistrement de session), adresses sans paramètres, et rien si le navigateur demande à ne pas être pisté. Les réglages sont en haut de `assets/js/main.js` (`CONFIG.analytics`) ; le « project token » qui y figure est public, l'appli l'envoie aussi à chaque visiteur.
+La landing utilise PostHog, le même projet que l'appli (POP-124 du dépôt `popote-app`), avec les mêmes réglages : région UE (Francfort), sans cookie (donc sans consentement à demander), pas de profil de personne, seulement les pages vues (pas de capture automatique des clics, pas d'enregistrement de session), adresses sans paramètres, et rien si le navigateur demande à ne pas être pisté. Les réglages sont en haut de `assets/js/main.js` (`CONFIG.analytics`) ; le « project token » qui y figure est public, l'appli l'envoie aussi à chaque visiteur.
 
 La mesure ne part que du site en ligne (`popoteduo.app`) : rien en local ni sur les préversions Vercel. C'est le navigateur qui envoie directement à PostHog, donc les pays sont justes. Vercel Web Analytics n'est plus utilisé : sous `popoteduo.app/bienvenue`, il ne se chargeait plus (Vercel ne le sert qu'à `/_vercel/insights`, et à travers le relais de l'appli les pays auraient été faux). Il peut être désactivé dans le projet Vercel (onglet **Analytics**).
 
 Dans PostHog, les pages de la landing sont celles dont le chemin commence par `/bienvenue` ; on suit dans le même outil le passage de la landing à la création de compte.
+
+### Le bandeau « pas de cookie » (POP-147)
+
+La mesure se passe de cookie et de consentement (CNIL) : le bandeau ne demande donc pas d'accord. Ses objectifs :
+
+- **la confiance des parents** : sur un site pour les familles, dire tout de suite qu'il n'y a pas de cookie, avec Gari et son cookie (`assets/img/gari/cookie.svg`) ;
+- **la transparence** : ce qui est compté, en une phrase, et un lien vers la politique de confidentialité ;
+- **un refus en un geste** : « Refuser » arrête la mesure sur cet appareil, PostHog compris s'il est déjà chargé ;
+- **ne pas gêner la lecture** : une petite carte en bas de l'écran, sans voile ni prise du focus, affichée une seule fois.
+
+Le choix (« oui » ou « non ») est gardé dans le stockage local (`popote-mesure`), comme la langue : ce n'est pas un traceur. Le lien « Mesure d'audience » du pied de page rouvre le bandeau. Le code est dans `initMesure` (`assets/js/main.js`), le style sous « Bandeau « pas de cookie » » dans `style.css`.
 
 ### Le pare-feu (Vercel Firewall)
 

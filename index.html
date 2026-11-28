@@ -29,7 +29,7 @@ document.documentElement.className+=' js';(function(){var c=null;try{c=localStor
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preload" href="/bienvenue/assets/fonts/fredoka-var.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/bienvenue/assets/fonts/nunito-var.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/bienvenue/assets/css/style.css?v=35">
+<link rel="stylesheet" href="/bienvenue/assets/css/style.css?v=36">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[
 {"@type":"Organization","@id":"https://popoteduo.app/#organisation","name":"Popote Duo","url":"https://popoteduo.app/bienvenue","logo":"https://popoteduo.app/bienvenue/assets/img/apple-touch-icon.png","email":"contact.popoteduo@gmail.com"},
@@ -382,7 +382,7 @@ document.documentElement.className+=' js';(function(){var c=null;try{c=localStor
     <div class="foot-grid">
       <a class="logo" href="#top" aria-label="Popote Duo, retour en haut">Popote<span>Duo</span></a>
       <nav aria-label="Pied de page">
-        <a href="#appli">L’appli</a><a href="#mode-cuisine">Démo</a><a href="#tarifs">Tarifs</a><a href="#faq">FAQ</a><a href="#liste">Commencer</a><a href="/bienvenue/politique-de-confidentialite">Confidentialité</a><a href="/bienvenue/mentions-legales">Mentions légales</a>
+        <a href="#appli">L’appli</a><a href="#mode-cuisine">Démo</a><a href="#tarifs">Tarifs</a><a href="#faq">FAQ</a><a href="#liste">Commencer</a><a href="/bienvenue/politique-de-confidentialite">Confidentialité</a><a href="/bienvenue/mentions-legales">Mentions légales</a><a href="#mesure" data-mesure-ouvrir>Mesure d’audience</a>
       </nav>
     </div>
     <p>© 2026 Popote Duo · Photo&nbsp;: Unsplash. Voix de Gari&nbsp;: Piper, «&nbsp;siwis&nbsp;» (CC&nbsp;BY&nbsp;4.0) et «&nbsp;LJ&nbsp;Speech&nbsp;» (domaine public).</p>
@@ -391,6 +391,20 @@ document.documentElement.className+=' js';(function(){var c=null;try{c=localStor
 
 <a class="to-top" id="toTop" href="#top" aria-label="Retour en haut"><svg><use href="#i-up"/></svg></a>
 
-<script src="/bienvenue/assets/js/main.js?v=32" defer></script>
+<!-- Mesure d'audience (POP-147) : pas de cookie, donc pas de consentement à demander ; le bandeau le dit,
+     et permet de ne pas être compté. Affiché une fois, rouvert par le lien du pied de page (main.js). -->
+<section class="mesure" id="mesure" aria-labelledby="mesure-titre" hidden>
+  <img class="mesure-gari" src="/bienvenue/assets/img/gari/cookie.svg" alt="" width="240" height="236">
+  <div class="mesure-texte">
+    <h2 id="mesure-titre">Ici, pas de cookie… sauf celui de Gari&nbsp;!</h2>
+    <p>On compte seulement les visites, sans cookie et sans savoir qui vous êtes. <a href="/bienvenue/politique-de-confidentialite#audience">En savoir plus</a></p>
+  </div>
+  <div class="mesure-actions">
+    <button type="button" class="btn btn-ink btn-s" data-mesure="oui">Accepter</button>
+    <button type="button" class="btn btn-line btn-s" data-mesure="non">Refuser</button>
+  </div>
+</section>
+
+<script src="/bienvenue/assets/js/main.js?v=33" defer></script>
 </body>
 </html>
