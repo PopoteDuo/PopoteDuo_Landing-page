@@ -95,13 +95,14 @@ Avant d'envoyer, augmenter le numéro de version (`?v=…`) de `style.css` et `m
 
 ## Voir la page en local
 
-Avec MAMP lancé : http://localhost:8888/popote-duo-landing/. Sans MAMP, depuis ce dossier :
+Les adresses de la page commencent toutes par `/bienvenue/` (POP-150) : il faut donc la servir sous ce chemin. Depuis le dossier qui contient ce dépôt :
 
 ```bash
-python3 -m http.server 8000
+mkdir -p /tmp/landing && ln -sfn "$PWD/PopoteDuo_Landing-page" /tmp/landing/bienvenue
+cd /tmp/landing && python3 -m http.server 8000
 ```
 
-puis http://localhost:8000. En local, Gari et la voix marchent, mais pas la mesure d'audience.
+puis http://localhost:8000/bienvenue (et http://localhost:8000/bienvenue/en). En local, Gari et la voix marchent, mais pas la mesure d'audience.
 
 ## Modifier les textes
 
