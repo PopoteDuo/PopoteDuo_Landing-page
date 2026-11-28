@@ -46,6 +46,7 @@ TEXT = [
     ('<li><a href="#tarifs">Tarifs</a></li>', '<li><a href="#tarifs">Pricing</a></li>'),
     ('>Se connecter</a>', '>Log in</a>'),
     ('>Créer mon compte<', '>Create my account<'),
+    ('>S’inscrire<', '>Sign up<'),
     ('>J’ai déjà un compte<', '>I already have an account<'),
     ('<nav class="dots" aria-label="Sections de la page">', '<nav class="dots" aria-label="Page sections">'),
     ('aria-label="Accueil"><span>Accueil</span>', 'aria-label="Home"><span>Home</span>'),
