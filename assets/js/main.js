@@ -39,9 +39,13 @@ const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
 // demande à ne pas être pisté (« Do Not Track », « Global Privacy Control »). Le navigateur envoie
 // directement à PostHog : le pays est le vrai (à travers le relais de l'appli, il ne le serait pas).
 // Rien en local ni sur les préversions : seulement sur l'adresse en ligne.
+// Le choix fait dans le bandeau (POP-147) : « non », on ne compte pas ce visiteur.
+const MESURE_KEY='popote-mesure';
+function mesureChoice(){try{return localStorage.getItem(MESURE_KEY)}catch(_){return null}}
 function loadAnalytics(){
   const a=CONFIG.analytics;
   if(a.provider!=='posthog'||!a.key||location.hostname!==a.host)return;
+  if(mesureChoice()==='non'||window.posthog)return;
   if(navigator.doNotTrack==='1'||window.doNotTrack==='1'||navigator.globalPrivacyControl===true)return;
   // Les adresses partent sans paramètres ni « #… ».
   const clean=v=>typeof v==='string'?v.split(/[?#]/,1)[0]:v;
@@ -62,6 +66,31 @@ function loadAnalytics(){
 // Événements (démo, Gari) : comme dans l'appli, seulement les pages vues sont mesurées ; rien d'autre ne part.
 function track(name,props){}
 addEventListener('load',()=>setTimeout(loadAnalytics,1200),{once:true});
+
+/* ---------- Bandeau « pas de cookie » (POP-147) ---------- */
+// La mesure se passe de cookie et de consentement (CNIL) : le bandeau ne demande pas d'accord, il dit
+// ce qui est compté et permet de ne pas l'être, en un geste. Il s'affiche une fois, sans cacher la
+// page ni prendre le focus ; le lien « Mesure d'audience » du pied de page le rouvre. Le choix reste
+// sur l'appareil (stockage local), ce qui n'est pas un traceur.
+function initMesure(){
+  const el=$('#mesure');if(!el)return;
+  const show=focus=>{el.hidden=false;if(focus)el.querySelector('[data-mesure]').focus()};
+  const hide=()=>{const inside=el.contains(document.activeElement);el.hidden=true;if(inside)$('[data-mesure-ouvrir]')?.focus()};
+  if(!mesureChoice())setTimeout(()=>show(false),RM?0:900);
+  el.addEventListener('click',e=>{
+    const b=e.target.closest('[data-mesure]');if(!b)return;
+    const choice=b.dataset.mesure;
+    try{localStorage.setItem(MESURE_KEY,choice)}catch(_){}
+    // PostHog déjà chargé : on l'arrête ou on le relance ; sinon, loadAnalytics lit le choix.
+    const ph=window.posthog;
+    if(choice==='non')ph?.opt_out_capturing?.();
+    else if(ph?.opt_in_capturing)ph.opt_in_capturing();else loadAnalytics();
+    hide();
+  });
+  document.addEventListener('click',e=>{if(e.target.closest('[data-mesure-ouvrir]')){e.preventDefault();show(true)}});
+  addEventListener('keydown',e=>{if(e.key==='Escape'&&!el.hidden)hide()});
+}
+initMesure();
 
 /* ---------- Gari ---------- */
 // Gari est le dessin « pop » de l'appli (outils/dessiner-gari.py), devant son soleil.

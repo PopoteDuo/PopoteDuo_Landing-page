@@ -150,6 +150,19 @@ h3{font-size:22px;line-height:1.2}
 .to-top svg{width:22px;height:22px}
 .to-top.on{opacity:1;transform:none;pointer-events:auto}
 
+/* ---------- Bandeau « pas de cookie » (POP-147) : une carte crème en bas, Gari et son cookie qui dépassent ---------- */
+.mesure{position:fixed;z-index:45;left:calc(var(--frame) + 8px);right:calc(var(--frame) + 8px);bottom:calc(env(safe-area-inset-bottom,0px) + 12px);display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:12px 14px;padding:14px 16px 16px;border-radius:var(--r-l);background:var(--creme);box-shadow:var(--ombre-modale),inset 0 0 0 1.5px var(--trait);animation:mesure-in .5s var(--rebond)}
+.mesure[hidden]{display:none}
+.mesure-gari{width:84px;height:auto;margin:-34px -4px -6px -6px}
+.mesure h2{margin:0 0 4px;font-family:var(--titre);font-weight:600;font-size:19px;line-height:1.2;color:var(--herbe)}
+.mesure p{margin:0;font-size:15px;line-height:1.45;color:var(--texte-2)}
+.mesure p a{color:var(--herbe);font-weight:800}
+.mesure-actions{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px}
+.mesure-actions .btn{flex:1 1 auto;justify-content:center;padding:0 18px}
+@media (min-width:720px){.mesure{right:auto;width:min(460px,calc(100% - 2 * var(--frame) - 32px));left:calc(var(--frame) + 16px);bottom:calc(env(safe-area-inset-bottom,0px) + 16px)}}
+@keyframes mesure-in{from{opacity:0;transform:translateY(24px)}}
+@media (prefers-reduced-motion:reduce){.mesure{animation:none}}
+
 /* ---------- Haut de page : le soleil de l'écran d'accueil de l'appli ---------- */
 .hero{padding:var(--frame) var(--frame) 0}
 .hero-in{position:relative;overflow:clip;display:flex;flex-direction:column;gap:8px;min-height:calc(100svh - var(--frame));padding:calc(env(safe-area-inset-top,0px) + 84px) var(--gut) 56px;border-radius:var(--r-xl);background:var(--soleil)}
