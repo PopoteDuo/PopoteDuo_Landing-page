@@ -83,7 +83,7 @@ Le projet Vercel est relié au dépôt GitHub PopoteDuo/PopoteDuo_Landing-page :
 
 Le projet Vercel n'a plus besoin du domaine `popoteduo.app`. Pour vérifier une préversion, ouvrir son adresse suivie de `/bienvenue`.
 
-Les boutons « Se connecter », « Créer mon compte » et « J’ai déjà un compte » mènent à l’appli, https://popoteduo.app (`/connexion` et `/compte`). Tant que le domaine `popoteduo.app` est servi par Vercel (avant la bascule de POP-148), `vercel.json` redirige `/compte`, `/connexion` et `/confidentialite` vers `https://app.popoteduo.app` (POP-151) : sans ça, ces boutons donnent une 404. Après la bascule, `popoteduo.app` est servi par l'appli et ces redirections ne servent plus (on pourra les retirer). Ils sont en dur dans `index.html` ; la version anglaise les reprend par `outils/version-anglaise.py`.
+Les boutons « Se connecter », « Créer mon compte » et « J’ai déjà un compte » mènent à l’appli, https://popoteduo.app (`/connexion` et `/compte`). Depuis la bascule de POP-148, ces adresses sont servies par l'appli : elles n'arrivent plus chez Vercel (les redirections temporaires de POP-151 ont été retirées, POP-177). Ils sont en dur dans `index.html` ; la version anglaise les reprend par `outils/version-anglaise.py`.
 
 Avant d'envoyer, augmenter le numéro de version (`?v=…`) de `style.css` et `main.js` dans `index.html` (et de `style.css` dans les pages légales et la 404), sinon les visiteurs gardent l'ancienne version en cache : ces fichiers sont gardés un an.
 
@@ -95,13 +95,14 @@ Avant d'envoyer, augmenter le numéro de version (`?v=…`) de `style.css` et `m
 
 ## Voir la page en local
 
-Avec MAMP lancé : http://localhost:8888/popote-duo-landing/. Sans MAMP, depuis ce dossier :
+Les adresses de la page commencent toutes par `/bienvenue/` (POP-150) : il faut donc la servir sous ce chemin. Depuis le dossier qui contient ce dépôt :
 
 ```bash
-python3 -m http.server 8000
+mkdir -p /tmp/landing && ln -sfn "$PWD/PopoteDuo_Landing-page" /tmp/landing/bienvenue
+cd /tmp/landing && python3 -m http.server 8000
 ```
 
-puis http://localhost:8000. En local, Gari et la voix marchent, mais pas la mesure d'audience.
+puis http://localhost:8000/bienvenue (et http://localhost:8000/bienvenue/en). En local, Gari et la voix marchent, mais pas la mesure d'audience.
 
 ## Modifier les textes
 

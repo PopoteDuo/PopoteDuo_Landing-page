@@ -129,7 +129,10 @@ h3{font-size:22px;line-height:1.2}
 .lang a:hover{color:var(--herbe)}
 @media (max-width:400px){.nav-pill{padding-left:14px;gap:6px}.logo{font-size:19px}.logo span{padding:2px 8px 3px}.nav-end{gap:4px}.lang a,.lang span{min-width:30px;height:32px;padding:0 4px}.nav .btn-s{padding:0 14px;font-size:15px;min-height:44px}}
 /* Très petits écrans (320 px) : le bouton de la barre laisse la place, l'inscription est juste en dessous dans le haut de page */
-@media (max-width:360px){.nav .btn-s{display:none}}
+/* Sur téléphone, le bouton de la barre prend un libellé court : logo, langue et bouton tiennent dès 320 px (POP-176). */
+.nav-short{display:none}
+@media (max-width:479px){.nav-signup .nav-long{display:none}.nav-signup .nav-short{display:inline}}
+@media (max-width:359px){.nav-pill{padding-left:12px}.logo{font-size:17px}.lang a,.lang span{min-width:28px}.nav .btn-s{padding:0 12px}}
 
 /* Repères de défilement, à droite (ordinateur) */
 .dots{display:none}
@@ -158,7 +161,7 @@ h3{font-size:22px;line-height:1.2}
 .hero-note{margin:0;font-size:14.5px;font-weight:700;opacity:.8}
 .hero-note.ok{opacity:1;font-weight:800}
 .hero-note:empty{display:none}
-/* Boutons vers l’appli (app.popoteduo.app), sous le formulaire de l’accueil et dans l’en-tête */
+/* Boutons vers l’appli (popoteduo.app), sous le formulaire de l’accueil et dans l’en-tête */
 .hero-app{display:flex;flex-wrap:wrap;align-items:center;gap:8px 20px;margin-top:8px}
 @media (max-width:640px){.nav .nav-app{display:none}}
 /* L'inscription rapide, dans le haut de page comme chez Seego : l'e-mail est repris dans le formulaire complet */
