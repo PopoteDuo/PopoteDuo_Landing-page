@@ -69,7 +69,7 @@ La mesure se passe de cookie et de consentement (CNIL) : le bandeau ne demande d
 
 - **la confiance des parents** : sur un site pour les familles, dire tout de suite qu'il n'y a pas de cookie, avec Gari et son cookie (`assets/img/gari/cookie.svg`) ;
 - **la transparence** : ce qui est compté, en une phrase, et un lien vers la politique de confidentialité ;
-- **un refus en un geste** : « Ne pas me compter » arrête la mesure sur cet appareil, PostHog compris s'il est déjà chargé ;
+- **un refus en un geste** : « Refuser » arrête la mesure sur cet appareil, PostHog compris s'il est déjà chargé ;
 - **ne pas gêner la lecture** : une petite carte en bas de l'écran, sans voile ni prise du focus, affichée une seule fois.
 
 Le choix (« oui » ou « non ») est gardé dans le stockage local (`popote-mesure`), comme la langue : ce n'est pas un traceur. Le lien « Mesure d'audience » du pied de page rouvre le bandeau. Le code est dans `initMesure` (`assets/js/main.js`), le style sous « Bandeau « pas de cookie » » dans `style.css`.

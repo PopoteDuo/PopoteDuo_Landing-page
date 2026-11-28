@@ -201,8 +201,8 @@ TEXT = [
     ('<a href="#appli">L’appli</a><a href="#mode-cuisine">Démo</a><a href="#tarifs">Tarifs</a><a href="#faq">FAQ</a><a href="#liste">Commencer</a><a href="/bienvenue/en/privacy">Confidentialité</a><a href="/bienvenue/en/legal-notice">Mentions légales</a><a href="#mesure" data-mesure-ouvrir>Mesure d’audience</a>', '<a href="#appli">The app</a><a href="#mode-cuisine">Demo</a><a href="#tarifs">Pricing</a><a href="#faq">FAQ</a><a href="#liste">Get started</a><a href="/bienvenue/en/privacy">Privacy</a><a href="/bienvenue/en/legal-notice">Legal notice</a><a href="#mesure" data-mesure-ouvrir>Visitor stats</a>'),
     ('<h2 id="mesure-titre">Ici, pas de cookie… sauf celui de Gari&nbsp;!</h2>', '<h2 id="mesure-titre">No cookies here… except Gari’s!</h2>'),
     ('<p>On compte seulement les visites, sans cookie et sans savoir qui vous êtes. <a href="/bienvenue/politique-de-confidentialite#audience">En savoir plus</a></p>', '<p>We only count visits, without cookies and without knowing who you are. <a href="/bienvenue/en/privacy#audience">Learn more</a></p>'),
-    ('data-mesure="oui">Compris</button>', 'data-mesure="oui">Got it</button>'),
-    ('data-mesure="non">Ne pas me compter</button>', 'data-mesure="non">Don’t count me</button>'),
+    ('data-mesure="oui">Accepter</button>', 'data-mesure="oui">Accept</button>'),
+    ('data-mesure="non">Refuser</button>', 'data-mesure="non">Decline</button>'),
 ]
 
 
